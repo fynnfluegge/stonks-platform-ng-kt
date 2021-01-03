@@ -2,10 +2,6 @@ name: CI pipeline
 on:
   push:
     branches: [ master ]
-env:
-  ALIBABA_ACCESS_KEY:
-  ALIBABA_SECRET_KEY:
-  ALIBABA_DEFAULT_REGION: 
 jobs:
   build:
     if: github.event_name == 'push'
@@ -16,8 +12,19 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: Docker Build
-        run: docker-compose build
+      - name: Login to ACR
+        uses: aliyun/acr-login@v1
+        with:
+          login-server: https://registry-intl.eu-central-1.aliyuncs.com
+          username: "${{ secrets.ACR_USERNAME }}"
+          password: "${{ secrets.ACR_PASSWORD }}"
+      - name: Docker build and push
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker-compose build -t registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/invest-platform-default:$IMAGE_TAG .
+# docker push registry.cn-hangzhou.aliyuncs.com/myrepo/demo:$IMAGE_TAG
+# docker-compose build
 #name: Login to ACR
 # uses: aliyun/acr-login@v1
 #  with:
