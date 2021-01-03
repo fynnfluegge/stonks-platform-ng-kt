@@ -1,6 +1,7 @@
 name: CI pipeline
-on: push
-  branches: [ master ]
+on:
+  push:
+    branches: [ master ]
 env:
   ALIBABA_ACCESS_KEY:
   ALIBABA_SECRET_KEY:
