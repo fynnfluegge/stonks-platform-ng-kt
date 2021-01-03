@@ -22,11 +22,15 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: cache maven dependencies
         uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: Login to ACR
         uses: aliyun/acr-login@v1
         with:
@@ -38,6 +42,4 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker-compose build
-          docker-compose tag invest-platform-web:latest registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:$IMAGE_TAG
-          docker-compose tag invest-platform-api:latest registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:$IMAGE_TAG
           docker-compose push
