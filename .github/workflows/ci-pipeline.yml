@@ -22,7 +22,9 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker-compose build -t registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/invest-platform-default:$IMAGE_TAG .
+          docker-compose build
+          docker-compose push
+          
 # docker push registry.cn-hangzhou.aliyuncs.com/myrepo/demo:$IMAGE_TAG
 # docker-compose build
 #name: Login to ACR
