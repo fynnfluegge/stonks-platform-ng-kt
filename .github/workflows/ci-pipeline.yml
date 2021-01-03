@@ -3,7 +3,7 @@ on: push
 env:
   ALIBABA_ACCESS_KEY:
   ALIBABA_SECRET_KEY:
-  ALIBABA_DEFAULT_REGION:  
+  ALIBABA_DEFAULT_REGION: 
 jobs:
   build:
     if: github.event_name == 'push'
