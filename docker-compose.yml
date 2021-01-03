@@ -2,7 +2,7 @@ version: "3.9"
 services:
   web:
     build: ./web/.
-    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:tag
+    image: invest-platform-web
   api:
     build: ./api/.
-    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:tag
+    image: invest-platform-api

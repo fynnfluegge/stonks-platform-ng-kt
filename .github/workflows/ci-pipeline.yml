@@ -12,6 +12,20 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
+      - name: cache multiple paths
+          uses: actions/cache@v2  
+          with:
+            path: |
+              ~/cache
+              !~/cache/exclude
+              **/node_modules
+            key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+      - name: cache maven dependencies
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Login to ACR
         uses: aliyun/acr-login@v1
         with:
@@ -23,19 +37,6 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker-compose build
+          docker tag invest-platform-web registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:$IMAGE_TAG
+          docker tag invest-platform-api registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:$IMAGE_TAG
           docker-compose push
-          
-# docker push registry.cn-hangzhou.aliyuncs.com/myrepo/demo:$IMAGE_TAG
-# docker-compose build
-#name: Login to ACR
-# uses: aliyun/acr-login@v1
-#  with:
-#    login-server: https://registry.cn-hangzhou.aliyuncs.com
-#    username: "${{ secrets.REGISTRY_USERNAME }}"
-#    password: "${{ secrets.REGISTRY_PASSWORD }}"
-#name: Build and push image
-#  env:
-#    IMAGE_TAG: ${{ github.sha }}
-#  run: |
-#    docker build -t registry.cn-hangzhou.aliyuncs.com/myrepo/demo:$IMAGE_TAG .
-#    docker push registry.cn-hangzhou.aliyuncs.com/myrepo/demo:$IMAGE_TAG
