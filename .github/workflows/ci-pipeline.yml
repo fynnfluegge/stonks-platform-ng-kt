@@ -13,14 +13,15 @@ jobs:
         with:
           java-version: '11'
       - name: cache multiple paths
-          uses: actions/cache@v2  
-          with:
-            path: |
-              ~/cache
-              !~/cache/exclude
-              **/node_modules
-            key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+        uses: actions/cache@v2  
+        with:
+          path: |
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: cache maven dependencies
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
