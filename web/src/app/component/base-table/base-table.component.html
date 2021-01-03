@@ -1,0 +1,97 @@
+<table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" sortable="name" (sort)="onSort($event)" style="cursor:pointer">Name</th>
+      <th scope="col" sortable="dayChangePercent" (sort)="onSort($event)" style="cursor:pointer">Price</th>
+      <th scope="col" sortable="fiftyDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">50D-Ø</th>
+      <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">200D-Ø</th>
+      <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52W-Low</th>
+      <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52W-High</th>
+      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer">Market Cap</th>
+      <th scope="col">52W-Slider</th>
+      <th scope="col">Chart</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let quoteRecord of data">
+        <td>
+          <a class='whitelink' (click)="copyMessage(quoteRecord.wkn)" style="cursor:pointer;" matTooltip="Copy WKN" matTooltipPosition='right'>
+            {{ quoteRecord.name }}
+          </a>
+        </td>
+        <td>
+          <div
+          [@cellValueChangedAnimation]="quoteRecord.price"
+          [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented"
+          [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented">
+          {{ (quoteRecord.price).toPrecision(5) }}
+          {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
+        </div>
+        <div>
+          {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) }}
+        </div>
+        <div [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+          {{ (quoteRecord.dayChangePercent).toPrecision(3) }} %
+        </div>
+        </td>
+        <td>
+          <div>{{ (quoteRecord.fiftyDayAverage).toPrecision(5) }}</div>
+          <div [ngStyle]="{'color': quoteRecord.fiftyDayAverageChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.fiftyDayAverageChangePercent * 100).toPrecision(3) }} %
+          </div>
+        </td>
+        <td>
+          <div>{{ (quoteRecord.twoHundredDayAverage).toPrecision(5) }}</div>
+          <div [ngStyle]="{'color': quoteRecord.twoHundredDayAverageChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.twoHundredDayAverageChangePercent * 100).toFixed(3) }} %
+          </div>
+        </td>
+        <td>
+          <div>{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) }}</div>
+          <div [ngStyle]="{'color': quoteRecord.fiftyTwoWeekLowChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.fiftyTwoWeekLowChangePercent * 100).toPrecision(3) }} %
+          </div>
+        </td>
+        <td>
+          <div>{{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) }}</div>
+          <div [ngStyle]="{'color': 'red'}">
+            {{ (quoteRecord.fiftyTwoWeekHighChangePercent * 100).toPrecision(3) }} %
+          </div>
+        </td>
+        <td>{{ quoteRecord.marketCap === 0 ? ''
+          : (quoteRecord.marketCap / 1000000000).toPrecision(4) + ' B'}}
+        </td>
+        <td>
+          <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
+            step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
+          </mat-slider>
+        </td>
+        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer" matTooltip="Open 200d Chart" matTooltipPosition='right'>
+          <div *ngIf="quoteRecord.chartData[0].data != null">
+            <div *ngIf="quoteRecord.chartData[0].data[0] <= quoteRecord.chartData[0].data[9]">
+              <canvas
+                  baseChart
+                  [chartType]="'line'"
+                  [datasets]="quoteRecord.chartData"
+                  [options]="chartOptions"
+                  [labels]="chartLabels"
+                  [legend]="false"
+                  [colors]="greenlineChartColors">
+              </canvas>
+            </div>
+            <div *ngIf="quoteRecord.chartData[0].data[0] > quoteRecord.chartData[0].data[9]">
+              <canvas
+                  baseChart
+                  [chartType]="'line'"
+                  [datasets]="quoteRecord.chartData"
+                  [options]="chartOptions"
+                  [labels]="chartLabels"
+                  [legend]="false"
+                  [colors]="redlineChartColors">
+              </canvas>
+            </div>
+          </div>
+        </td>
+      </tr>
+  </tbody>
+</table>

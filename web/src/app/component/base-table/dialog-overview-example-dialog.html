@@ -1,0 +1,23 @@
+<h6 style="text-align: center;">{{ quoteRecord.name }} 200d-Chart</h6>
+<div *ngIf="quoteRecord.chartData[0].data[0] <= quoteRecord.chartData[0].data[199]">
+  <canvas
+      baseChart
+      [chartType]="'line'"
+      [datasets]="quoteRecord.chartData"
+      [options]="chartOptions"
+      [labels]="chartLabels"
+      [legend]="false"
+      [colors]="greenlineChartColors">
+  </canvas>
+</div>
+<div *ngIf="quoteRecord.chartData[0].data[0] > quoteRecord.chartData[0].data[199]">
+  <canvas
+      baseChart
+      [chartType]="'line'"
+      [datasets]="quoteRecord.chartData"
+      [options]="chartOptions"
+      [labels]="chartLabels"
+      [legend]="false"
+      [colors]="redlineChartColors">
+  </canvas>
+</div>

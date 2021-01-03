@@ -1,0 +1,140 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-toolbar.mat-primary {
+  background: #282828;
+  color: #fff;
+}
+
+.mat-button {
+  background: #282828;
+}
+
+mat-toolbar-row.mat-toolbar-row {
+    height: 64px;
+}
+
+a:hover {
+  background-color: #353535;
+  color: white;
+  text-decoration: none;
+}
+
+a.whitelink:hover {
+  background-color: white;
+  color: white;
+  text-decoration: none;
+}
+
+span:hover {
+  color: white;
+}
+
+.table .thead-dark th {
+    background-color: #282828;
+    border-color: transparent;
+    border-width: 0px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.card-body {
+  padding: 12px;
+  padding-bottom: 18px;
+  overflow: hidden;
+}
+
+.mb-5, .my-5 {
+  margin-bottom: 0rem!important;
+  margin-top: 0rem!important;
+}
+
+.col-md-12{
+  padding: 12px;
+}
+
+.container {
+  height: calc(100% - 80px);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.row {
+  height: 100%;
+  padding-bottom: 10px;
+}
+
+.card.my-5{
+  height: 100%;
+}
+
+.table td {
+  border-width: 1px;
+  border-bottom: 0px;
+}
+
+.table {
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  border-radius:10px 10px 0 0;
+  // height: 100%;
+  thead tr:nth-child(1) th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}
+
+.table-bordered {
+  border: 0px;
+}
+
+tbody {
+  display:block;
+  // height: calc(100% - 50px);
+  // overflow-y:auto;
+  font-size: 14px;
+}
+
+thead, tbody tr {
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+
+table th:first-child{
+  border-radius:10px 0 0 0;
+}
+
+table th:last-child{
+  border-radius:0 10px 0 0;
+}
+
+tfoot {
+  display:block;
+  display:table;
+  table-layout:fixed;
+  width: calc( 100% - 1.1em );
+}
+
+.table td {
+  padding: 8px 8px 4px 12px;
+}
+
+td.ng-tns-c3-0 {
+  padding: 5px;
+}
+
+.mat-slider {
+  overflow-x: auto;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 50px !important;
+}
+
+.mat-slider-thumb {
+  background-color: #727272 !important;
+}

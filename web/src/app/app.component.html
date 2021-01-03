@@ -1,0 +1,52 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'/overview'">Overview</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/tech'">Tech</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/health'">Health</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/finance'">Finance</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/food'">Food</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/retail'">Retail</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/energy'">Energy</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/industry'">Industry</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/mobility'">Mobility</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/media'">Media</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/misc'">Misc</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/performance'">Performance</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/savings'">Savings</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="container" style="overflow-y: scroll;">
+  <div class="row">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

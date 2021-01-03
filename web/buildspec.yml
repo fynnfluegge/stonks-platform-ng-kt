@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t algo-invest-web .
+      - docker tag algo-invest-web:latest 929860192456.dkr.ecr.eu-central-1.amazonaws.com/algo-invest-web:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 929860192456.dkr.ecr.eu-central-1.amazonaws.com/algo-invest-web:latest
