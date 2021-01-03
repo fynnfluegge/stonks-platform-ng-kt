@@ -38,6 +38,6 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker-compose build
-          docker tag invest-platform-web registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:$IMAGE_TAG
-          docker tag invest-platform-api registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:$IMAGE_TAG
+          docker-compose tag invest-platform-web:latest registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:$IMAGE_TAG
+          docker-compose tag invest-platform-api:latest registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:$IMAGE_TAG
           docker-compose push
