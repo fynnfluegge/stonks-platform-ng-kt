@@ -12,25 +12,16 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: cache multiple paths
-        uses: actions/cache@v2  
+      - name: npm cache
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v1
         with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-            **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-      - name: cache maven dependencies
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            ${{ runner.os }}-node-
       - name: Login to ACR
         uses: aliyun/acr-login@v1
         with:
