@@ -7,7 +7,6 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../../../environments/environment';
 
 @Component({
