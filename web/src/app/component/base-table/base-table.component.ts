@@ -1,19 +1,22 @@
-import { Component, OnInit, QueryList, ViewChildren, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
 import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
-import { interval } from 'rxjs/internal/observable/interval';
-import { switchMap, delay } from 'rxjs/operators';
 import { Color } from 'ng2-charts';
-import { PollingService } from '../../service/polling.service';
-import { MatDialog, MAT_DIALOG_DATA, MatSliderModule } from '@angular/material';
+import { EventListenerService } from '../../service/eventListenerService';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../../../environments/environment';
 
 @Component({
+  selector: 'base-table',
   templateUrl: './base-table.component.html',
 })
 export class BaseTableComponent implements OnInit, OnDestroy {
+  @Input() url: string;
+  apiURL = environment.apiUrl;
 
   @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
 
@@ -68,66 +71,54 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   data = this.quoteRecords;
   subscription: Subscription
 
-  constructor(private quoteService: PollingService, private dialog: MatDialog) {
+  constructor(private quoteService: EventListenerService, private dialog: MatDialog) {
   }
 
 
-  merge(vData: QuoteRecord[]) {
+  merge(element: QuoteRecord) {
 
-    this.quoteRecords.forEach(element => {
-      element.priceDecremented = false;
-      element.priceIncremented = false;
-      element.dayChangePercentDecremented = false;
-      element.dayChangePercentIncremented = false;
-    });
+      element.priceDecremented = false
+      element.priceIncremented = false
+      element.dayChangePercentDecremented = false
+      element.dayChangePercentIncremented = false
 
-    vData.forEach(element => {
-        if (!this.init) {
-          this.quoteRecords.push(element);
-        } else {
-          const index = this.quoteRecords.findIndex(x => x.symbol === element.symbol);
-
+      if (this.quoteRecords.findIndex(x => x.symbol === element.symbol) == -1) {
+        this.quoteRecords.push(element);
+      } else {
+        const index = this.quoteRecords.findIndex(x => x.symbol === element.symbol)
+        if(index > -1){
           if (this.quoteRecords[index].price < element.price) {
-            this.quoteRecords[index].priceIncremented = true;
+            this.quoteRecords[index].priceIncremented = true
           }
           if (this.quoteRecords[index].price > element.price) {
-            this.quoteRecords[index].priceDecremented = true;
+            this.quoteRecords[index].priceDecremented = true
           }
           if (this.quoteRecords[index].dayChangePercent < element.dayChangePercent) {
-            this.quoteRecords[index].dayChangePercentIncremented = true;
+            this.quoteRecords[index].dayChangePercentIncremented = true
           }
           if (this.quoteRecords[index].dayChangePercent > element.dayChangePercent) {
-            this.quoteRecords[index].dayChangePercentDecremented = true;
+            this.quoteRecords[index].dayChangePercentDecremented = true
           }
 
-          this.quoteRecords[index].price = element.price;
-          this.quoteRecords[index].dayChangePercent = element.dayChangePercent;
-          this.quoteRecords[index].dayChange = element.dayChange;
-          this.quoteRecords[index].fiftyDayAverage = element.fiftyDayAverage;
-          this.quoteRecords[index].fiftyDayAverageChangePercent = element.fiftyDayAverageChangePercent;
-          this.quoteRecords[index].twoHundredDayAverage = element.twoHundredDayAverage;
-          this.quoteRecords[index].twoHundredDayAverageChangePercent = element.twoHundredDayAverageChangePercent;
-          this.quoteRecords[index].fiftyTwoWeekLow = element.fiftyTwoWeekLow;
-          this.quoteRecords[index].fiftyTwoWeekLowChangePercent = element.fiftyTwoWeekLowChangePercent;
-          this.quoteRecords[index].fiftyTwoWeekHigh = element.fiftyTwoWeekHigh;
-          this.quoteRecords[index].fiftyTwoWeekHighChangePercent = element.fiftyTwoWeekHighChangePercent;
-          this.quoteRecords[index].chartData = element.chartData;
+          this.quoteRecords[index].price = element.price
+          this.quoteRecords[index].dayChangePercent = element.dayChangePercent
+          this.quoteRecords[index].dayChange = element.dayChange
+          this.quoteRecords[index].fiftyDayAverage = element.fiftyDayAverage
+          this.quoteRecords[index].fiftyDayAverageChangePercent = element.fiftyDayAverageChangePercent
+          this.quoteRecords[index].twoHundredDayAverage = element.twoHundredDayAverage
+          this.quoteRecords[index].twoHundredDayAverageChangePercent = element.twoHundredDayAverageChangePercent
+          this.quoteRecords[index].fiftyTwoWeekLow = element.fiftyTwoWeekLow
+          this.quoteRecords[index].fiftyTwoWeekLowChangePercent = element.fiftyTwoWeekLowChangePercent
+          this.quoteRecords[index].fiftyTwoWeekHigh = element.fiftyTwoWeekHigh
+          this.quoteRecords[index].fiftyTwoWeekHighChangePercent = element.fiftyTwoWeekHighChangePercent
+          this.quoteRecords[index].chartData = element.chartData
         }
-    });
-
-    this.init = true;
+      }
   }
 
   ngOnInit() {
-
-    this.quoteService.initQuoteRecords().subscribe(data => this.merge(data));
-
-    this.subscription = interval(2000)
-      .pipe(
-        delay(0),
-        switchMap(() => this.quoteService.updateQuoteRecords())
-      )
-      .subscribe(data => this.merge(data));
+    this.subscription = this.quoteService.observeMessages(this.apiURL + this.url)
+      .subscribe(message => { this.merge(message) });
   }
 
   ngOnDestroy() {
@@ -189,13 +180,16 @@ export class DialogOverviewExampleDialogComponent {
     dayChangePercent: 0, exchange: '', fiftyDayAverage: 0, fiftyDayAverageChangePercent: 0, fiftyTwoWeekHigh: 0,
     fiftyTwoWeekHighChangePercent: 0, fiftyTwoWeekLow: 0, fiftyTwoWeekLowChangePercent: 0, marketCap: 0,
     name: '', price: 0, quoteType: '', twoHundredDayAverage: 0, twoHundredDayAverageChangePercent: 0,
-    dayChangePercentDecremented: false, dayChangePercentIncremented: false, priceDecremented: false, priceIncremented: false,
+    dayChangePercentDecremented: false,
+    dayChangePercentIncremented: false,
+    priceDecremented: false,
+    priceIncremented: false,
     chartData: [{ data: [] }] };
 
   service: BasicRestService;
 
   constructor(public http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-    this.service = new BasicRestService(http, 'http://18.156.73.56:9091/quote/' + data.symbol);
+    this.service = new BasicRestService(http, 'http://localhost:9091/quote/' + data.symbol);
     this.service.getQuoteRecord().subscribe(x => this.merge(x));
 
     for (let i = 0; i < 200; i++) {

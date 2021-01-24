@@ -78,6 +78,7 @@ public class QuoteRecord {
 	public enum QuoteType{
 		EQUITY,
 		CURRENCY,
+		CRYPTOCURRENCY,
 		INDEX,
 		ETF,
 		FUTURE
@@ -85,7 +86,7 @@ public class QuoteRecord {
 	
 	public enum Industry{
 		NONE,
-		BIGTECH	,
+		FANG,
 		TECH_MANUFACTURING,
 		SEMICONDUCTOR,
 		MEDIA,
@@ -118,7 +119,6 @@ public class QuoteRecord {
 		AUTOMOBILE,
 		PAYMENT,
 		CAR_RENTAL,
-		GENERAL_SERVICES,
 		RECYCLING,
 		CHINA
 	}

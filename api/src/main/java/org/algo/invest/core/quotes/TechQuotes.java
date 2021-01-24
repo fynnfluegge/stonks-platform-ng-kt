@@ -3,26 +3,34 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import lombok.Getter;
 import org.algo.invest.model.QuoteRecord.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class TechQuotes {
 
-	public static Map<String, QuoteSymbolMetaData> getQuotes(){
-		
-		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
-		
-		// Big Tech
-		symbolNameMapping.put("GOOG", new QuoteSymbolMetaData("GOOG","Google","A14Y6F", "", Industry.BIGTECH));
-		symbolNameMapping.put("AAPL", new QuoteSymbolMetaData("AAPL","Apple","865985", "", Industry.BIGTECH));
-		symbolNameMapping.put("FB", new QuoteSymbolMetaData("FB","Facebook","A1JWVX", "", Industry.BIGTECH));
-		symbolNameMapping.put("AMZN", new QuoteSymbolMetaData("AMZN","Amazon","906866", "", Industry.BIGTECH));
-		symbolNameMapping.put("MSFT", new QuoteSymbolMetaData("MSFT","Microsoft","870747", "", Industry.BIGTECH));
-		symbolNameMapping.put("NFLX", new QuoteSymbolMetaData("NFLX","Netflix","552484", "", Industry.MEDIA));
-		symbolNameMapping.put("BABA", new QuoteSymbolMetaData("BABA","Alibaba","A117ME", "", Industry.BIGTECH));
-		symbolNameMapping.put("TCEHY", new QuoteSymbolMetaData("TCEHY","Tencent","A1138D", "", Industry.BIGTECH));
-		symbolNameMapping.put("BIDU", new QuoteSymbolMetaData("BIDU","Baidu","A0F5DE", "", Industry.BIGTECH));
-		
+	@Getter
+	public Map<Industry, String> urlSymbols = new LinkedHashMap<>();
+	@Getter
+	public Map<Industry, Map<String, QuoteSymbolMetaData>> quotes = new LinkedHashMap<>();
+	@Getter
+	Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
+
+	public TechQuotes() {
+
+		quotes.put(Industry.FANG, new LinkedHashMap<>());
+		quotes.get(Industry.FANG).put("GOOG", new QuoteSymbolMetaData("GOOG","Google","A14Y6F", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("AAPL", new QuoteSymbolMetaData("AAPL","Apple","865985", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("FB", new QuoteSymbolMetaData("FB","Facebook","A1JWVX", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("AMZN", new QuoteSymbolMetaData("AMZN","Amazon","906866", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("MSFT", new QuoteSymbolMetaData("MSFT","Microsoft","870747", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("NFLX", new QuoteSymbolMetaData("NFLX","Netflix","552484", "", Industry.MEDIA));
+		quotes.get(Industry.FANG).put("BABA", new QuoteSymbolMetaData("BABA","Alibaba","A117ME", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("TCEHY", new QuoteSymbolMetaData("TCEHY","Tencent","A1138D", "", Industry.FANG));
+		quotes.get(Industry.FANG).put("BIDU", new QuoteSymbolMetaData("BIDU","Baidu","A0F5DE", "", Industry.FANG));
+
+		urlSymbols.put(Industry.FANG, String.join(",",quotes.get(Industry.FANG).keySet()));
+
 		// Tech Manufacturing
 		symbolNameMapping.put("SNE", new QuoteSymbolMetaData("SNE","SONY","853688", "", Industry.TECH_MANUFACTURING));
 		symbolNameMapping.put("3CP.F", new QuoteSymbolMetaData("3CP.F","Xiaomi","A2JNY1", "", Industry.TECH_MANUFACTURING));
@@ -35,7 +43,7 @@ public class TechQuotes {
 		symbolNameMapping.put("IRBT", new QuoteSymbolMetaData("IRBT","iRobot","A0F5CC", "", Industry.TECH_MANUFACTURING));
 		symbolNameMapping.put("GRMN", new QuoteSymbolMetaData("GRMN","Garmin","A1C06B", "", Industry.TECH_MANUFACTURING));
 		symbolNameMapping.put("BSL.DE", new QuoteSymbolMetaData("BSL.DE","Basler","510200", "", Industry.TECH_MANUFACTURING));
-		
+
 		// Semiconductor & FPGA
 		symbolNameMapping.put("NVDA", new QuoteSymbolMetaData("NVDA","Nvidia","918422", "", Industry.SEMICONDUCTOR));
 		symbolNameMapping.put("TSFA.F", new QuoteSymbolMetaData("TSFA.F","TSMC","909800","",Industry.SEMICONDUCTOR));
@@ -51,7 +59,7 @@ public class TechQuotes {
 		symbolNameMapping.put("AVGO", new QuoteSymbolMetaData("AVGO","Broadcom","A2JG9Z","",Industry.SEMICONDUCTOR));
 		symbolNameMapping.put("QRVO", new QuoteSymbolMetaData("QRVO","Qorvo","A12CY9","",Industry.SEMICONDUCTOR));
 		symbolNameMapping.put("ASME.DE", new QuoteSymbolMetaData("ASME.DE","ASML","A1J4U4","",Industry.SEMICONDUCTOR));
-		
+
 		// Cloud/SaaS
 		symbolNameMapping.put("CRM", new QuoteSymbolMetaData("CRM","Salesforce","A0B87V","",Industry.CLOUD));
 		symbolNameMapping.put("SPLK", new QuoteSymbolMetaData("SPLK","Splunk","A1JV4H","",Industry.CLOUD));
@@ -90,7 +98,7 @@ public class TechQuotes {
 		symbolNameMapping.put("AOF.DE", new QuoteSymbolMetaData("AOF.DE","Atoss","510440","",Industry.SOFTWARE));
 		symbolNameMapping.put("AVLR", new QuoteSymbolMetaData("AVLR","Avalara","A2JNYN","",Industry.SOFTWARE));
 		symbolNameMapping.put("MDB", new QuoteSymbolMetaData("MDB","MongoDB","A2DYB1","",Industry.SOFTWARE));
-		
+
 		// Security
 		symbolNameMapping.put("FTNT", new QuoteSymbolMetaData("FTNT","FortiNet","A0YEFE","",Industry.SECURITY));
 		symbolNameMapping.put("CYBR", new QuoteSymbolMetaData("CYBR","Cyberark","A12CPP","",Industry.SECURITY));
@@ -100,14 +108,12 @@ public class TechQuotes {
 		symbolNameMapping.put("ZS", new QuoteSymbolMetaData("ZS","ZScaler","A2JF28","",Industry.SECURITY));
 		symbolNameMapping.put("CRWD", new QuoteSymbolMetaData("CRWD","Crowdstrike","A2PK2R","",Industry.SECURITY));
 		symbolNameMapping.put("QLYS", new QuoteSymbolMetaData("QLYS","Qualys","A1J423","",Industry.SECURITY));
-		
+
 		// IT-Services
 		symbolNameMapping.put("IBM", new QuoteSymbolMetaData("IBM","IBM","851399","",Industry.ITSERVICES));
 		symbolNameMapping.put("MHH", new QuoteSymbolMetaData("MHH","Mastech Digital","A0Q9V2","",Industry.ITSERVICES));
 		symbolNameMapping.put("BC8.DE", new QuoteSymbolMetaData("BC8.DE","Bechtle","515870","",Industry.ITSERVICES));
 		symbolNameMapping.put("PS", new QuoteSymbolMetaData("PS","Pluralsight","A2JL45","",Industry.ITSERVICES));
 		symbolNameMapping.put("TWOU", new QuoteSymbolMetaData("TWOU","2U","A1XEYD","",Industry.ITSERVICES));
-		
-		return symbolNameMapping;
 	}
 }

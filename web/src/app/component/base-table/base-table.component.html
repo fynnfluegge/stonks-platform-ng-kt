@@ -20,29 +20,36 @@
           </a>
         </td>
         <td>
-          <div
-          [@cellValueChangedAnimation]="quoteRecord.price"
-          [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented"
-          [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented">
+          <div>
+          <!-- [@cellValueChangedAnimation]="quoteRecord.price"> -->
+          <!-- [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented" -->
+          <!-- [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented"> -->
           {{ (quoteRecord.price).toPrecision(5) }}
           {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
         </div>
         <div>
           {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) }}
         </div>
-        <div [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+        <div
+          [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
           {{ (quoteRecord.dayChangePercent).toPrecision(3) }} %
         </div>
         </td>
         <td>
-          <div>{{ (quoteRecord.fiftyDayAverage).toPrecision(5) }}</div>
-          <div [ngStyle]="{'color': quoteRecord.fiftyDayAverageChangePercent > 0 ? 'green' : 'red'}">
+          <div>
+            {{ (quoteRecord.fiftyDayAverage).toPrecision(5) }}
+          </div>
+          <div 
+            [ngStyle]="{'color': quoteRecord.fiftyDayAverageChangePercent > 0 ? 'green' : 'red'}">
             {{ (quoteRecord.fiftyDayAverageChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
         <td>
-          <div>{{ (quoteRecord.twoHundredDayAverage).toPrecision(5) }}</div>
-          <div [ngStyle]="{'color': quoteRecord.twoHundredDayAverageChangePercent > 0 ? 'green' : 'red'}">
+          <div>
+            {{ (quoteRecord.twoHundredDayAverage).toPrecision(5) }}
+          </div>
+          <div
+            [ngStyle]="{'color': quoteRecord.twoHundredDayAverageChangePercent > 0 ? 'green' : 'red'}">
             {{ (quoteRecord.twoHundredDayAverageChangePercent * 100).toFixed(3) }} %
           </div>
         </td>
@@ -58,7 +65,8 @@
             {{ (quoteRecord.fiftyTwoWeekHighChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
-        <td>{{ quoteRecord.marketCap === 0 ? ''
+        <td>
+          {{ quoteRecord.marketCap === 0 ? ''
           : (quoteRecord.marketCap / 1000000000).toPrecision(4) + ' B'}}
         </td>
         <td>

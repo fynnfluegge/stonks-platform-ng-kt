@@ -2,13 +2,7 @@ package org.algo.invest.core;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import org.algo.invest.core.quotes.ChinaQuotes;
 import org.algo.invest.core.quotes.EnergyQuotes;
@@ -36,7 +30,10 @@ public class AppConfig {
 	private final String YAHOO_FINANCE_QUOTE_URL = "https://query1.finance.yahoo.com/v7/finance/quote";
 	
 	@Getter
-	private String allQuoteSymbolsUrl = "symbols=";
+	private String allQuoteSymbolsUrl;
+
+	@Getter
+	private Map<Industry, String> quoteSymbolUrls = new HashMap();
 	
 	@Getter
 	private List<String> allQuoteSymbols = new ArrayList<>();
@@ -45,22 +42,14 @@ public class AppConfig {
 	private Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
 	
 	@Getter
-	private Set<String> SparplanWkns = new HashSet<>();
+	private TechQuotes techQuotes;
 	
 	public AppConfig() {
 		
 		System.setProperty("yahoofinance.histquotes2.enabled", "false");
-		
+		techQuotes = new TechQuotes();
 		addSymbolNameMappings();
-				
-		for (String vSymbol : symbolNameMapping.keySet()) {
-			try {
-				allQuoteSymbolsUrl += URLEncoder.encode(vSymbol, "UTF8") + "%2C";
-			} catch (UnsupportedEncodingException e) {
-				log.error("Error at URL encoding " + vSymbol);
-			}
-			allQuoteSymbols.add(vSymbol);
-		}
+		allQuoteSymbolsUrl = String.join(",",symbolNameMapping.keySet());
 	}
 	
 	private void addSymbolNameMappings() {
@@ -90,7 +79,8 @@ public class AppConfig {
 		symbolNameMapping.put("^HSCE", new QuoteSymbolMetaData("^HSCE","Hang Seng China","","",Industry.NONE));
 
 		symbolNameMapping.putAll(EtfQuotes.getQuotes());
-		symbolNameMapping.putAll(TechQuotes.getQuotes());
+		symbolNameMapping.putAll(techQuotes.getQuotes().get(Industry.FANG));
+		symbolNameMapping.putAll(techQuotes.getSymbolNameMapping());
 		symbolNameMapping.putAll(HealthQuotes.getQuotes());
 		symbolNameMapping.putAll(FoodQuotes.getQuotes());
 		symbolNameMapping.putAll(RetailQuotes.getQuotes());
@@ -100,22 +90,5 @@ public class AppConfig {
 		symbolNameMapping.putAll(EnergyQuotes.getQuotes());
 		symbolNameMapping.putAll(MediaQuotes.getQuotes());
 		symbolNameMapping.putAll(ChinaQuotes.getQuotes());
-		
-		ReadSparplanWkns();
-	}
-	
-	private void ReadSparplanWkns() {
-		
-		try (Scanner scanner = new Scanner(AppConfig.class.getClassLoader().getResourceAsStream("sparplan_wkns.csv"));) {
-		    while (scanner.hasNextLine()) {
-		        SparplanWkns.add(getWknFromLine(scanner.nextLine()));
-		    }
-		}
-	}
-	
-	private String getWknFromLine(String line) {
-		
-		String[] semicolon_splitted = line.split(";");
-		return semicolon_splitted[semicolon_splitted.length-1];
 	}
 }

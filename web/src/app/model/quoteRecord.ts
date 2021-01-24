@@ -1,4 +1,9 @@
+import { Quote } from '@angular/compiler';
 import { logging } from 'protractor';
+
+export interface asjaskf {
+  data: QuoteRecord
+}
 
 export interface QuoteRecord {
   symbol: string;

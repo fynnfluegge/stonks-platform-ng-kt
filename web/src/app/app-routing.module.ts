@@ -12,7 +12,6 @@ import { FoodComponent } from './component/food/food.component';
 import { EnergyComponent } from './component/energy/energy.component';
 import { PerformanceComponent } from './component/performance/performance.component';
 import { OtherComponent } from './component/misc/misc.component';
-import { SavingsComponent } from './component/savings/savings.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -27,8 +26,7 @@ const routes: Routes = [
   { path: 'media', component: MediaComponent },
   { path: 'food', component: FoodComponent },
   { path: 'misc', component: OtherComponent },
-  { path: 'performance', component: PerformanceComponent },
-  { path: 'savings', component: SavingsComponent }
+  { path: 'performance', component: PerformanceComponent }
 ];
 
 @NgModule({

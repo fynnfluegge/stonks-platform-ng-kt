@@ -10,7 +10,7 @@ public class HealthQuotes {
 
 	public static Map<String, QuoteSymbolMetaData> getQuotes(){
 		
-		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
+		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
 		
 		// Pharma
 		symbolNameMapping.put("PFE", new QuoteSymbolMetaData("PFE","Pfizer","852009","",Industry.PHARMA));
