@@ -3,7 +3,7 @@ import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
 import { Color } from 'ng2-charts';
 import { EventListenerService } from '../../service/eventListenerService';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
