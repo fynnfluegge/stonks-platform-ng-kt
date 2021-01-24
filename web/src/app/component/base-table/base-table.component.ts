@@ -175,6 +175,7 @@ export interface DialogData {
   templateUrl: 'dialog-overview-example-dialog.html',
 })
 export class DialogOverviewExampleDialogComponent {
+  apiURL = environment.apiUrl;  
 
   quoteRecord: QuoteRecord = { wkn: '', symbol: '', url: '', country: '', currency: '', dayChange: 0,
     dayChangePercent: 0, exchange: '', fiftyDayAverage: 0, fiftyDayAverageChangePercent: 0, fiftyTwoWeekHigh: 0,
@@ -189,7 +190,7 @@ export class DialogOverviewExampleDialogComponent {
   service: BasicRestService;
 
   constructor(public http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-    this.service = new BasicRestService(http, 'http://localhost:9091/quote/' + data.symbol);
+    this.service = new BasicRestService(http, this.apiURL + '/quote/' + data.symbol);
     this.service.getQuoteRecord().subscribe(x => this.merge(x));
 
     for (let i = 0; i < 200; i++) {
