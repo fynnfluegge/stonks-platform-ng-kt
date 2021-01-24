@@ -1,7 +1,7 @@
 FROM node:10-alpine AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install @angular/cli && npm install && npm run build --prod
+RUN npm install @angular/cli && npm install && npm run build
 
 FROM node:10-alpine AS server-build
 
