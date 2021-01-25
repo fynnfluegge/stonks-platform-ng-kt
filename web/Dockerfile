@@ -1,13 +1,14 @@
 FROM node:10-alpine AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install @angular/cli && npm install && npm run build
+RUN npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install gzipper &&npm run build --prod &&
+gzipper compress ./build ./dist
 
 FROM node:10-alpine AS server-build
 
 WORKDIR /root/
 
-COPY --from=ui-build /usr/src/app/build ./
+COPY --from=ui-build /usr/src/app/dist ./
 COPY package*.json ./
 RUN npm install
 COPY server.js ./

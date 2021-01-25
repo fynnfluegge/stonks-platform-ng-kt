@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-optimizer": "^0.1101.1",
     "@angular/animations": "~11.1.0",
     "@angular/cdk": "^11.1.0",
     "@angular/common": "~11.1.0",
@@ -29,7 +30,7 @@
     "ng2-charts": "^2.3.2",
     "ngx-bootstrap": "^5.3.2",
     "ngx-pagination": "^5.0.0",
-    "rxjs": "~6.6.3",
+    "rxjs": "^6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
