@@ -1,7 +1,7 @@
 FROM node:10-alpine AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm i gzipper &&npm run build --prod &&
+RUN npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm i gzipper -g && npm run build --prod --buil-optimizer &&
 gzipper compress ./build ./dist
 
 FROM node:10-alpine AS server-build
