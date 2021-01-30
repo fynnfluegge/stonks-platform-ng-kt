@@ -4,6 +4,7 @@
 /bin
 /target
 /dist
+/build
 /tmp
 /out-tsc
 # Only exists if Bazel was run
