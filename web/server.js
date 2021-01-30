@@ -1,9 +1,9 @@
 const express = require('express')
 const compression = require('compression')
+var expressStaticGzip = require("express-static-gzip");
 const app = express()
 
-app.use(express.static('var/www'));
-app.use(compression());
+app.use("/", expressStaticGzip("var/www/"));
 
 app.all('/*', function(req, res, next) {
     res.sendFile('index.html.gz', { root: 'var/www' });
