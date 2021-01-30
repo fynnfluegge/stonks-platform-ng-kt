@@ -1,7 +1,7 @@
 FROM node:14 AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && npm install gzipper && npm run build --prod --aot --build-optimizer && gzipper compress ./build ./dist
+RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && npm install gzipper && npm run build --prod --aot --build-optimizer && npm run gzipper compress ./build ./dist
 
 FROM node:14 AS server-build
 
