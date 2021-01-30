@@ -1,10 +1,10 @@
-FROM node:15.7.0-alpine AS ui-build
+FROM node:14 AS ui-build
 WORKDIR /usr/src/app
 COPY . .
 RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && 
 npm install gzipper && npm run build --prod --aot --build-optimizer
 
-FROM node:15.7.0-alpine AS server-build
+FROM node:14 AS server-build
 
 WORKDIR /root/
 
