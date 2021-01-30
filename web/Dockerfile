@@ -1,13 +1,13 @@
 FROM node:14 AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && npm install gzipper && npm run build --prod --aot --build-optimizer
+RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && npm install gzipper && npm run build --prod --aot --build-optimizer && npm gzipper compress ./build ./dist
 
 FROM node:14 AS server-build
 
 WORKDIR /root/
 
-COPY --from=ui-build /usr/src/app/build ./
+COPY --from=ui-build /usr/src/app/dist ./
 COPY package*.json ./
 RUN npm install
 COPY server.js ./
