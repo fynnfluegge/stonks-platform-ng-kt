@@ -1,7 +1,7 @@
 FROM node:10-alpine AS ui-build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm run build --prod --aot --build-optimizer
+RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install compression --save && npm run build --prod --aot --build-optimizer
 
 FROM node:10-alpine AS server-build
 
