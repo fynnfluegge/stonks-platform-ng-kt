@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 
 import org.algo.invest.controller.RealtimeMarketDataController;
 import org.algo.invest.core.AppConfig;
+import org.algo.invest.model.QuoteRecord;
 import org.algo.invest.model.YahooFinanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,6 +41,8 @@ public class MarketDataService {
 	@Autowired
 	private RealtimeMarketDataController realtimeMarketDataController;
 
+	private Flux<QuoteRecord> flux;
+
 	@PostConstruct
     public void onStartup() {
 		
@@ -65,7 +68,7 @@ public class MarketDataService {
 		initHistoricalData();
 
 		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
-		Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
+		flux = Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
 			mono.flatMapMany(results ->
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
@@ -74,15 +77,19 @@ public class MarketDataService {
 					else {
 						if (realtimeMarketDataController.getRealtimeStockRecords().get(quoteRecord.getSymbol())
 								.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
+//							System.out.println(quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
 							// TODO reactive refresh quote stream on refresh=true
 							quoteRecord.setRefresh(true);
 							realtimeMarketDataController.getRealtimeStockRecords().put(quoteRecord.getSymbol(), quoteRecord);
 						}
 						else {
+//							System.out.println(quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
 							realtimeMarketDataController.getRealtimeStockRecords().get(quoteRecord.getSymbol()).setRefresh(false);
 						}
 					}
 				}));
+
+		flux.subscribe();
     }
 	
 	@Scheduled(cron = "0 0 0 * * *")

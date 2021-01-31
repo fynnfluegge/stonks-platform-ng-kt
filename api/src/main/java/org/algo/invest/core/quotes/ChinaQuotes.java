@@ -20,8 +20,7 @@ public class ChinaQuotes {
 		symbolNameMapping.put("PDD", new QuoteSymbolMetaData("PDD","Pinduoduo","","",Industry.CHINA));
 		symbolNameMapping.put("HMI", new QuoteSymbolMetaData("HMI","Huami","","",Industry.CHINA));
 		symbolNameMapping.put("BZUN", new QuoteSymbolMetaData("BZUN","Baozun","","",Industry.CHINA));
-		symbolNameMapping.put("TOBAF", new QuoteSymbolMetaData("TOBAF","Taat","A2P6PR","",Industry.CHINA));
-		
+
 		return symbolNameMapping;
 	}
 }

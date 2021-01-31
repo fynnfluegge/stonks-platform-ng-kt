@@ -10,8 +10,6 @@ import org.algo.invest.model.QuoteSymbolMetaData;
 public class TechQuotes {
 
 	@Getter
-	public Map<Industry, String> urlSymbols = new LinkedHashMap<>();
-	@Getter
 	public Map<Industry, Map<String, QuoteSymbolMetaData>> quotes = new LinkedHashMap<>();
 	@Getter
 	Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
@@ -28,8 +26,6 @@ public class TechQuotes {
 		quotes.get(Industry.FANG).put("BABA", new QuoteSymbolMetaData("BABA","Alibaba","A117ME", "", Industry.FANG));
 		quotes.get(Industry.FANG).put("TCEHY", new QuoteSymbolMetaData("TCEHY","Tencent","A1138D", "", Industry.FANG));
 		quotes.get(Industry.FANG).put("BIDU", new QuoteSymbolMetaData("BIDU","Baidu","A0F5DE", "", Industry.FANG));
-
-		urlSymbols.put(Industry.FANG, String.join(",",quotes.get(Industry.FANG).keySet()));
 
 		// Tech Manufacturing
 		symbolNameMapping.put("SNE", new QuoteSymbolMetaData("SNE","SONY","853688", "", Industry.TECH_MANUFACTURING));
