@@ -6,7 +6,7 @@ const app = express();
 
 app.use(compression());
 
-app.use(express.static(path.join(__dirname, '/build/var/www'));
+app.use(express.static(path.join(__dirname, '/build/var/www')));
 
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/build/var/www/index.html'));
