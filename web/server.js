@@ -1,19 +1,14 @@
-const express = require('express')
-const compression = require('compression')
-const expressStaticGzip = require("express-static-gzip")
-const app = express()
+const express = require('express');
+const compression = require('compression');
+const expressStaticGzip = require("express-static-gzip");
+const app = express();
 
-app.use('/*', expressStaticGzip('var/www/', {
-    enableBrotli: true,
-    customCompressions: [{
-        encodingName: 'deflate',
-        fileExtension: 'zz'
-    }],
-    orderPreference: ['br']
-}));
+app.use(compression());
 
-app.all('/*', function(req, res, next) {
-    res.sendFile('index.html.gz', { root: 'var/www' });
-});
+app.use(express.static(__dirname + '/build/var/www'));
+
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname + '/build/var/www/index.html'));
+})
 
 app.listen(3000, () => {console.log('Server listen on port 3000')})

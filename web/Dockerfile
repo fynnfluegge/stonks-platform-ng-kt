@@ -7,7 +7,8 @@ FROM node:14 AS server-build
 
 WORKDIR /root/
 
-COPY --from=ui-build /usr/src/app/dist ./
+COPY --from=ui-build /usr/src/app/dist ./dist
+COPY --from=ui-build /usr/src/app/build ./build
 COPY package*.json ./
 RUN npm install
 COPY server.js ./
