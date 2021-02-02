@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class IndustryQuotes {
@@ -13,7 +13,7 @@ public class IndustryQuotes {
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
 		// Industrial Manufacturing
-		symbolNameMapping.put("RAA.DE", new QuoteSymbolMetaData("RAA.DE","Rational","701080","",Industry.INDUSTRIAL_MANUFACTURING));
+		symbolNameMapping.put("RAA.DE", new QuoteSymbolMetaData("RAA.DE","Rational","701080","", Industry.INDUSTRIAL_MANUFACTURING));
 		symbolNameMapping.put("JUN3.DE", new QuoteSymbolMetaData("JUN3.DE","Jungheinrich","621993","",Industry.INDUSTRIAL_MANUFACTURING));
 		symbolNameMapping.put("CAT", new QuoteSymbolMetaData("CAT","Caterpillar","850598","",Industry.INDUSTRIAL_MANUFACTURING));
 		symbolNameMapping.put("SWK", new QuoteSymbolMetaData("SWK","Stanley Black & Decker","A1CTQA","",Industry.INDUSTRIAL_MANUFACTURING));

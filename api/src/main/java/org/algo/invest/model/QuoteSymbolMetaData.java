@@ -1,7 +1,5 @@
 package org.algo.invest.model;
 
-import org.algo.invest.model.QuoteRecord.Industry;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

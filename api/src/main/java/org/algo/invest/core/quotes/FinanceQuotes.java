@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class FinanceQuotes {
@@ -13,7 +13,7 @@ public class FinanceQuotes {
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
 		// Finanzen/Versicherung/Holding
-		symbolNameMapping.put("JPM", new QuoteSymbolMetaData("JPM","JP Morgan","850628","",Industry.FINANCE_INSURANCE_HOLDING));
+		symbolNameMapping.put("JPM", new QuoteSymbolMetaData("JPM","JP Morgan","850628","", Industry.FINANCE_INSURANCE_HOLDING));
 		symbolNameMapping.put("GS", new QuoteSymbolMetaData("GS","Goldman Sachs","920332","",Industry.FINANCE_INSURANCE_HOLDING));
 		symbolNameMapping.put("WFC", new QuoteSymbolMetaData("WFC","Wells Fargo","857949","",Industry.FINANCE_INSURANCE_HOLDING));
 		symbolNameMapping.put("BAC", new QuoteSymbolMetaData("BAC","Bank of America","858388","",Industry.FINANCE_INSURANCE_HOLDING));

@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class ChinaQuotes {
@@ -12,7 +12,7 @@ public class ChinaQuotes {
 		
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
-		symbolNameMapping.put("DOYU", new QuoteSymbolMetaData("DOYU","DouYou","","",Industry.CHINA));
+		symbolNameMapping.put("DOYU", new QuoteSymbolMetaData("DOYU","DouYou","","", Industry.CHINA));
 		symbolNameMapping.put("HUYA", new QuoteSymbolMetaData("HUYA","HuYa","","",Industry.CHINA));
 		symbolNameMapping.put("MPNGF", new QuoteSymbolMetaData("MPNGF","Meituan-Dianping","","",Industry.CHINA));
 		symbolNameMapping.put("FNI.F", new QuoteSymbolMetaData("FNI.F","Fosun","","",Industry.CHINA));

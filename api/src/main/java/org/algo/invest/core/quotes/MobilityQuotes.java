@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class MobilityQuotes {
@@ -13,7 +13,7 @@ public static Map<String, QuoteSymbolMetaData> getQuotes(){
 	Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
 		// Raum-/Luftfahrt & Reise
-		symbolNameMapping.put("MTX.F", new QuoteSymbolMetaData("MTX.F","MTU","A0D9PT","",Industry.AEROSPACE_TRAVEL));
+		symbolNameMapping.put("MTX.F", new QuoteSymbolMetaData("MTX.F","MTU","A0D9PT","", Industry.AEROSPACE_TRAVEL));
 		symbolNameMapping.put("FRA.DE", new QuoteSymbolMetaData("FRA.DE","Fraport","577330","",Industry.AEROSPACE_TRAVEL));
 		symbolNameMapping.put("AIR.DE", new QuoteSymbolMetaData("AIR.DE","Airbus","938914","",Industry.AEROSPACE_TRAVEL));
 		symbolNameMapping.put("BA", new QuoteSymbolMetaData("BA","Boeing","850471","",Industry.AEROSPACE_TRAVEL));

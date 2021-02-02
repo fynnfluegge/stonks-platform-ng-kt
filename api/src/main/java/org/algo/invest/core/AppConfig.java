@@ -1,7 +1,5 @@
 package org.algo.invest.core;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 
 import org.algo.invest.core.quotes.ChinaQuotes;
@@ -15,7 +13,7 @@ import org.algo.invest.core.quotes.MediaQuotes;
 import org.algo.invest.core.quotes.MobilityQuotes;
 import org.algo.invest.core.quotes.RetailQuotes;
 import org.algo.invest.core.quotes.TechQuotes;
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 import org.springframework.stereotype.Component;
 

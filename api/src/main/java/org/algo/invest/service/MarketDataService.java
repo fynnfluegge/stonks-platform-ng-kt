@@ -43,7 +43,7 @@ import yahoofinance.util.RedirectableRequest;
 public class MarketDataService {
 	
 	@Autowired
-	private AppConfig appconfig;
+	private AppConfig appConfig;
 
 	@Getter
 	public Map<String, QuoteRecord> realtimeStockRecords = new ConcurrentHashMap<>();
@@ -61,8 +61,8 @@ public class MarketDataService {
 	@PostConstruct
     public void onStartup() {
 
-		for (String vSymbol : appconfig.symbolNameMapping.keySet()) {
-			realtimeStockRecords.put(vSymbol, QuoteRecord.builder().build());
+		for (String vSymbol : appConfig.symbolNameMapping.keySet()) {
+			realtimeStockRecords.put(vSymbol, new QuoteRecord());
 		}
 
 		sink = Sinks.many().replay().latest();
@@ -78,7 +78,7 @@ public class MarketDataService {
 				.get()
 				.uri(uriBuilder ->
 					uriBuilder.path("/quote")
-						.queryParam("symbols", appconfig.getAllQuoteSymbolsUrl()).build())
+						.queryParam("symbols", appConfig.getAllQuoteSymbolsUrl()).build())
 				.retrieve()
 				.bodyToMono(YahooFinanceResponse.class);
 
@@ -88,24 +88,21 @@ public class MarketDataService {
 				.forEach(record -> realtimeStockRecords.put(record.getSymbol(), record));
 
 		// Init Historical Quote Records
-//		initHistoricalData();
+		initHistoricalData();
 
 		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
 		flux = Flux.interval(Duration.ofSeconds(10)).flatMap(counter ->
 			mono.flatMapMany(results ->
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
-					if (!realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
-						System.out.println("!!!!!! not in records: " + quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
-					else {
+					if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
 						if (realtimeStockRecords.get(quoteRecord.getSymbol())
 								.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
-//							System.out.println(quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
 							realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
 							sink.tryEmitNext(quoteRecord);
 						}
 					}
-				}));
+				));
 
 		flux.subscribe();
     }
@@ -136,7 +133,7 @@ public class MarketDataService {
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
 		
 		try {
-			for (String symbol : appconfig.symbolNameMapping.keySet()) {
+			for (String symbol : appConfig.symbolNameMapping.keySet()) {
 				result.put(symbol, getHistory(symbol, cal));
 			}
 			

@@ -3,7 +3,6 @@ package org.algo.invest.controller;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.time.Duration;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collector;
@@ -13,9 +12,9 @@ import java.util.stream.Stream;
 import org.algo.invest.core.AppConfig;
 import org.algo.invest.dto.ChartDataDto;
 import org.algo.invest.dto.QuoteDto;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteRecord;
-import org.algo.invest.model.QuoteRecord.Industry;
-import org.algo.invest.model.QuoteRecord.QuoteType;
+import org.algo.invest.model.QuoteType;
 import org.algo.invest.service.MarketDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,104 +37,87 @@ public class MarketDataRestController {
         Flux<QuoteDto> flux = Mono.just(
                 Stream.concat(getQuotes(QuoteType.CURRENCY, Industry.NONE).stream(), getQuotes(QuoteType.INDEX, Industry.NONE).stream()).collect(Collectors.toList()))
                 .flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(marketDataService.getLatestQuotes().map(this::getQuoteDto));
+        return flux.mergeWith(marketDataService.getLatestQuotes().filter(it -> it.getQuoteType() == QuoteType.INDEX || it.getQuoteType() == QuoteType.CURRENCY).map(this::getQuoteDto));
     }
 
     @RequestMapping(value="/stream/quotes/etf", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> getEtfQuotes() {
         Flux<QuoteDto> flux = Mono.just(getQuotes(QuoteType.ETF, Industry.NONE)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux.mergeWith(marketDataService.getLatestQuotes().filter(it -> it.getQuoteType() == QuoteType.ETF).map(this::getQuoteDto));
     }
 
     @RequestMapping(value="/stream/quotes/{industry}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> getEcommerceQuotes(@PathVariable String industry) {
         Flux<QuoteDto> flux = Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase()))).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux.mergeWith(marketDataService.getLatestQuotes()
+                .filter(it -> it.getQuoteType() == QuoteType.EQUITY && appConfig.getSymbolNameMapping().get(it.getSymbol()).getIndustry() == Industry.valueOf(industry.toUpperCase())).map(this::getQuoteDto));
     }
 
-    @RequestMapping(value="/get24hOutperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<QuoteDto> getDailyOutperformer() {
+    @RequestMapping(value="/get24hOutPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<QuoteDto> getDailyOutPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getRegularMarketChangePercent).reversed())
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
-    @RequestMapping(value="/get24hUnderperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/get24hUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> getDailyUnderPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getRegularMarketChangePercent))
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
-    @RequestMapping(value="/get50dOutperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<QuoteDto> get50dOutperformer() {
+    @RequestMapping(value="/50dOutPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<QuoteDto> get50dOutPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getFiftyDayAverageChangePercent).reversed())
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
-    @RequestMapping(value="/get50dUnderperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/50dUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> get50dPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getFiftyDayAverageChangePercent))
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
-    @RequestMapping(value="/get200dOutperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<QuoteDto> get200dOutperformer() {
+    @RequestMapping(value="/200dOutPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<QuoteDto> get200dOutPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getTwoHundredDayAverageChangePercent).reversed())
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
-    @RequestMapping(value="/get200dUnderperformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/get200dUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> get200dUnderPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
                 .sorted(Comparator.comparing(QuoteRecord::getTwoHundredDayAverageChangePercent))
                 .map(this::getQuoteDto).collect(Collectors.toList()).subList(0, 9)).flatMapMany(Flux::fromIterable);
-        return flux.mergeWith(Flux.interval(Duration.ofSeconds(2)).flatMap(counter -> flux));
+        return flux;
     }
 
+    @RequestMapping(value="/allQuotes", method=RequestMethod.GET)
+    public List<QuoteDto> getAllQuotes() {
+        return appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
+                .map(this::getQuoteDto).collect(Collectors.toList());
+    }
 
     private List<QuoteDto> getQuotes(QuoteType quoteType, Industry industry){
 
         return appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == quoteType && appConfig.getSymbolNameMapping().get(x.getSymbol()).getIndustry() == industry)
                 .map(this::getQuoteDto).collect(Collectors.toList());
-    }
-
-    @RequestMapping(value="/getAllQuotes", method=RequestMethod.GET)
-    public List<QuoteDto> getAllQuotes() {
-
-        return appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
-                .map(this::getQuoteDto).collect(Collectors.toList());
-    }
-
-    @RequestMapping(value="/log", method=RequestMethod.GET)
-    public List<String> getLog() {
-        List<String> s_log = new ArrayList<>();
-        try{
-            FileInputStream fstream = new FileInputStream("logs/bot-app.log");
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-            String strLine;
-            while ((strLine = br.readLine()) != null)   {
-                s_log.add(strLine);
-            }
-            fstream.close();
-        } catch (Exception ignored) {
-        }
-        return s_log;
     }
 
     private QuoteDto getQuoteDto(QuoteRecord quoteRecord) {
@@ -229,5 +211,21 @@ public class MarketDataRestController {
             }
             return acc2;
         }, ArrayList::new);
+    }
+
+    @RequestMapping(value="/log", method=RequestMethod.GET)
+    public List<String> getLog() {
+        List<String> s_log = new ArrayList<>();
+        try{
+            FileInputStream fstream = new FileInputStream("logs/bot-app.log");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine;
+            while ((strLine = br.readLine()) != null)   {
+                s_log.add(strLine);
+            }
+            fstream.close();
+        } catch (Exception ignored) {
+        }
+        return s_log;
     }
 }

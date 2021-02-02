@@ -2,11 +2,10 @@ package org.algo.invest.dto;
 
 import java.util.List;
 
-import org.algo.invest.model.QuoteRecord.QuoteType;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.algo.invest.model.QuoteType;
 
 @Getter
 @Setter

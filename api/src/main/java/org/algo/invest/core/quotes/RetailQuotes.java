@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class RetailQuotes {
@@ -13,7 +13,7 @@ public class RetailQuotes {
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
 		// E-Commerce
-		symbolNameMapping.put("SHOP", new QuoteSymbolMetaData("SHOP","Shopify","A14TJP","",Industry.ECOMMERCE));
+		symbolNameMapping.put("SHOP", new QuoteSymbolMetaData("SHOP","Shopify","A14TJP","", Industry.ECOMMERCE));
 		symbolNameMapping.put("SE", new QuoteSymbolMetaData("SE","Sea","","",Industry.ECOMMERCE));
 		symbolNameMapping.put("RAK.F", new QuoteSymbolMetaData("RAK.F","Rakuten","927128","",Industry.ECOMMERCE));
 		symbolNameMapping.put("ZAL.DE", new QuoteSymbolMetaData("ZAL.DE","Zalando","ZAL111","",Industry.ECOMMERCE));

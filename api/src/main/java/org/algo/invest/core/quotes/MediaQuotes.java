@@ -3,7 +3,7 @@ package org.algo.invest.core.quotes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.algo.invest.model.QuoteRecord.Industry;
+import org.algo.invest.model.Industry;
 import org.algo.invest.model.QuoteSymbolMetaData;
 
 public class MediaQuotes {
@@ -13,7 +13,7 @@ public class MediaQuotes {
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 	
 		// Media
-		symbolNameMapping.put("DIS", new QuoteSymbolMetaData("DIS","Walt Disney","855686","",Industry.MEDIA));
+		symbolNameMapping.put("DIS", new QuoteSymbolMetaData("DIS","Walt Disney","855686","", Industry.MEDIA));
 		symbolNameMapping.put("SPOT", new QuoteSymbolMetaData("SPOT","Spotify","A2JEGN","",Industry.MEDIA));
 		symbolNameMapping.put("TME", new QuoteSymbolMetaData("TME","Tencent Music","A1138D","",Industry.MEDIA));
 		symbolNameMapping.put("IQ8.F", new QuoteSymbolMetaData("IQ8.F","IQIYI","A2JGN8","",Industry.MEDIA));
