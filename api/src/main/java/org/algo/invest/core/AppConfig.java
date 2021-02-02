@@ -37,9 +37,9 @@ public class AppConfig {
 	
 	@Getter
 	private List<String> allQuoteSymbols = new ArrayList<>();
-	
+
 	@Getter
-	private Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
+	public Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<>();
 	
 	@Getter
 	private TechQuotes techQuotes;

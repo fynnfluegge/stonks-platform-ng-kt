@@ -9,14 +9,19 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import org.algo.invest.controller.RealtimeMarketDataController;
+import lombok.Getter;
 import org.algo.invest.core.AppConfig;
 import org.algo.invest.model.QuoteRecord;
 import org.algo.invest.model.YahooFinanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -33,19 +39,36 @@ import yahoofinance.util.RedirectableRequest;
 
 @Log4j2
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class MarketDataService {
 	
 	@Autowired
 	private AppConfig appconfig;
-	
-	@Autowired
-	private RealtimeMarketDataController realtimeMarketDataController;
+
+	@Getter
+	public Map<String, QuoteRecord> realtimeStockRecords = new ConcurrentHashMap<>();
+
+	@Getter
+	public Map<String, Map<Calendar, HistoricalQuote>> historyQuotes = new ConcurrentHashMap<>();
+
+	@Getter
+	private Flux<QuoteRecord> latestQuotes;
 
 	private Flux<QuoteRecord> flux;
 
+	private Sinks.Many<QuoteRecord> sink;
+
 	@PostConstruct
     public void onStartup() {
-		
+
+		for (String vSymbol : appconfig.symbolNameMapping.keySet()) {
+			realtimeStockRecords.put(vSymbol, QuoteRecord.builder().build());
+		}
+
+		sink = Sinks.many().replay().latest();
+
+		latestQuotes = sink.asFlux();
+
 		Mono<YahooFinanceResponse> mono =
 			WebClient.builder().baseUrl("https://query1.finance.yahoo.com/v7/finance")
 				.exchangeStrategies(
@@ -62,29 +85,24 @@ public class MarketDataService {
 		// Init RealtimeMarketDataController.RealtimeStockRecords
 		Objects.requireNonNull(
 			mono.block()).getQuoteResponse().getResult()
-				.forEach(record -> realtimeMarketDataController.getRealtimeStockRecords().put(record.getSymbol(), record));
+				.forEach(record -> realtimeStockRecords.put(record.getSymbol(), record));
 
 		// Init Historical Quote Records
-		initHistoricalData();
+//		initHistoricalData();
 
 		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
-		flux = Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
+		flux = Flux.interval(Duration.ofSeconds(10)).flatMap(counter ->
 			mono.flatMapMany(results ->
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
-					if (!realtimeMarketDataController.getRealtimeStockRecords().containsKey(quoteRecord.getSymbol()))
+					if (!realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
 						System.out.println("!!!!!! not in records: " + quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
 					else {
-						if (realtimeMarketDataController.getRealtimeStockRecords().get(quoteRecord.getSymbol())
+						if (realtimeStockRecords.get(quoteRecord.getSymbol())
 								.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
 //							System.out.println(quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
-							// TODO reactive refresh quote stream on refresh=true
-							quoteRecord.setRefresh(true);
-							realtimeMarketDataController.getRealtimeStockRecords().put(quoteRecord.getSymbol(), quoteRecord);
-						}
-						else {
-//							System.out.println(quoteRecord.getSymbol() + " " + quoteRecord.getLongName());
-							realtimeMarketDataController.getRealtimeStockRecords().get(quoteRecord.getSymbol()).setRefresh(false);
+							realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
+							sink.tryEmitNext(quoteRecord);
 						}
 					}
 				}));
@@ -96,16 +114,16 @@ public class MarketDataService {
 	public void updateHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 6.048e+8).entrySet()) {
 			for(HistoricalQuote quote : entry.getValue()) {
-				realtimeMarketDataController.getHistoryQuotes().get(quote.getSymbol()).put(quote.getDate(), quote);
+				historyQuotes.get(quote.getSymbol()).put(quote.getDate(), quote);
 			}
 		}
 	}
 	
 	public void initHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 2.592e+10).entrySet()) {
-			realtimeMarketDataController.getHistoryQuotes().put(entry.getKey(), new LinkedHashMap<>());
+			historyQuotes.put(entry.getKey(), new LinkedHashMap<>());
 			for (HistoricalQuote quote : entry.getValue()) {
-				realtimeMarketDataController.getHistoryQuotes().get(entry.getKey()).put(quote.getDate(), quote);
+				historyQuotes.get(entry.getKey()).put(quote.getDate(), quote);
 			}
 		}
 	}
@@ -118,7 +136,7 @@ public class MarketDataService {
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
 		
 		try {
-			for (String symbol : appconfig.getSymbolNameMapping().keySet()) {
+			for (String symbol : appconfig.symbolNameMapping.keySet()) {
 				result.put(symbol, getHistory(symbol, cal));
 			}
 			

@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class QuoteRecord {
 
-	private boolean refresh;
 	private String region;
 	private QuoteType quoteType;
 	private Industry industry;
