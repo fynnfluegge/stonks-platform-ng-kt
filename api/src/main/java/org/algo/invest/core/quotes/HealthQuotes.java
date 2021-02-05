@@ -46,7 +46,6 @@ public class HealthQuotes {
 
 		// Medsoftware
 		symbolNameMapping.put("TDOC", new QuoteSymbolMetaData("TDOC","Teladoc Health","A14VPK","",Industry.MEDSOFTWARE));
-		symbolNameMapping.put("LVGO", new QuoteSymbolMetaData("LVGO","Livongo Health","A2PNLV","",Industry.MEDSOFTWARE));
 		symbolNameMapping.put("VEEV", new QuoteSymbolMetaData("VEEV","Veeva System","A1W5SA","",Industry.MEDSOFTWARE));
 		
 		// Biotechnology

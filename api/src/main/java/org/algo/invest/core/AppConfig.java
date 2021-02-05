@@ -43,7 +43,6 @@ public class AppConfig {
 	private TechQuotes techQuotes;
 	
 	public AppConfig() {
-		
 		System.setProperty("yahoofinance.histquotes2.enabled", "false");
 		techQuotes = new TechQuotes();
 		addSymbolNameMappings();

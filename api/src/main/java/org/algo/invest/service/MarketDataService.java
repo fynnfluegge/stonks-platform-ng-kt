@@ -9,8 +9,6 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +17,6 @@ import lombok.Getter;
 import org.algo.invest.core.AppConfig;
 import org.algo.invest.model.QuoteRecord;
 import org.algo.invest.model.YahooFinanceResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,8 +39,7 @@ import yahoofinance.util.RedirectableRequest;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class MarketDataService {
 	
-	@Autowired
-	private AppConfig appConfig;
+	private final AppConfig appConfig;
 
 	@Getter
 	public Map<String, QuoteRecord> realtimeStockRecords = new ConcurrentHashMap<>();
@@ -57,6 +53,10 @@ public class MarketDataService {
 	private Flux<QuoteRecord> flux;
 
 	private Sinks.Many<QuoteRecord> sink;
+
+	public MarketDataService(AppConfig appConfig) {
+		this.appConfig = appConfig;
+	}
 
 	@PostConstruct
     public void onStartup() {
@@ -91,7 +91,7 @@ public class MarketDataService {
 		initHistoricalData();
 
 		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
-		flux = Flux.interval(Duration.ofSeconds(10)).flatMap(counter ->
+		flux = Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
 			mono.flatMapMany(results ->
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
@@ -131,12 +131,11 @@ public class MarketDataService {
 		cal.setTime(new Date(System.currentTimeMillis() - timeMillis));
 		
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
-		
+
 		try {
 			for (String symbol : appConfig.symbolNameMapping.keySet()) {
 				result.put(symbol, getHistory(symbol, cal));
 			}
-			
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}

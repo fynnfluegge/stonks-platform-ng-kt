@@ -1,5 +1,13 @@
-<mat-toolbar color="primary" style="height:75px;">
-  <mat-toolbar-row style="display: flex; flex-wrap: wrap; height:75px;">
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button class="example-icon" mat-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side">
     <div>
       <a mat-button [routerLink]="'/overview'">Overview</a>
     </div>
@@ -31,18 +39,19 @@
       <a mat-button [routerLink]="'/media'">Media</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/misc'">Misc</a>
+      <a mat-button [routerLink]="'/china'">China</a>
     </div>
     <div>
       <a mat-button [routerLink]="'/performance'">Performance</a>
     </div>
-  </mat-toolbar-row>
-</mat-toolbar>
+  </mat-drawer>
 
-<div class="container" style="overflow-y: scroll;">
-  <div class="row">
-    <div class="col-md-12">
-      <router-outlet></router-outlet>
+  <div class="container" style="overflow-y: scroll;">
+    <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
-</div>
+
+</mat-drawer-container>

@@ -3,16 +3,23 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.mat-toolbar.mat-primary {
+.mat-toolbar.mat-primary,
+.mat-drawer {
   background: #282828;
   color: #fff;
+}
+
+.mat-drawer {
+  padding: 8px;
 }
 
 .mat-button {
   background: #282828;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 350;
 }
+
+.mat-button:focus {outline:0;}
 
 a:hover {
   background-color: #353535;

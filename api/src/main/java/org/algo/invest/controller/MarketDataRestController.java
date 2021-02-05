@@ -53,7 +53,7 @@ public class MarketDataRestController {
                 .filter(it -> it.getQuoteType() == QuoteType.EQUITY && appConfig.getSymbolNameMapping().get(it.getSymbol()).getIndustry() == Industry.valueOf(industry.toUpperCase())).map(this::getQuoteDto));
     }
 
-    @RequestMapping(value="/get24hOutPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/24hOutPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> getDailyOutPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
@@ -62,7 +62,7 @@ public class MarketDataRestController {
         return flux;
     }
 
-    @RequestMapping(value="/get24hUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/24hUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> getDailyUnderPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
@@ -98,7 +98,7 @@ public class MarketDataRestController {
         return flux;
     }
 
-    @RequestMapping(value="/get200dUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @RequestMapping(value="/200dUnderPerformer", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<QuoteDto> get200dUnderPerformer() {
         Flux<QuoteDto> flux = Mono.just(appConfig.getSymbolNameMapping().keySet().stream().map(s -> marketDataService.getRealtimeStockRecords().get(s))
                 .filter(x -> x.getQuoteType() == QuoteType.EQUITY)
