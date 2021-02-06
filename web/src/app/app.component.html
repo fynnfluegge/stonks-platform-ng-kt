@@ -1,12 +1,12 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <button mat-icon-button class="example-icon" mat-button (click)="drawer.toggle()">
+    <button mat-icon-button mat-button (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-drawer-container autosize>
+<mat-drawer-container autosize style="height: calc(100% - 64px);">
   <mat-drawer #drawer mode="side">
     <div>
       <a mat-button [routerLink]="'/overview'">Overview</a>
@@ -46,7 +46,7 @@
     </div>
   </mat-drawer>
 
-  <div class="container" style="overflow-y: scroll;">
+  <div class="container">
     <div class="row">
       <div class="col-md-12">
         <router-outlet></router-outlet>

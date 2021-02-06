@@ -19,7 +19,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: 350;
 }
 
-.mat-button:focus {outline:0;}
+.mat-button:focus {
+  outline:0;
+}
 
 a:hover {
   background-color: #353535;
@@ -46,12 +48,6 @@ span:hover {
     font-weight: 400;
 }
 
-.card-body {
-  padding: 12px;
-  padding-bottom: 18px;
-  overflow: hidden;
-}
-
 .mb-5, .my-5 {
   margin-bottom: 0rem!important;
   margin-top: 0rem!important;
@@ -59,21 +55,6 @@ span:hover {
 
 .col-md-12{
   padding: 12px;
-}
-
-.container {
-  height: calc(100% - 80px);
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.row {
-  height: 100%;
-  padding-bottom: 10px;
-}
-
-.card.my-5{
-  height: 100%;
 }
 
 .table td {
@@ -84,7 +65,6 @@ span:hover {
 .table {
   box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
   border-radius:10px 10px 0 0;
-  // height: 100%;
   thead tr:nth-child(1) th{
     position: sticky;
     top: 0;
@@ -98,8 +78,6 @@ span:hover {
 
 tbody {
   display:block;
-  // height: calc(100% - 50px);
-  // overflow-y:auto;
   font-size: 14px;
 }
 
@@ -126,6 +104,7 @@ tfoot {
 
 .table td {
   padding: 8px 8px 4px 12px;
+  word-wrap: break-word;
 }
 
 td.ng-tns-c3-0 {
@@ -142,4 +121,8 @@ td.ng-tns-c3-0 {
 
 .mat-slider-thumb {
   background-color: #727272 !important;
+}
+
+.container {
+  min-width: 720px;
 }
