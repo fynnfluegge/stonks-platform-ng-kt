@@ -96,10 +96,15 @@ public class MarketDataService {
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
 					if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
-						if (realtimeStockRecords.get(quoteRecord.getSymbol())
-								.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
-							realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
-							sink.tryEmitNext(quoteRecord);
+						try {
+							if (realtimeStockRecords.get(quoteRecord.getSymbol())
+									.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
+								realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
+								sink.tryEmitNext(quoteRecord);
+							}
+						}
+						catch (Exception e){
+							log.error(e.getMessage());
 						}
 					}
 				));

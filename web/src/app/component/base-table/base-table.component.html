@@ -21,9 +21,9 @@
         </td>
         <td>
           <div>
-          <!-- [@cellValueChangedAnimation]="quoteRecord.price"> -->
-          <!-- [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented" -->
-          <!-- [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented"> -->
+          <!-- [@cellValueChangedAnimation]="quoteRecord.price"
+          [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented"
+          [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented"> -->
           {{ (quoteRecord.price).toPrecision(5) }}
           {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
         </div>

@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-tech',
   templateUrl: './tech.component.html'
 })
-export class TechComponent implements OnInit {
+export class TechComponent  {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
+import { Component, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
 import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
 import { Color } from 'ng2-charts';
@@ -8,13 +8,17 @@ import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 @Component({
   selector: 'base-table',
   templateUrl: './base-table.component.html',
 })
-export class BaseTableComponent implements OnInit, OnDestroy {
+export class BaseTableComponent implements AfterViewInit, OnDestroy {
   @Input() url: string;
+  @Input() initDelay: number;
   apiURL = environment.apiUrl;
 
   @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
@@ -115,8 +119,9 @@ export class BaseTableComponent implements OnInit, OnDestroy {
       }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.subscription = this.quoteService.observeMessages(this.apiURL + this.url)
+      .pipe(delay(this.initDelay))
       .subscribe(message => { this.merge(message) });
   }
 
