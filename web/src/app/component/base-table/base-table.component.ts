@@ -8,13 +8,13 @@ import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from "rxjs";
 import { delay } from "rxjs/operators";
+import { TableAnimations} from "../../animations"
 
 @Component({
   selector: 'base-table',
   templateUrl: './base-table.component.html',
+  animations: [TableAnimations.animations]
 })
 export class BaseTableComponent implements AfterViewInit, OnDestroy {
   @Input() url: string;
@@ -77,32 +77,13 @@ export class BaseTableComponent implements AfterViewInit, OnDestroy {
   constructor(private quoteService: EventListenerService, private dialog: MatDialog) {
   }
 
-
   merge(element: QuoteRecord) {
-
-      element.priceDecremented = false
-      element.priceIncremented = false
-      element.dayChangePercentDecremented = false
-      element.dayChangePercentIncremented = false
 
       if (this.quoteRecords.findIndex(x => x.symbol === element.symbol) == -1) {
         this.quoteRecords.push(element);
       } else {
         const index = this.quoteRecords.findIndex(x => x.symbol === element.symbol)
         if(index > -1){
-          if (this.quoteRecords[index].price < element.price) {
-            this.quoteRecords[index].priceIncremented = true
-          }
-          if (this.quoteRecords[index].price > element.price) {
-            this.quoteRecords[index].priceDecremented = true
-          }
-          if (this.quoteRecords[index].dayChangePercent < element.dayChangePercent) {
-            this.quoteRecords[index].dayChangePercentIncremented = true
-          }
-          if (this.quoteRecords[index].dayChangePercent > element.dayChangePercent) {
-            this.quoteRecords[index].dayChangePercentDecremented = true
-          }
-
           this.quoteRecords[index].price = element.price
           this.quoteRecords[index].dayChangePercent = element.dayChangePercent
           this.quoteRecords[index].dayChange = element.dayChange
@@ -185,10 +166,6 @@ export class DialogOverviewExampleDialogComponent {
     dayChangePercent: 0, exchange: '', fiftyDayAverage: 0, fiftyDayAverageChangePercent: 0, fiftyTwoWeekHigh: 0,
     fiftyTwoWeekHighChangePercent: 0, fiftyTwoWeekLow: 0, fiftyTwoWeekLowChangePercent: 0, marketCap: 0,
     name: '', price: 0, quoteType: '', twoHundredDayAverage: 0, twoHundredDayAverageChangePercent: 0,
-    dayChangePercentDecremented: false,
-    dayChangePercentIncremented: false,
-    priceDecremented: false,
-    priceIncremented: false,
     chartData: [{ data: [] }] };
 
   service: BasicRestService;

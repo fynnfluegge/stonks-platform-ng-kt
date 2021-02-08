@@ -29,9 +29,4 @@ export interface QuoteRecord {
   chartData: [
     { data: number[] }
   ];
-
-  priceDecremented: boolean;
-  priceIncremented: boolean;
-  dayChangePercentDecremented: boolean;
-  dayChangePercentIncremented: boolean;
 }

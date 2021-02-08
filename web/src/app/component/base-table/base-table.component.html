@@ -20,10 +20,8 @@
           </a>
         </td>
         <td>
-          <div>
-          <!-- [@cellValueChangedAnimation]="quoteRecord.price"
-          [@cellValueFadeoutIncrementAnimation]="quoteRecord.priceIncremented"
-          [@cellValueFadeoutDecrementAnimation]="quoteRecord.priceDecremented"> -->
+          <div
+          [@cellValueChangedAnimation]="quoteRecord.price">
           {{ (quoteRecord.price).toPrecision(5) }}
           {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
         </div>
