@@ -1,6 +1,5 @@
 package org.algo.invest.core
 
-import lombok.extern.log4j.Log4j2
 import org.algo.invest.model.Industry
 import org.algo.invest.model.QuoteSymbolMetaData
 import org.algo.invest.core.quotes.TechQuotes

@@ -41,18 +41,13 @@ public class MarketDataService {
 	
 	private final AppConfig appConfig;
 
-	@Getter
 	public Map<String, QuoteRecord> realtimeStockRecords = new ConcurrentHashMap<>();
 
-	@Getter
 	public Map<String, Map<Calendar, HistoricalQuote>> historyQuotes = new ConcurrentHashMap<>();
 
-	@Getter
-	private Flux<QuoteRecord> latestQuotes;
+	public Flux<QuoteRecord> latestQuotes;
 
-	private Flux<QuoteRecord> flux;
-
-	private Sinks.Many<QuoteRecord> sink;
+	public Sinks.Many<QuoteRecord> sink;
 
 	public MarketDataService(AppConfig appConfig) {
 		this.appConfig = appConfig;
@@ -61,8 +56,8 @@ public class MarketDataService {
 	@PostConstruct
     public void onStartup() {
 
-		for (String vSymbol : appConfig.getSymbolNameMapping().keySet()) {
-			realtimeStockRecords.put(vSymbol, new QuoteRecord());
+		for (String symbol : appConfig.getSymbolNameMapping().keySet()) {
+			realtimeStockRecords.put(symbol, new QuoteRecord());
 		}
 
 		sink = Sinks.many().replay().latest();
