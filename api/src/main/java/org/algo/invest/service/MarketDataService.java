@@ -61,7 +61,7 @@ public class MarketDataService {
 	@PostConstruct
     public void onStartup() {
 
-		for (String vSymbol : appConfig.symbolNameMapping.keySet()) {
+		for (String vSymbol : appConfig.getSymbolNameMapping().keySet()) {
 			realtimeStockRecords.put(vSymbol, new QuoteRecord());
 		}
 
@@ -80,25 +80,28 @@ public class MarketDataService {
 					uriBuilder.path("/quote")
 						.queryParam("symbols", appConfig.getAllQuoteSymbolsUrl()).build())
 				.retrieve()
-				.bodyToMono(YahooFinanceResponse.class);
+				.bodyToMono(YahooFinanceResponse.class)
+				.doOnError(throwable -> log.error("Failed for some reason", throwable))
+				.onErrorReturn(new YahooFinanceResponse());
 
 		// Init RealtimeMarketDataController.RealtimeStockRecords
-		Objects.requireNonNull(
-			mono.block()).getQuoteResponse().getResult()
+		Objects.requireNonNull(Objects.requireNonNull(
+				mono.block()).getQuoteResponse()).getResult()
 				.forEach(record -> realtimeStockRecords.put(record.getSymbol(), record));
 
 		// Init Historical Quote Records
 		initHistoricalData();
 
 		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
-		flux = Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
+		Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
 			mono.flatMapMany(results ->
 				Flux.fromIterable(results.getQuoteResponse().getResult()))
 				.doOnNext(quoteRecord -> {
 					if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
 						try {
-							if (realtimeStockRecords.get(quoteRecord.getSymbol())
-									.getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
+							if (!realtimeStockRecords.get(quoteRecord.getSymbol())
+									// TODO float 5 digits
+									.getRegularMarketPrice().equals(quoteRecord.getRegularMarketPrice())) {
 								realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
 								sink.tryEmitNext(quoteRecord);
 							}
@@ -107,9 +110,8 @@ public class MarketDataService {
 							log.error(e.getMessage());
 						}
 					}
-				));
-
-		flux.subscribe();
+				)
+		).subscribe();
     }
 	
 	@Scheduled(cron = "0 0 0 * * *")
@@ -138,7 +140,7 @@ public class MarketDataService {
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
 
 		try {
-			for (String symbol : appConfig.symbolNameMapping.keySet()) {
+			for (String symbol : appConfig.getSymbolNameMapping().keySet()) {
 				result.put(symbol, getHistory(symbol, cal));
 			}
 		} catch (Exception e) {
@@ -198,13 +200,13 @@ public class MarketDataService {
         String[] data = line.split(YahooFinance.QUOTES_CSV_DELIMITER);
         
         return new HistoricalQuote(vSymbol,
-                Utils.parseHistDate(data[0]),
-                Utils.getBigDecimal(data[1]),
-                Utils.getBigDecimal(data[3]),
-                Utils.getBigDecimal(data[2]),
-                Utils.getBigDecimal(data[4]),
-                Utils.getBigDecimal(data[5]),
-                Utils.getLong(data[6])
+			Utils.parseHistDate(data[0]),
+			Utils.getBigDecimal(data[1]),
+			Utils.getBigDecimal(data[3]),
+			Utils.getBigDecimal(data[2]),
+			Utils.getBigDecimal(data[4]),
+			Utils.getBigDecimal(data[5]),
+			Utils.getLong(data[6])
         );
     }
 }

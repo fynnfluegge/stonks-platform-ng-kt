@@ -8,7 +8,6 @@ export interface asjaskf {
 export interface QuoteRecord {
   symbol: string;
   wkn: string;
-  url: string;
   country: string;
   name: string;
   currency: string;

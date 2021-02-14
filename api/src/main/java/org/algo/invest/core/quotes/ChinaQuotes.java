@@ -12,14 +12,14 @@ public class ChinaQuotes {
 		
 		Map<String, QuoteSymbolMetaData> symbolNameMapping = new LinkedHashMap<String, QuoteSymbolMetaData>();
 		
-		symbolNameMapping.put("DOYU", new QuoteSymbolMetaData("DOYU","DouYou","","", Industry.CHINA));
-		symbolNameMapping.put("HUYA", new QuoteSymbolMetaData("HUYA","HuYa","","",Industry.CHINA));
-		symbolNameMapping.put("MPNGF", new QuoteSymbolMetaData("MPNGF","Meituan-Dianping","","",Industry.CHINA));
-		symbolNameMapping.put("FNI.F", new QuoteSymbolMetaData("FNI.F","Fosun","","",Industry.CHINA));
-		symbolNameMapping.put("JD", new QuoteSymbolMetaData("JD","JD.com","","",Industry.CHINA));
-		symbolNameMapping.put("PDD", new QuoteSymbolMetaData("PDD","Pinduoduo","","",Industry.CHINA));
-		symbolNameMapping.put("HMI", new QuoteSymbolMetaData("HMI","Huami","","",Industry.CHINA));
-		symbolNameMapping.put("BZUN", new QuoteSymbolMetaData("BZUN","Baozun","","",Industry.CHINA));
+		symbolNameMapping.put("DOYU", new QuoteSymbolMetaData("DOYU","DouYou","", Industry.CHINA));
+		symbolNameMapping.put("HUYA", new QuoteSymbolMetaData("HUYA","HuYa","", Industry.CHINA));
+		symbolNameMapping.put("MPNGF", new QuoteSymbolMetaData("MPNGF","Meituan-Dianping","", Industry.CHINA));
+		symbolNameMapping.put("FNI.F", new QuoteSymbolMetaData("FNI.F","Fosun","", Industry.CHINA));
+		symbolNameMapping.put("JD", new QuoteSymbolMetaData("JD","JD.com","", Industry.CHINA));
+		symbolNameMapping.put("PDD", new QuoteSymbolMetaData("PDD","Pinduoduo","", Industry.CHINA));
+		symbolNameMapping.put("HMI", new QuoteSymbolMetaData("HMI","Huami","", Industry.CHINA));
+		symbolNameMapping.put("BZUN", new QuoteSymbolMetaData("BZUN","Baozun","", Industry.CHINA));
 
 		return symbolNameMapping;
 	}

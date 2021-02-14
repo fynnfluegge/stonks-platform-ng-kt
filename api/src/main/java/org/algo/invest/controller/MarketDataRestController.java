@@ -129,34 +129,32 @@ public class MarketDataRestController {
                                 .stream().map(x -> x.getValue().getClose().floatValue()).collect(Collectors.toList()) :
                         new ArrayList<Float>());
 
-        if (chartData.getData().size() == 10 && chartData.getData().get(9) != quoteRecord.getRegularMarketPrice())
+        if (chartData.getData().size() == 10 && chartData.getData().get(9) != quoteRecord.getRegularMarketPrice().floatValue())
         {
             chartData.getData().remove(0);
-            chartData.getData().add(quoteRecord.getRegularMarketPrice());
+            chartData.getData().add(quoteRecord.getRegularMarketPrice().floatValue());
         }
 
-
-        return QuoteDto.builder().symbol(quoteRecord.getSymbol())
-                .name(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getName())
-                .wkn(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getWkn())
-                .url(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getUrl())
-                .exchange(quoteRecord.getFullExchangeName())
-                .currency(quoteRecord.getCurrency())
-                .price(quoteRecord.getRegularMarketPrice())
-                .dayChange(quoteRecord.getRegularMarketChange())
-                .dayChangePercent(quoteRecord.getRegularMarketChangePercent())
-                .marketCap(quoteRecord.getMarketCap())
-                .fiftyDayAverage(quoteRecord.getFiftyDayAverage())
-                .fiftyDayAverageChangePercent(quoteRecord.getFiftyDayAverageChangePercent())
-                .twoHundredDayAverage(quoteRecord.getTwoHundredDayAverage())
-                .twoHundredDayAverageChangePercent(quoteRecord.getTwoHundredDayAverageChangePercent())
-                .fiftyTwoWeekHigh(quoteRecord.getFiftyTwoWeekHigh())
-                .fiftyTwoWeekHighChangePercent(quoteRecord.getFiftyTwoWeekHighChangePercent())
-                .fiftyTwoWeekLow(quoteRecord.getFiftyTwoWeekLow())
-                .fiftyTwoWeekLowChangePercent(quoteRecord.getFiftyTwoWeekLowChangePercent())
-                .quoteType(quoteRecord.getQuoteType())
-                .chartData(Collections.singletonList(chartData))
-                .build();
+        return new QuoteDto(
+                quoteRecord.getSymbol(),
+                appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getName(),
+                appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getWkn(),
+                quoteRecord.getRegularMarketPrice().floatValue(),
+                quoteRecord.getRegularMarketChange(),
+                quoteRecord.getRegularMarketChangePercent(),
+                quoteRecord.getCurrency(),
+                quoteRecord.getFullExchangeName(),
+                quoteRecord.getMarketCap(),
+                quoteRecord.getFiftyDayAverage(),
+                quoteRecord.getFiftyDayAverageChangePercent(),
+                quoteRecord.getTwoHundredDayAverage(),
+                quoteRecord.getTwoHundredDayAverageChangePercent(),
+                quoteRecord.getFiftyTwoWeekHigh(),
+                quoteRecord.getFiftyTwoWeekHighChangePercent(),
+                quoteRecord.getFiftyTwoWeekLow(),
+                quoteRecord.getFiftyTwoWeekLowChangePercent(),
+                quoteRecord.getQuoteType(),
+                Collections.singletonList(chartData));
     }
 
     @RequestMapping(value="/quote/{symbol}", method=RequestMethod.GET)
@@ -171,33 +169,32 @@ public class MarketDataRestController {
                                 .stream().map(x -> x.getClose().floatValue()).collect(Collectors.toList()) :
                         new ArrayList<>());
 
-        if (chartData.getData().size() == 200 && chartData.getData().get(199) != quoteRecord.getRegularMarketPrice())
+        if (chartData.getData().size() == 200 && chartData.getData().get(199) != quoteRecord.getRegularMarketPrice().floatValue())
         {
             chartData.getData().remove(0);
-            chartData.getData().add(quoteRecord.getRegularMarketPrice());
+            chartData.getData().add(quoteRecord.getRegularMarketPrice().floatValue());
         }
 
-        return QuoteDto.builder().symbol(quoteRecord.getSymbol())
-                .name(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getName())
-                .wkn(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getWkn())
-                .url(appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getUrl())
-                .exchange(quoteRecord.getFullExchangeName())
-                .currency(quoteRecord.getCurrency())
-                .price(quoteRecord.getRegularMarketPrice())
-                .dayChange(quoteRecord.getRegularMarketChange())
-                .dayChangePercent(quoteRecord.getRegularMarketChangePercent())
-                .marketCap(quoteRecord.getMarketCap())
-                .fiftyDayAverage(quoteRecord.getFiftyDayAverage())
-                .fiftyDayAverageChangePercent(quoteRecord.getFiftyDayAverageChangePercent())
-                .twoHundredDayAverage(quoteRecord.getTwoHundredDayAverage())
-                .twoHundredDayAverageChangePercent(quoteRecord.getTwoHundredDayAverageChangePercent())
-                .fiftyTwoWeekHigh(quoteRecord.getFiftyTwoWeekHigh())
-                .fiftyTwoWeekHighChangePercent(quoteRecord.getFiftyTwoWeekHighChangePercent())
-                .fiftyTwoWeekLow(quoteRecord.getFiftyTwoWeekLow())
-                .fiftyTwoWeekLowChangePercent(quoteRecord.getFiftyTwoWeekLowChangePercent())
-                .quoteType(quoteRecord.getQuoteType())
-                .chartData(Collections.singletonList(chartData))
-                .build();
+        return new QuoteDto(
+                quoteRecord.getSymbol(),
+                appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getName(),
+                appConfig.getSymbolNameMapping().get(quoteRecord.getSymbol()).getWkn(),
+                quoteRecord.getRegularMarketPrice().floatValue(),
+                quoteRecord.getRegularMarketChange(),
+                quoteRecord.getRegularMarketChangePercent(),
+                quoteRecord.getCurrency(),
+                quoteRecord.getFullExchangeName(),
+                quoteRecord.getMarketCap(),
+                quoteRecord.getFiftyDayAverage(),
+                quoteRecord.getFiftyDayAverageChangePercent(),
+                quoteRecord.getTwoHundredDayAverage(),
+                quoteRecord.getTwoHundredDayAverageChangePercent(),
+                quoteRecord.getFiftyTwoWeekHigh(),
+                quoteRecord.getFiftyTwoWeekHighChangePercent(),
+                quoteRecord.getFiftyTwoWeekLow(),
+                quoteRecord.getFiftyTwoWeekLowChangePercent(),
+                quoteRecord.getQuoteType(),
+                Collections.singletonList(chartData));
     }
 
     public <T> Collector<T, ?, List<T>> lastN(int n) {

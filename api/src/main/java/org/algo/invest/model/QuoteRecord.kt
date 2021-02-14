@@ -1,5 +1,7 @@
 package org.algo.invest.model
 
+import java.math.BigDecimal
+
 data class QuoteRecord(
     val industry: Industry? = null,
     val quoteType: QuoteType? = null,
@@ -58,9 +60,16 @@ data class QuoteRecord(
     val regularMarketChange: Float = 0f,
     val regularMarketChangePercent: Float = 0f,
     val regularMarketTime: Long = 0,
-    val regularMarketPrice: Float = 0f,
+    val regularMarketPrice: BigDecimal = BigDecimal(0),
     val regularMarketDayHigh: Float = 0f,
     val regularMarketDayRange: String? = null
+)
+
+data class QuoteSymbolMetaData(
+    val symbol: String? = null,
+    val name: String? = null,
+    val wkn: String? = null,
+    val industry: Industry? = null
 )
 
 enum class QuoteType {
@@ -104,4 +113,8 @@ enum class Industry {
     CAR_RENTAL,
     RECYCLING,
     CHINA
+}
+
+enum class Subindustry {
+
 }
