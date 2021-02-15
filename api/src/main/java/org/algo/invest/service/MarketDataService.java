@@ -6,14 +6,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import lombok.Getter;
 import org.algo.invest.core.AppConfig;
 import org.algo.invest.model.QuoteRecord;
 import org.algo.invest.model.YahooFinanceResponse;
@@ -49,6 +47,8 @@ public class MarketDataService {
 
 	public Sinks.Many<QuoteRecord> sink;
 
+	public Mono<YahooFinanceResponse> mono;
+
 	public MarketDataService(AppConfig appConfig) {
 		this.appConfig = appConfig;
 	}
@@ -56,58 +56,45 @@ public class MarketDataService {
 	@PostConstruct
     public void onStartup() {
 
-		for (String symbol : appConfig.getSymbolNameMapping().keySet()) {
-			realtimeStockRecords.put(symbol, new QuoteRecord());
-		}
-
 		sink = Sinks.many().replay().latest();
-
 		latestQuotes = sink.asFlux();
 
-		Mono<YahooFinanceResponse> mono =
-			WebClient.builder().baseUrl("https://query1.finance.yahoo.com/v7/finance")
-				.exchangeStrategies(
-					ExchangeStrategies.builder()
-					.codecs(config -> config.defaultCodecs().maxInMemorySize(1024 * 1024)).build())
-				.build()
-				.get()
-				.uri(uriBuilder ->
-					uriBuilder.path("/quote")
-						.queryParam("symbols", appConfig.getAllQuoteSymbolsUrl()).build())
-				.retrieve()
-				.bodyToMono(YahooFinanceResponse.class)
-				.doOnError(throwable -> log.error("Failed for some reason", throwable))
-				.onErrorReturn(new YahooFinanceResponse());
+		mono = WebClient.builder().baseUrl("https://query1.finance.yahoo.com/v7/finance")
+			.exchangeStrategies(
+				ExchangeStrategies.builder()
+				.codecs(config -> config.defaultCodecs().maxInMemorySize(1024 * 1024)).build())
+			.build()
+			.get()
+			.uri(uriBuilder ->
+				uriBuilder.path("/quote")
+					.queryParam("symbols", appConfig.getAllQuoteSymbolsUrl()).build())
+			.retrieve()
+			.bodyToMono(YahooFinanceResponse.class)
+			.doOnError(throwable -> log.error("Failed for some reason", throwable))
+			.onErrorReturn(new YahooFinanceResponse());
 
 		// Init RealtimeMarketDataController.RealtimeStockRecords
-		Objects.requireNonNull(Objects.requireNonNull(
-				mono.block()).getQuoteResponse()).getResult()
-				.forEach(record -> realtimeStockRecords.put(record.getSymbol(), record));
+		Objects.requireNonNull(mono.block()).getQuoteResponse().getResult().forEach(quoteRecord -> realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord));
 
-		// Init Historical Quote Records
 		initHistoricalData();
-
-		// Update RealtimeMarketDataController.RealtimeStockRecords every Second
-		Flux.interval(Duration.ofSeconds(2)).flatMap(counter ->
-			mono.flatMapMany(results ->
-				Flux.fromIterable(results.getQuoteResponse().getResult()))
-				.doOnNext(quoteRecord -> {
-					if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
-						try {
-							if (!realtimeStockRecords.get(quoteRecord.getSymbol())
-									// TODO float 5 digits
-									.getRegularMarketPrice().equals(quoteRecord.getRegularMarketPrice())) {
-								realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
-								sink.tryEmitNext(quoteRecord);
-							}
-						}
-						catch (Exception e){
-							log.error(e.getMessage());
-						}
-					}
-				)
-		).subscribe();
     }
+
+	@Scheduled(fixedRate = 1000, initialDelay = 1000)
+	public void updateStockData() {
+		try {
+			mono.flatMapMany(it -> Flux.fromIterable(it.getQuoteResponse().getResult()))
+			.doOnNext(quoteRecord -> {
+				if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
+					if (realtimeStockRecords.get(quoteRecord.getSymbol()).getRegularMarketPrice().floatValue() != quoteRecord.getRegularMarketPrice().floatValue()) {
+						realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
+						sink.tryEmitNext(quoteRecord);
+					}
+				}).subscribe();
+		}
+		catch (Exception e){
+			log.error(e.getMessage());
+		}
+	}
 	
 	@Scheduled(cron = "0 0 0 * * *")
 	public void updateHistoricalData() {

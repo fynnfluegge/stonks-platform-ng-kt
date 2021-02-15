@@ -19,24 +19,25 @@ import java.util.*
 
 @Component
 class AppConfig {
+
     val yahooFinanceQuoteUrl = "https://query1.finance.yahoo.com/v7/finance/quote"
     val allQuoteSymbolsUrl: String
     val symbolNameMapping: MutableMap<String, QuoteSymbolMetaData> = LinkedHashMap()
     val quoteSymbolUrls: Map<Industry, String> = EnumMap(Industry::class.java)
 
     private fun addSymbolNameMappings() {
-        symbolNameMapping.putAll(IndicesQuotes.getQuotes())
-        symbolNameMapping.putAll(EtfQuotes.getQuotes())
-        symbolNameMapping.putAll(TechQuotes.getQuotes())
-        symbolNameMapping.putAll(HealthQuotes.getQuotes())
-        symbolNameMapping.putAll(FoodQuotes.getQuotes())
-        symbolNameMapping.putAll(RetailQuotes.getQuotes())
-        symbolNameMapping.putAll(FinanceQuotes.getQuotes())
-        symbolNameMapping.putAll(IndustryQuotes.getQuotes())
-        symbolNameMapping.putAll(MobilityQuotes.getQuotes())
-        symbolNameMapping.putAll(EnergyQuotes.getQuotes())
-        symbolNameMapping.putAll(MediaQuotes.getQuotes())
-        symbolNameMapping.putAll(ChinaQuotes.getQuotes())
+        symbolNameMapping.putAll(IndicesQuotes.quotes)
+        symbolNameMapping.putAll(EtfQuotes.quotes)
+        symbolNameMapping.putAll(TechQuotes.quotes)
+        symbolNameMapping.putAll(HealthQuotes.quotes)
+        symbolNameMapping.putAll(FoodQuotes.quotes)
+        symbolNameMapping.putAll(RetailQuotes.quotes)
+        symbolNameMapping.putAll(FinanceQuotes.quotes)
+        symbolNameMapping.putAll(IndustryQuotes.quotes)
+        symbolNameMapping.putAll(MobilityQuotes.quotes)
+        symbolNameMapping.putAll(EnergyQuotes.quotes)
+        symbolNameMapping.putAll(MediaQuotes.quotes)
+        symbolNameMapping.putAll(ChinaQuotes.quotes)
     }
 
     init {

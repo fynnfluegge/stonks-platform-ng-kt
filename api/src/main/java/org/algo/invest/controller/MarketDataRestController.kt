@@ -57,10 +57,10 @@ class MarketDataRestController(
     val dailyOutPerformer: Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter { it!!.quoteType == QuoteType.EQUITY }
-            .sortedByDescending { it!!.regularMarketChangePercent }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter { it.quoteType == QuoteType.EQUITY }
+            .sortedByDescending { it.regularMarketChangePercent }
+            .map{ getQuoteDto(it) }
             .take(10)
             .toList()
         ).flatMapMany { Flux.fromIterable(it) }
@@ -69,10 +69,10 @@ class MarketDataRestController(
     val dailyUnderPerformer: Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter { it!!.quoteType == QuoteType.EQUITY }
-            .sortedBy { it!!.regularMarketChangePercent }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter { it.quoteType == QuoteType.EQUITY }
+            .sortedBy { it.regularMarketChangePercent }
+            .map{ getQuoteDto(it) }
             .take(10)
             .toList()
         ).flatMapMany { Flux.fromIterable(it) }
@@ -81,10 +81,10 @@ class MarketDataRestController(
     fun get50dOutPerformer(): Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter { it!!.quoteType == QuoteType.EQUITY }
-            .sortedByDescending { it!!.fiftyDayAverageChangePercent }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter { it.quoteType == QuoteType.EQUITY }
+            .sortedByDescending { it.fiftyDayAverageChangePercent }
+            .map{ getQuoteDto(it) }
             .take(10)
             .toList()
         ).flatMapMany { Flux.fromIterable(it) }
@@ -93,10 +93,10 @@ class MarketDataRestController(
     fun get50dPerformer(): Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys
                 .asSequence()
-                .map { marketDataService.realtimeStockRecords[it] }
-                .filter { it!!.quoteType == QuoteType.EQUITY }
-                .sortedBy { it!!.fiftyDayAverageChangePercent }
-                .map{ getQuoteDto(it!!) }
+                .map { marketDataService.realtimeStockRecords.getValue(it) }
+                .filter { it.quoteType == QuoteType.EQUITY }
+                .sortedBy { it.fiftyDayAverageChangePercent }
+                .map{ getQuoteDto(it) }
                 .take(10)
                 .toList()
         ).flatMapMany { Flux.fromIterable(it) }
@@ -105,10 +105,10 @@ class MarketDataRestController(
     fun get200dOutPerformer(): Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter { it!!.quoteType === QuoteType.EQUITY }
-            .sortedByDescending { it!!.twoHundredDayAverageChangePercent }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter { it.quoteType === QuoteType.EQUITY }
+            .sortedByDescending { it.twoHundredDayAverageChangePercent }
+            .map{ getQuoteDto(it) }
             .take(10)
             .toList()
         ).flatMapMany { Flux.fromIterable(it) }
@@ -117,34 +117,30 @@ class MarketDataRestController(
     fun get200dUnderPerformer(): Flux<QuoteDto> =
         Mono.just(appConfig.symbolNameMapping.keys.stream()
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter { it!!.quoteType === QuoteType.EQUITY }
-            .sortedBy { it!!.twoHundredDayAverageChangePercent }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter { it.quoteType === QuoteType.EQUITY }
+            .sortedBy { it.twoHundredDayAverageChangePercent }
+            .map{ getQuoteDto(it) }
             .take(10)
             .toList()
         ).flatMapMany { Flux.fromIterable(it) }
 
-//    @get:RequestMapping(value = ["/allQuotes"], method = [RequestMethod.GET])
-//    val allQuotes: List<QuoteDto> =
-//        appConfig.symbolNameMapping.keys.map { getQuoteDto(marketDataService.realtimeStockRecords[it]!!) }
-
     private fun getQuotes(quoteType: QuoteType, industry: Industry): List<QuoteDto> =
         appConfig.symbolNameMapping.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords[it] }
-            .filter{ it!!.quoteType === quoteType && appConfig.symbolNameMapping[it!!.symbol]!!.industry === industry }
-            .map{ getQuoteDto(it!!) }
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+            .map{ getQuoteDto(it) }
             .toList()
 
     private fun getQuoteDto(quoteRecord: QuoteRecord): QuoteDto {
         val chartData = ChartDataDto(
-            if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol)
-                && marketDataService.historyQuotes[quoteRecord.symbol]!!.size > 10
-            ) marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10).subList(0, 10)
-                .stream().map { x: Map.Entry<Calendar?, HistoricalQuote> -> x.value.close.toFloat() }
-                .collect(Collectors.toList()) else ArrayList())
-        if (chartData.data!!.size == 10 && chartData.data[9] != quoteRecord.regularMarketPrice.toFloat()) {
+            if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol) && marketDataService.historyQuotes.getValue(quoteRecord.symbol).size > 10)
+                marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10).subList(0, 10)
+                    .stream().map { x: Map.Entry<Calendar?, HistoricalQuote> -> x.value.close.toFloat() }
+                    .collect(Collectors.toList())
+            else ArrayList())
+        if (chartData.data?.size == 10 && chartData.data[9] != quoteRecord.regularMarketPrice.toFloat()) {
             Collections.rotate(chartData.data, -1)
             chartData.data.mapIndexed { index, _ -> if (index == 9) quoteRecord.regularMarketPrice.toFloat() }
         }
@@ -153,15 +149,15 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/quote/{symbol}"], method = [RequestMethod.GET])
     fun getQuote(@PathVariable symbol: String): QuoteDto {
-        val quoteRecord = marketDataService.realtimeStockRecords[symbol]
+        val quoteRecord = marketDataService.realtimeStockRecords.getValue(symbol)
         val chartData = ChartDataDto(
-            if (marketDataService.historyQuotes.containsKey(symbol) &&
-                marketDataService.historyQuotes[symbol]!!.size >= 200
-            ) marketDataService.historyQuotes[symbol]!!.values.toList().takeLast(200).subList(0, 200)
-                .stream().map { x: HistoricalQuote -> x.close.toFloat() }
-                .collect(Collectors.toList()) else ArrayList()
+            if (marketDataService.historyQuotes.containsKey(symbol) && marketDataService.historyQuotes.getValue(symbol).size >= 200)
+                marketDataService.historyQuotes.getValue(symbol).values.toList().takeLast(200).subList(0, 200)
+                    .stream().map { it.close.toFloat() }
+                    .collect(Collectors.toList())
+            else ArrayList()
         )
-        if (chartData.data!!.size == 200 && chartData.data[199] != quoteRecord!!.regularMarketPrice.toFloat()) {
+        if (chartData.data?.size == 200 && chartData.data[199] != quoteRecord.regularMarketPrice.toFloat()) {
             Collections.rotate(chartData.data, -1)
             chartData.data.mapIndexed { index, _ -> if (index == 199) quoteRecord.regularMarketPrice.toFloat() }
         }
@@ -188,8 +184,8 @@ class MarketDataRestController(
     private fun quoteDto(quoteRecord: QuoteRecord, chartData: ChartDataDto) =
         QuoteDto(
             quoteRecord.symbol,
-            appConfig.symbolNameMapping[quoteRecord.symbol]!!.name,
-            appConfig.symbolNameMapping[quoteRecord.symbol]!!.wkn,
+            appConfig.symbolNameMapping.getValue(quoteRecord.symbol!!).name,
+            appConfig.symbolNameMapping.getValue(quoteRecord.symbol).wkn,
             quoteRecord.regularMarketPrice.toFloat(),
             quoteRecord.regularMarketChange,
             quoteRecord.regularMarketChangePercent,

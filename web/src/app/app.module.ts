@@ -1,7 +1,5 @@
-// import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -15,6 +13,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ChartsModule } from 'ng2-charts';
 import { NgbdSortableHeaderDirective } from './directive/sortable/sortableheader.component';
@@ -53,8 +52,6 @@ import { OtherComponent } from './component/misc/misc.component';
     OtherComponent,
   ],
   imports: [
-    // BrowserModule,
-    // NgbModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -69,7 +66,8 @@ import { OtherComponent } from './component/misc/misc.component';
     MatTooltipModule,
     MatSliderModule,
     ChartsModule,
-    PlatformModule
+    PlatformModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent],

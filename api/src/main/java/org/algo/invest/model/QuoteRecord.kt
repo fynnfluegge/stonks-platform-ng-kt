@@ -3,9 +3,9 @@ package org.algo.invest.model
 import java.math.BigDecimal
 
 data class QuoteRecord(
-    val symbol: String,
-    val industry: Industry,
-    val quoteType: QuoteType,
+    val symbol: String? = null,
+    val industry: Industry? = null,
+    val quoteType: QuoteType? = null,
     val region: String? = null,
     val currency: String? = null,
     val regularMarketDayLow: Float = 0f,
@@ -63,9 +63,7 @@ data class QuoteRecord(
     val regularMarketPrice: BigDecimal = BigDecimal(0),
     val regularMarketDayHigh: Float = 0f,
     val regularMarketDayRange: String? = null
-) {
-    constructor() : this("", Industry.AEROSPACE_TRAVEL, QuoteType.CRYPTOCURRENCY)
-}
+)
 
 data class QuoteSymbolMetaData(
     val symbol: String? = null,
@@ -75,7 +73,7 @@ data class QuoteSymbolMetaData(
 )
 
 enum class QuoteType {
-    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE
+    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE, NONE
 }
 
 enum class Industry {
