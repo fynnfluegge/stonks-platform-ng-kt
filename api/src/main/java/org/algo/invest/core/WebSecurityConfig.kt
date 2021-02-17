@@ -16,14 +16,14 @@ import java.lang.Exception
 @Configuration
 @EnableWebSecurity
 @EnableScheduling
-class WebSecurityConfig : WebSecurityConfigurerAdapter(), WebMvcConfigurer {
+open class WebSecurityConfig : WebSecurityConfigurerAdapter(), WebMvcConfigurer {
     @Throws(Exception::class)
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity.cors()
     }
 
     @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
+    open fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf("http://localhost:4200", "http://47.91.78.219:3000")
         configuration.allowedMethods = listOf("GET", "POST")
