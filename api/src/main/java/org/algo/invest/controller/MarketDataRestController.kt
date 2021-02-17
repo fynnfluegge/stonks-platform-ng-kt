@@ -136,7 +136,7 @@ class MarketDataRestController(
     private fun getQuoteDto(quoteRecord: QuoteRecord): QuoteDto {
         val chartData = ChartDataDto(
             if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol) && marketDataService.historyQuotes.getValue(quoteRecord.symbol).size > 10)
-                marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10).subList(0, 10)
+                marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10)
                     .stream().map { x: Map.Entry<Calendar?, HistoricalQuote> -> x.value.close.toFloat() }
                     .collect(Collectors.toList())
             else ArrayList())
@@ -152,7 +152,7 @@ class MarketDataRestController(
         val quoteRecord = marketDataService.realtimeStockRecords.getValue(symbol)
         val chartData = ChartDataDto(
             if (marketDataService.historyQuotes.containsKey(symbol) && marketDataService.historyQuotes.getValue(symbol).size >= 200)
-                marketDataService.historyQuotes.getValue(symbol).values.toList().takeLast(200).subList(0, 200)
+                marketDataService.historyQuotes.getValue(symbol).values.toList().takeLast(200)
                     .stream().map { it.close.toFloat() }
                     .collect(Collectors.toList())
             else ArrayList()
