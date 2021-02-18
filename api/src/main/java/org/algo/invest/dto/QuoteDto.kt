@@ -23,3 +23,7 @@ data class QuoteDto (
     val quoteType: QuoteType? = null,
     val chartData: List<ChartDataDto>? = null
 )
+
+data class ChartDataDto (
+    val data: MutableList<Float>? = null
+)

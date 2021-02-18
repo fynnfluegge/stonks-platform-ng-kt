@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.algo.invest.service.MarketDataService
 import org.algo.invest.core.AppConfig
+import org.algo.invest.dto.ChartDataDto
 import org.springframework.web.bind.annotation.RequestMapping
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
@@ -14,7 +15,6 @@ import java.util.stream.Collectors
 import org.algo.invest.model.QuoteRecord
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMethod
-import org.algo.invest.dto.ChartDataDto
 import org.springframework.http.MediaType
 import yahoofinance.histquotes.HistoricalQuote
 import java.io.FileInputStream
@@ -141,8 +141,9 @@ class MarketDataRestController(
                     .collect(Collectors.toList())
             else ArrayList())
         if (chartData.data?.size == 10 && chartData.data[9] != quoteRecord.regularMarketPrice.toFloat()) {
-//            Collections.rotate(chartData.data, -1)
-//            chartData.data.mapIndexed { index, _ -> if (index == 9) quoteRecord.regularMarketPrice.toFloat() }
+            Collections.rotate(chartData.data, -1)
+            chartData.data.removeLast()
+            chartData.data.add(quoteRecord.regularMarketPrice.toFloat())
         }
         return quoteDto(quoteRecord, chartData)
     }
@@ -157,6 +158,11 @@ class MarketDataRestController(
                     .collect(Collectors.toList())
             else ArrayList()
         )
+        if (chartData.data?.size == 200 && chartData.data[199] != quoteRecord.regularMarketPrice.toFloat()) {
+            Collections.rotate(chartData.data, -1)
+            chartData.data.removeLast()
+            chartData.data.add(quoteRecord.regularMarketPrice.toFloat())
+        }
         return quoteDto(quoteRecord!!, chartData)
     }
 
