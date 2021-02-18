@@ -3,6 +3,7 @@ package org.algo.invest.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.MathContext;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -49,6 +50,8 @@ public class MarketDataService {
 
 	public Mono<YahooFinanceResponse> mono;
 
+	private MathContext mathContext = new MathContext(5);
+
 	public MarketDataService(AppConfig appConfig) {
 		this.appConfig = appConfig;
 	}
@@ -85,7 +88,8 @@ public class MarketDataService {
 			mono.flatMapMany(it -> Flux.fromIterable(it.getQuoteResponse().getResult()))
 			.doOnNext(quoteRecord -> {
 				if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
-					if (realtimeStockRecords.get(quoteRecord.getSymbol()).getRegularMarketPrice().floatValue() != quoteRecord.getRegularMarketPrice().floatValue()) {
+					if (realtimeStockRecords.get(quoteRecord.getSymbol()).getRegularMarketPrice().round(mathContext).floatValue()
+							!= quoteRecord.getRegularMarketPrice().round(mathContext).floatValue()) {
 						realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
 						sink.tryEmitNext(quoteRecord);
 					}

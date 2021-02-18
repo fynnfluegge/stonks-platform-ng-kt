@@ -73,7 +73,7 @@ data class QuoteSymbolMetaData(
 )
 
 enum class QuoteType {
-    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE, NONE
+    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE
 }
 
 enum class Industry {

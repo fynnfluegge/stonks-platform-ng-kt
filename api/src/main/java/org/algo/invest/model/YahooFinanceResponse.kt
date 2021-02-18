@@ -7,5 +7,5 @@ data class YahooFinanceResponse (
 )
 
 data class QuoteResponse (
-    val result: List<QuoteRecord?> = ArrayList()
+    val result: List<QuoteRecord> = ArrayList()
 )
