@@ -141,8 +141,8 @@ class MarketDataRestController(
                     .collect(Collectors.toList())
             else ArrayList())
         if (chartData.data?.size == 10 && chartData.data[9] != quoteRecord.regularMarketPrice.toFloat()) {
-            Collections.rotate(chartData.data, -1)
-            chartData.data.mapIndexed { index, _ -> if (index == 9) quoteRecord.regularMarketPrice.toFloat() }
+//            Collections.rotate(chartData.data, -1)
+//            chartData.data.mapIndexed { index, _ -> if (index == 9) quoteRecord.regularMarketPrice.toFloat() }
         }
         return quoteDto(quoteRecord, chartData)
     }
@@ -157,10 +157,6 @@ class MarketDataRestController(
                     .collect(Collectors.toList())
             else ArrayList()
         )
-        if (chartData.data?.size == 200 && chartData.data[199] != quoteRecord.regularMarketPrice.toFloat()) {
-            Collections.rotate(chartData.data, -1)
-            chartData.data.mapIndexed { index, _ -> if (index == 199) quoteRecord.regularMarketPrice.toFloat() }
-        }
         return quoteDto(quoteRecord!!, chartData)
     }
 
