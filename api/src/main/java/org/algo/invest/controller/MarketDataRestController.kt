@@ -21,6 +21,7 @@ import java.io.FileInputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 import kotlin.streams.asSequence
 
@@ -30,6 +31,8 @@ class MarketDataRestController(
     private val marketDataService: MarketDataService,
     private val appConfig: AppConfig)
 {
+    private final val PAGESIZE: Int = 20
+
     @get:RequestMapping(value = ["/stream/quotes/indices"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     val indicesQuotes: Flux<QuoteDto> =
         Mono.just(listOf(getQuotes(QuoteType.CURRENCY, Industry.NONE), getQuotes(QuoteType.INDEX, Industry.NONE)).flatten())
@@ -45,13 +48,17 @@ class MarketDataRestController(
             .map { getQuoteDto(it) })
 
     @RequestMapping(value = ["/stream/quotes/{industry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun ecommerceQuotes(@PathVariable industry: String): Flux<QuoteDto> =
+    fun quotes(@PathVariable industry: String): Flux<QuoteDto> =
         Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
                 }
                 .map { getQuoteDto(it) })
+
+    @RequestMapping(value = ["/stream/quotes/{industry}/{page}"])
+    fun page(@PathVariable industry: String, @PathVariable page: Int) =
+        getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase()), page)
 
     @get:RequestMapping(value = ["/24hOutPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     val dailyOutPerformer: Flux<QuoteDto> =
@@ -132,6 +139,20 @@ class MarketDataRestController(
             .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
             .map{ getQuoteDto(it) }
             .toList()
+
+    private fun getQuotes(quoteType: QuoteType, industry: Industry, page: Int): List<QuoteDto> =
+        try {
+            appConfig.symbolNameMapping.keys
+                .asSequence()
+                .map { marketDataService.realtimeStockRecords.getValue(it) }
+                .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+                .chunked(PAGESIZE)
+                .elementAt(page)
+                .map{ getQuoteDto(it) }
+                .toList()
+        } catch (exception: IndexOutOfBoundsException){
+            emptyList()
+        }
 
     private fun getQuoteDto(quoteRecord: QuoteRecord): QuoteDto {
         val chartData = ChartDataDto(

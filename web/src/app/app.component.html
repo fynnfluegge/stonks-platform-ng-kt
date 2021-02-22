@@ -6,7 +6,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-drawer-container autosize>
+<mat-drawer-container>
   <mat-drawer #drawer mode="side">
     <mat-expansion-panel [class.mat-elevation-z0]="true" dense>
       <mat-expansion-panel-header>
@@ -14,7 +14,7 @@
       </mat-expansion-panel-header>
       <mat-nav-list dense>
         <div>
-          <a mat-button [routerLink]="'/tech'">Tech</a>
+          <a mat-button [routerLink]="'/tech'" [queryParams]="{industry: 'sfasf'}">Tech</a>
         </div>
       </mat-nav-list>
   </mat-expansion-panel>
@@ -54,11 +54,7 @@
   </mat-drawer>
 
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
+    <router-outlet></router-outlet>
   </div>
 
 </mat-drawer-container>

@@ -52,21 +52,17 @@ span:hover {
 }
 
 .table .thead-dark th {
-    background-color: #282828;
-    border-color: transparent;
-    border-width: 0px;
-    font-family: Roboto,"Helvetica Neue",sans-serif;
-    font-size: 15px;
-    font-weight: 400;
+  background-color: #282828;
+  border-color: transparent;
+  border-width: 0px;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .mb-5, .my-5 {
   margin-bottom: 0rem!important;
   margin-top: 0rem!important;
-}
-
-.col-md-12{
-  padding: 12px;
 }
 
 .table td {
@@ -82,6 +78,7 @@ span:hover {
     top: 0;
     z-index: 10;
   }
+  height: 100%; //calc(100% - 46px);
 }
 
 .table-bordered {
@@ -89,8 +86,10 @@ span:hover {
 }
 
 tbody {
-  display:block;
+  display: block;
   font-size: 14px;
+  height: calc(100% - 46px);
+  overflow: auto;
 }
 
 thead, tbody tr {
@@ -136,5 +135,9 @@ td.ng-tns-c3-0 {
 }
 
 .container {
+  height: 100%;
   min-width: 720px;
+  padding: 12px 12px 24px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

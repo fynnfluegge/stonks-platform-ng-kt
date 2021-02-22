@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
 import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
 import { Color } from 'ng2-charts';
@@ -10,13 +10,14 @@ import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { delay } from "rxjs/operators";
 import { TableAnimations} from "../../animations"
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'base-table',
   templateUrl: './base-table.component.html',
   animations: [TableAnimations.animations]
 })
-export class BaseTableComponent implements AfterViewInit, OnDestroy {
+export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() url: string;
   @Input() initDelay: number;
   apiURL = environment.apiUrl;
@@ -74,47 +75,72 @@ export class BaseTableComponent implements AfterViewInit, OnDestroy {
   data = this.quoteRecords;
   subscription: Subscription
 
-  constructor(private quoteService: EventListenerService, private dialog: MatDialog) {
+  constructor(private http: HttpClient, private quoteService: EventListenerService, private dialog: MatDialog, private route: ActivatedRoute) {
   }
 
-  merge(element: QuoteRecord) {
+  concat(element: QuoteRecord[]) {
+    element.forEach(it => {
+      if (this.quoteRecords.findIndex(x => x.symbol === it.symbol) == -1)
+        this.quoteRecords.push(it);
+    })
+  }
 
-      if (this.quoteRecords.findIndex(x => x.symbol === element.symbol) == -1) {
-        this.quoteRecords.push(element);
-      } else {
-        const index = this.quoteRecords.findIndex(x => x.symbol === element.symbol)
-        if(index > -1){
-          this.quoteRecords[index].price = element.price
-          this.quoteRecords[index].dayChangePercent = element.dayChangePercent
-          this.quoteRecords[index].dayChange = element.dayChange
-          this.quoteRecords[index].fiftyDayAverage = element.fiftyDayAverage
-          this.quoteRecords[index].fiftyDayAverageChangePercent = element.fiftyDayAverageChangePercent
-          this.quoteRecords[index].twoHundredDayAverage = element.twoHundredDayAverage
-          this.quoteRecords[index].twoHundredDayAverageChangePercent = element.twoHundredDayAverageChangePercent
-          this.quoteRecords[index].fiftyTwoWeekLow = element.fiftyTwoWeekLow
-          this.quoteRecords[index].fiftyTwoWeekLowChangePercent = element.fiftyTwoWeekLowChangePercent
-          this.quoteRecords[index].fiftyTwoWeekHigh = element.fiftyTwoWeekHigh
-          this.quoteRecords[index].fiftyTwoWeekHighChangePercent = element.fiftyTwoWeekHighChangePercent
-          this.quoteRecords[index].chartData = element.chartData
-        }
-      }
+  update(element: QuoteRecord) {
+    const index = this.quoteRecords.findIndex(x => x.symbol === element.symbol)
+    if(index > -1){
+      this.quoteRecords[index].price = element.price
+      this.quoteRecords[index].dayChangePercent = element.dayChangePercent
+      this.quoteRecords[index].dayChange = element.dayChange
+      this.quoteRecords[index].fiftyDayAverage = element.fiftyDayAverage
+      this.quoteRecords[index].fiftyDayAverageChangePercent = element.fiftyDayAverageChangePercent
+      this.quoteRecords[index].twoHundredDayAverage = element.twoHundredDayAverage
+      this.quoteRecords[index].twoHundredDayAverageChangePercent = element.twoHundredDayAverageChangePercent
+      this.quoteRecords[index].fiftyTwoWeekLow = element.fiftyTwoWeekLow
+      this.quoteRecords[index].fiftyTwoWeekLowChangePercent = element.fiftyTwoWeekLowChangePercent
+      this.quoteRecords[index].fiftyTwoWeekHigh = element.fiftyTwoWeekHigh
+      this.quoteRecords[index].fiftyTwoWeekHighChangePercent = element.fiftyTwoWeekHighChangePercent
+      this.quoteRecords[index].chartData = element.chartData
+    }
+  }
+
+  ngOnInit() {
+    const id = this.route.snapshot.queryParamMap.get('id')
+    console.log(id)
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/0").subscribe(message => { this.concat(message) })
   }
 
   ngAfterViewInit() {
     this.subscription = this.quoteService.observeMessages(this.apiURL + this.url)
       .pipe(delay(this.initDelay))
-      .subscribe(message => { this.merge(message) });
+      .subscribe(message => { this.update(message) })
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe()
   }
 
+  onTableScroll(e) {
+    const tableViewHeight = e.target.offsetHeight // viewport: ~500px
+    const tableScrollHeight = e.target.scrollHeight // length of all table
+    const scrollLocation = e.target.scrollTop; // how far user scrolled
+    
+    console.log("tableViewHeight " + tableViewHeight)
+    console.log("tableScrollHeight " + tableScrollHeight)
+    console.log("scrollLocation " + scrollLocation)
+
+    const buffer = 500
+    const limit = tableScrollHeight - tableViewHeight - buffer
+    if (scrollLocation > 200) {
+      console.log(limit)
+      this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/1").subscribe(message => { this.concat(message) })
+    }
+  }
+
   onSort({column, direction}: SortEvent) {
 
     this.headers.forEach(header => {
       if (header.sortable !== column) {
-        header.direction = '';
+        header.direction = ''
       }
     });
 

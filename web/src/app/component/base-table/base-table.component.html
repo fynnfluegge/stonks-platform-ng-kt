@@ -1,22 +1,22 @@
-<table class="table table-bordered table-striped" style="height: 200px;">
+<table class="table table-bordered table-striped">
   <thead class="thead-dark">
     <tr>
       <th scope="col" sortable="name" (sort)="onSort($event)" style="cursor:pointer">Name</th>
       <th scope="col" sortable="dayChangePercent" (sort)="onSort($event)" style="cursor:pointer">Price</th>
-      <th scope="col" sortable="fiftyDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">50D-Ø</th>
-      <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">200D-Ø</th>
-      <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52W-Low</th>
-      <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52W-High</th>
-      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer">Market Cap</th>
-      <th scope="col">52W-Slider</th>
+      <th scope="col" sortable="fiftyDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">50-Ø</th>
+      <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">200-Ø</th>
+      <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-Low</th>
+      <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-High</th>
+      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer">Cap.</th>
+      <th scope="col">52-ST</th>
       <th scope="col">Chart</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody (scroll)="onTableScroll($event)">
       <tr *ngFor="let quoteRecord of data">
         <td>
-          <a class='whitelink' (click)="copyMessage(quoteRecord.wkn)" style="cursor:pointer;" matTooltip="Copy WKN" matTooltipPosition='right'>
-            {{ quoteRecord.name }}
+          <a class='whitelink' (click)="copyMessage(quoteRecord.wkn)" style="cursor:pointer;" [matTooltip]="quoteRecord.name" matTooltipPosition='right'>
+            {{ quoteRecord.symbol }}
           </a>
         </td>
         <td>

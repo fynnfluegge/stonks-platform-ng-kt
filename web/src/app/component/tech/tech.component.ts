@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-tech',
   templateUrl: './tech.component.html'
 })
-export class TechComponent  {
+export class TechComponent {
 
   constructor() { }
-
 }
