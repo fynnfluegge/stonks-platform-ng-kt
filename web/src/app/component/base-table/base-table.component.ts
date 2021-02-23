@@ -8,10 +8,9 @@ import { BasicRestService } from 'src/app/service/basic-rest.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { delay } from "rxjs/operators";
 import { TableAnimations} from "../../animations"
 import { ActivatedRoute } from '@angular/router';
-import { dir } from 'console';
+import { delay } from "rxjs/operators";
 
 @Component({
   selector: 'base-table',
@@ -21,6 +20,8 @@ import { dir } from 'console';
 export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() url: string;
   @Input() initDelay: number;
+  @Input() paging: boolean = true
+  @Input() stream: boolean = true
   apiURL = environment.apiUrl;
 
   @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
@@ -105,31 +106,37 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.queryParamMap.get('id')
-    console.log(id)
-    this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/0").subscribe(message => { this.concat(message) })
+    // const id = this.route.snapshot.queryParamMap.get('id')
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging == true ? "/0" : ""))
+      .pipe(delay(this.initDelay))
+      .subscribe(message => { this.concat(message) })
   }
 
   ngAfterViewInit() {
-    this.subscription = this.quoteService.observeMessages(this.apiURL + this.url)
+    if (this.stream == true){
+      this.subscription = this.quoteService.observeMessages(this.apiURL + this.url)
       .pipe(delay(this.initDelay))
       .subscribe(message => { this.update(message) })
+    }
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    if (this.stream == true)
+      this.subscription.unsubscribe()
   }
 
   page: number = 1
   onTableScroll(e) {
-    const tableViewHeight = e.target.offsetHeight // viewport: ~500px
-    const tableScrollHeight = e.target.scrollHeight // length of all table
-    const scrollLocation = e.target.scrollTop; // how far user scrolled
-    const buffer = 500
-    const limit = tableScrollHeight - tableViewHeight - buffer
-    if (scrollLocation > limit) {
-      this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/" + this.page + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
-      this.page++
+    if (this.paging == true) {
+      const tableViewHeight = e.target.offsetHeight // viewport: ~500px
+      const tableScrollHeight = e.target.scrollHeight // length of all table
+      const scrollLocation = e.target.scrollTop; // how far user scrolled
+      const buffer = 500
+      const limit = tableScrollHeight - tableViewHeight - buffer
+      if (scrollLocation > limit) {
+        this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging ? "/" + this.page : "") + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
+        this.page++
+      }
     }
   }
 
@@ -146,7 +153,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.quoteRecords = []
     this. data = this.quoteRecords
-    this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/0" + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging ? "/0" : "") + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
   }
 
   openSite(siteUrl: string) {

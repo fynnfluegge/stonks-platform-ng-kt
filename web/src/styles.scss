@@ -78,7 +78,7 @@ span:hover {
     top: 0;
     z-index: 10;
   }
-  height: 100%; //calc(100% - 46px);
+  height: calc(100% - 18px);
 }
 
 .table-bordered {
@@ -139,5 +139,15 @@ td.ng-tns-c3-0 {
   min-width: 720px;
   padding: 12px 12px 24px 12px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
+}
+
+.no-scroll tbody {
+  height: 100%;
+  overflow: visible;
+}
+
+.no-scroll table {
+  height: 100%;
+  overflow: visible;
 }

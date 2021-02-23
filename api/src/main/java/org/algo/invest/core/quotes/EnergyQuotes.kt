@@ -18,17 +18,17 @@ object EnergyQuotes {
             symbolNameMapping["PLUG"] = QuoteSymbolMetaData("PLUG", "Plug Power", "A1JA81", Industry.ENERGY)
 
             // Erneuerbare Energien
-            symbolNameMapping["NEE"] = QuoteSymbolMetaData("NEE", "Nextera Energy", "A1CZ4H", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["D2G.F"] = QuoteSymbolMetaData("D2G.F", "Ørsted", "A0NBLH", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["VWS.DE"] = QuoteSymbolMetaData("VWS.DE", "Vestas Wind Systems", "A0MRJJ", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["SEDG"] = QuoteSymbolMetaData("SEDG", "Solaredge", "A14QVM", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["ECV.DE"] = QuoteSymbolMetaData("ECV.DE", "Encavis", "609500", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["ENPH"] = QuoteSymbolMetaData("ENPH", "Enphase Energy", "A1JC82", Industry.RENEWABLE_ENERGY)
-            symbolNameMapping["CXGH.F"] = QuoteSymbolMetaData("CXGH.F", "Goldwind", "A1C0QD", Industry.RENEWABLE_ENERGY)
+            symbolNameMapping["NEE"] = QuoteSymbolMetaData("NEE", "Nextera Energy", "A1CZ4H", Industry.ENERGY)
+            symbolNameMapping["D2G.F"] = QuoteSymbolMetaData("D2G.F", "Ørsted", "A0NBLH", Industry.ENERGY)
+            symbolNameMapping["VWS.DE"] = QuoteSymbolMetaData("VWS.DE", "Vestas Wind Systems", "A0MRJJ", Industry.ENERGY)
+            symbolNameMapping["SEDG"] = QuoteSymbolMetaData("SEDG", "Solaredge", "A14QVM", Industry.ENERGY)
+            symbolNameMapping["ECV.DE"] = QuoteSymbolMetaData("ECV.DE", "Encavis", "609500", Industry.ENERGY)
+            symbolNameMapping["ENPH"] = QuoteSymbolMetaData("ENPH", "Enphase Energy", "A1JC82", Industry.ENERGY)
+            symbolNameMapping["CXGH.F"] = QuoteSymbolMetaData("CXGH.F", "Goldwind", "A1C0QD", Industry.ENERGY)
 
-            // Akku
-            symbolNameMapping["VAR1.DE"] = QuoteSymbolMetaData("VAR1.DE", "Varta", "A0TGJ5", Industry.AKKU)
-            symbolNameMapping["BY6.F"] = QuoteSymbolMetaData("BY6.F", "BYD", "A0M4W9", Industry.AKKU)
+            //AKKU
+            symbolNameMapping["VAR1.DE"] = QuoteSymbolMetaData("VAR1.DE", "Varta", "A0TGJ5", Industry.ENERGY)
+            symbolNameMapping["BY6.F"] = QuoteSymbolMetaData("BY6.F", "BYD", "A0M4W9", Industry.ENERGY)
 
             return symbolNameMapping
         }

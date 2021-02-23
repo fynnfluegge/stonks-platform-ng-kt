@@ -4,7 +4,6 @@ import org.algo.invest.model.Industry
 import org.algo.invest.model.QuoteSymbolMetaData
 import org.algo.invest.core.quotes.TechQuotes
 import org.algo.invest.core.quotes.IndicesQuotes
-import org.algo.invest.core.quotes.EtfQuotes
 import org.algo.invest.core.quotes.HealthQuotes
 import org.algo.invest.core.quotes.FoodQuotes
 import org.algo.invest.core.quotes.RetailQuotes
@@ -27,7 +26,6 @@ class AppConfig {
 
     private fun addSymbolNameMappings() {
         symbolNameMapping.putAll(IndicesQuotes.quotes)
-        symbolNameMapping.putAll(EtfQuotes.quotes)
         symbolNameMapping.putAll(TechQuotes.quotes)
         symbolNameMapping.putAll(HealthQuotes.quotes)
         symbolNameMapping.putAll(FoodQuotes.quotes)

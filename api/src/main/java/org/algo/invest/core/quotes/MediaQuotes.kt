@@ -18,13 +18,13 @@ object MediaQuotes {
             symbolNameMapping["NNW.F"] = QuoteSymbolMetaData("NNW.F", "Naspers", "906614", Industry.MEDIA)
 
             // Games
-            symbolNameMapping["NTO.F"] = QuoteSymbolMetaData("NTO.F", "Nintendo", "864009", Industry.GAMES)
-            symbolNameMapping["7CD.F"] = QuoteSymbolMetaData("7CD.F", "CD Project Red", "534356", Industry.GAMES)
-            symbolNameMapping["EA"] = QuoteSymbolMetaData("EA", "EA", "878372", Industry.GAMES)
-            symbolNameMapping["ATVI"] = QuoteSymbolMetaData("ATVI", "Activision Blizzard", "A0Q4K4", Industry.GAMES)
-            symbolNameMapping["TTWO"] = QuoteSymbolMetaData("TTWO", "Take 2", "914508", Industry.GAMES)
-            symbolNameMapping["TH9A.F"] = QuoteSymbolMetaData("TH9A.F", "THQ Nordic", "A2PS64", Industry.GAMES)
-            symbolNameMapping["11C.F"] = QuoteSymbolMetaData("11C.F", "11 Bit Studios", "A1J1ZZ", Industry.GAMES)
+            symbolNameMapping["NTO.F"] = QuoteSymbolMetaData("NTO.F", "Nintendo", "864009", Industry.MEDIA)
+            symbolNameMapping["7CD.F"] = QuoteSymbolMetaData("7CD.F", "CD Project Red", "534356", Industry.MEDIA)
+            symbolNameMapping["EA"] = QuoteSymbolMetaData("EA", "EA", "878372", Industry.MEDIA)
+            symbolNameMapping["ATVI"] = QuoteSymbolMetaData("ATVI", "Activision Blizzard", "A0Q4K4", Industry.MEDIA)
+            symbolNameMapping["TTWO"] = QuoteSymbolMetaData("TTWO", "Take 2", "914508", Industry.MEDIA)
+            symbolNameMapping["TH9A.F"] = QuoteSymbolMetaData("TH9A.F", "THQ Nordic", "A2PS64", Industry.MEDIA)
+            symbolNameMapping["11C.F"] = QuoteSymbolMetaData("11C.F", "11 Bit Studios", "A1J1ZZ", Industry.MEDIA)
 
             return symbolNameMapping
         }

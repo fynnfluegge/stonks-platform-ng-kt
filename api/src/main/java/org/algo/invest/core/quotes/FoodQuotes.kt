@@ -25,20 +25,20 @@ object FoodQuotes {
             symbolNameMapping["BYND"] = QuoteSymbolMetaData("BYND", "Beyond Meat", "A2N7XQ", Industry.FOOD)
 
             // Food Delivery
-            symbolNameMapping["DPZ"] = QuoteSymbolMetaData("DPZ", "Dominos", "A0B6VQ", Industry.FOOD_DELIVERY)
-            symbolNameMapping["0OC.F"] = QuoteSymbolMetaData("0OC.F", "Ocado", "A1C2GZ", Industry.FOOD_DELIVERY)
-            symbolNameMapping["SYY"] = QuoteSymbolMetaData("SYY", "Sysco", "859121", Industry.FOOD_DELIVERY)
-            symbolNameMapping["HFG.DE"] = QuoteSymbolMetaData("HFG.DE", "Hello Fresh", "A16140", Industry.FOOD_DELIVERY)
-            symbolNameMapping["DHER.DE"] = QuoteSymbolMetaData("DHER.DE", "Delivery Hero", "A2E4K4", Industry.FOOD_DELIVERY)
+            symbolNameMapping["DPZ"] = QuoteSymbolMetaData("DPZ", "Dominos", "A0B6VQ", Industry.FOOD)
+            symbolNameMapping["0OC.F"] = QuoteSymbolMetaData("0OC.F", "Ocado", "A1C2GZ", Industry.FOOD)
+            symbolNameMapping["SYY"] = QuoteSymbolMetaData("SYY", "Sysco", "859121", Industry.FOOD)
+            symbolNameMapping["HFG.DE"] = QuoteSymbolMetaData("HFG.DE", "Hello Fresh", "A16140", Industry.FOOD)
+            symbolNameMapping["DHER.DE"] = QuoteSymbolMetaData("DHER.DE", "Delivery Hero", "A2E4K4", Industry.FOOD)
 
             // Gastronomy
-            symbolNameMapping["SBUX"] = QuoteSymbolMetaData("SBUX", "Starbucks", "884437", Industry.GASTRONOMY)
-            symbolNameMapping["CMG"] = QuoteSymbolMetaData("CMG", "Chipotle", "A0ESP5", Industry.GASTRONOMY)
-            symbolNameMapping["CAKE"] = QuoteSymbolMetaData("CAKE", "Cheesecake Factory", "884888", Industry.GASTRONOMY)
-            symbolNameMapping["MCD"] = QuoteSymbolMetaData("MCD", "McDonalds", "856958", Industry.GASTRONOMY)
-            symbolNameMapping["QSR"] = QuoteSymbolMetaData("QSR", "Restaurant Brands Int.", "A12GMA", Industry.GASTRONOMY)
-            symbolNameMapping["YUM"] = QuoteSymbolMetaData("YUM", "Yum! Brands", "909190", Industry.GASTRONOMY)
-            symbolNameMapping["TXRH"] = QuoteSymbolMetaData("TXRH", "Texas Roadhouse", "A0DKNQ", Industry.GASTRONOMY)
+            symbolNameMapping["SBUX"] = QuoteSymbolMetaData("SBUX", "Starbucks", "884437", Industry.FOOD)
+            symbolNameMapping["CMG"] = QuoteSymbolMetaData("CMG", "Chipotle", "A0ESP5", Industry.FOOD)
+            symbolNameMapping["CAKE"] = QuoteSymbolMetaData("CAKE", "Cheesecake Factory", "884888", Industry.FOOD)
+            symbolNameMapping["MCD"] = QuoteSymbolMetaData("MCD", "McDonalds", "856958", Industry.FOOD)
+            symbolNameMapping["QSR"] = QuoteSymbolMetaData("QSR", "Restaurant Brands Int.", "A12GMA", Industry.FOOD)
+            symbolNameMapping["YUM"] = QuoteSymbolMetaData("YUM", "Yum! Brands", "909190", Industry.FOOD)
+            symbolNameMapping["TXRH"] = QuoteSymbolMetaData("TXRH", "Texas Roadhouse", "A0DKNQ", Industry.FOOD)
 
             return symbolNameMapping
         }

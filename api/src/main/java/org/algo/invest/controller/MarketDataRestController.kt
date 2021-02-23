@@ -31,20 +31,6 @@ class MarketDataRestController(
 {
     private final val PAGESIZE: Int = 20
 
-    @get:RequestMapping(value = ["/stream/quotes/indices"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    val indicesQuotes: Flux<QuoteDto> =
-        Mono.just(listOf(getQuotes(QuoteType.CURRENCY, Industry.NONE), getQuotes(QuoteType.INDEX, Industry.NONE)).flatten())
-            .flatMapMany { Flux.fromIterable(it) }
-            .mergeWith(marketDataService.latestQuotes.filter { it.quoteType == QuoteType.INDEX || it.quoteType == QuoteType.CURRENCY }
-            .map { getQuoteDto(it) })
-
-    @get:RequestMapping(value = ["/stream/quotes/etf"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    val etfQuotes: Flux<QuoteDto> =
-        Mono.just(getQuotes(QuoteType.ETF, Industry.NONE))
-            .flatMapMany { Flux.fromIterable(it) }
-            .mergeWith(marketDataService.latestQuotes.filter { it.quoteType === QuoteType.ETF }
-            .map { getQuoteDto(it) })
-
     @RequestMapping(value = ["/stream/quotes/{industry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun quotesByIndustry(@PathVariable industry: String): Flux<QuoteDto> =
         Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
@@ -67,11 +53,11 @@ class MarketDataRestController(
     @RequestMapping(value = ["/stream/quotes/{industry}/{page}"])
     fun page(@PathVariable industry: String, @PathVariable page: Int,
              @RequestParam(required = false) sortProperty: String?, @RequestParam(required = false) sortDirection: String?) =
-        getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase()), page, sortProperty, sortDirection)
+        getQuotes(Industry.valueOf(industry.toUpperCase()), page, sortProperty, sortDirection)
 
-    @get:RequestMapping(value = ["/24hOutPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    val dailyOutPerformer: Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys
+    @RequestMapping(value = ["/24hOutPerformer"])
+    fun dailyOutPerformer() =
+        appConfig.symbolNameMapping.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -79,11 +65,10 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .take(10)
             .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
-    @get:RequestMapping(value = ["/24hUnderPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    val dailyUnderPerformer: Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys
+    @RequestMapping(value = ["/24hUnderPerformer"])
+    fun dailyUnderPerformer() =
+        appConfig.symbolNameMapping.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -91,11 +76,10 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .take(10)
             .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
-    @RequestMapping(value = ["/50dOutPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun get50dOutPerformer(): Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys
+    @RequestMapping(value = ["/50dOutPerformer"])
+    fun get50dOutPerformer() =
+        appConfig.symbolNameMapping.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -103,11 +87,10 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .take(10)
             .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
-    @RequestMapping(value = ["/50dUnderPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun get50dPerformer(): Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys
+    @RequestMapping(value = ["/50dUnderPerformer"])
+    fun get50dPerformer() =
+        appConfig.symbolNameMapping.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
                 .filter { it.quoteType == QuoteType.EQUITY }
@@ -115,11 +98,10 @@ class MarketDataRestController(
                 .map{ getQuoteDto(it) }
                 .take(10)
                 .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
-    @RequestMapping(value = ["/200dOutPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun get200dOutPerformer(): Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys
+    @RequestMapping(value = ["/200dOutPerformer"])
+    fun get200dOutPerformer() =
+        appConfig.symbolNameMapping.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType === QuoteType.EQUITY }
@@ -127,11 +109,10 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .take(10)
             .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
-    @RequestMapping(value = ["/200dUnderPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun get200dUnderPerformer(): Flux<QuoteDto> =
-        Mono.just(appConfig.symbolNameMapping.keys.stream()
+    @RequestMapping(value = ["/200dUnderPerformer"])
+    fun get200dUnderPerformer() =
+        appConfig.symbolNameMapping.keys.stream()
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType === QuoteType.EQUITY }
@@ -139,7 +120,6 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .take(10)
             .toList()
-        ).flatMapMany { Flux.fromIterable(it) }
 
     private fun getQuotes(quoteType: QuoteType, industry: Industry): List<QuoteDto> =
         appConfig.symbolNameMapping.keys
@@ -149,12 +129,12 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .toList()
 
-    private fun getQuotes(quoteType: QuoteType, industry: Industry, page: Int, sortProperty: String?, sortDirection: String?): List<QuoteDto> =
+    private fun getQuotes(industry: Industry, page: Int, sortProperty: String?, sortDirection: String?): List<QuoteDto> =
         try {
             appConfig.symbolNameMapping.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
-                .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+                .filter{ appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
                 .sortedWith { a, b ->
                     when (sortProperty){
                         "name" ->

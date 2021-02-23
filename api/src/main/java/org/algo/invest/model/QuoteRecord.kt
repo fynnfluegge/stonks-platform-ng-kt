@@ -79,7 +79,11 @@ enum class QuoteType {
 
 enum class Industry {
     NONE,
+    HEALTH,
+    INDUSTRIAL,
+    MOBILITY,
     FANG,
+    TECH,
     TECH_MANUFACTURING,
     SEMICONDUCTOR,
     MEDIA,
@@ -94,7 +98,7 @@ enum class Industry {
     MATERIALS_CHEMICALS,
     COMMUNICATION,
     REALESTATE_CONSTRUCTION,
-    FINANCE_INSURANCE_HOLDING,
+    FINANCE,
     EXCHANGE,
     PHARMA,
     MEDTECH,

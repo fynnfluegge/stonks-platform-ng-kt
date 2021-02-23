@@ -8,18 +8,21 @@
 
 <mat-drawer-container>
   <mat-drawer #drawer mode="side">
-    <mat-expansion-panel [class.mat-elevation-z0]="true" dense>
-      <mat-expansion-panel-header>
-        <a mat-button [routerLink]="'/tech'" [queryParams]="{industry: 'llll'}">Tech</a>
-      </mat-expansion-panel-header>
+    <!-- <mat-expansion-panel [class.mat-elevation-z0]="true" dense>
+    <mat-expansion-panel-header>
+      <a mat-button [routerLink]="'/tech'" [queryParams]="{industry: 'llll'}">Tech</a>
+    </mat-expansion-panel-header>
       <mat-nav-list dense>
         <div>
           <a mat-button [routerLink]="'/tech'" [queryParams]="{industry: 'sfasf'}">Tech</a>
         </div>
       </mat-nav-list>
-  </mat-expansion-panel>
+    </mat-expansion-panel> -->
     <div>
       <a mat-button [routerLink]="'/overview'">Overview</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/tech'">Tech</a>
     </div>
     <div>
       <a mat-button [routerLink]="'/health'">Health</a>
