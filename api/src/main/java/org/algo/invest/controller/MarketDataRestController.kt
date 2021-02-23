@@ -1,21 +1,18 @@
 package org.algo.invest.controller
 
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.algo.invest.service.MarketDataService
 import org.algo.invest.core.AppConfig
 import org.algo.invest.dto.ChartDataDto
-import org.springframework.web.bind.annotation.RequestMapping
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
+import org.algo.invest.model.Category
 import reactor.core.publisher.Mono
 import org.algo.invest.model.QuoteType
 import org.algo.invest.model.Industry
 import java.util.stream.Collectors
 import org.algo.invest.model.QuoteRecord
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
 import yahoofinance.histquotes.HistoricalQuote
 import java.io.FileInputStream
 import java.io.BufferedReader
@@ -23,6 +20,7 @@ import java.io.InputStreamReader
 import java.lang.Exception
 import java.lang.IndexOutOfBoundsException
 import java.util.*
+import kotlin.Comparator
 import kotlin.streams.asSequence
 
 @RestController
@@ -48,17 +46,28 @@ class MarketDataRestController(
             .map { getQuoteDto(it) })
 
     @RequestMapping(value = ["/stream/quotes/{industry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun quotes(@PathVariable industry: String): Flux<QuoteDto> =
+    fun quotesByIndustry(@PathVariable industry: String): Flux<QuoteDto> =
         Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
-                .filter { it.quoteType == QuoteType.EQUITY && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
+                .filter { it.quoteType == QuoteType.EQUITY && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase()) }
+                .map { getQuoteDto(it) })
+
+    @RequestMapping(value = ["/stream/quotes/{industry}/{category}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    fun quotesByCategory(@PathVariable industry: String, @PathVariable category: String): Flux<QuoteDto> =
+        Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
+            .flatMapMany { Flux.fromIterable(it) }
+            .mergeWith(marketDataService.latestQuotes
+                .filter { it.quoteType == QuoteType.EQUITY
+                    && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
+                    && appConfig.symbolNameMapping[it.symbol]!!.category == Category.valueOf(category.toUpperCase())
                 }
                 .map { getQuoteDto(it) })
 
     @RequestMapping(value = ["/stream/quotes/{industry}/{page}"])
-    fun page(@PathVariable industry: String, @PathVariable page: Int) =
-        getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase()), page)
+    fun page(@PathVariable industry: String, @PathVariable page: Int,
+             @RequestParam(required = false) sortProperty: String?, @RequestParam(required = false) sortDirection: String?) =
+        getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase()), page, sortProperty, sortDirection)
 
     @get:RequestMapping(value = ["/24hOutPerformer"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     val dailyOutPerformer: Flux<QuoteDto> =
@@ -140,12 +149,59 @@ class MarketDataRestController(
             .map{ getQuoteDto(it) }
             .toList()
 
-    private fun getQuotes(quoteType: QuoteType, industry: Industry, page: Int): List<QuoteDto> =
+    private fun getQuotes(quoteType: QuoteType, industry: Industry, page: Int, sortProperty: String?, sortDirection: String?): List<QuoteDto> =
         try {
             appConfig.symbolNameMapping.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
                 .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+                .sortedWith { a, b ->
+                    when (sortProperty){
+                        "name" ->
+                            when {
+                                a.symbol.toString() > b.symbol.toString() -> if (sortDirection == "desc") -1 else 1
+                                a.symbol.toString() < b.symbol.toString() -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "dayChangePercent" ->
+                            when {
+                                a.regularMarketChangePercent > b.regularMarketChangePercent -> if (sortDirection == "desc") -1 else 1
+                                a.regularMarketChangePercent < b.regularMarketChangePercent -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "fiftyDayAverageChangePercent" ->
+                            when {
+                                a.fiftyDayAverageChangePercent > b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
+                                a.fiftyDayAverageChangePercent < b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "twoHundredDayAverageChangePercent" ->
+                            when {
+                                a.twoHundredDayAverageChangePercent > b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
+                                a.twoHundredDayAverageChangePercent < b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "fiftyTwoWeekLowChangePercent" ->
+                            when {
+                                a.fiftyTwoWeekLowChangePercent > b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") -1 else 1
+                                a.fiftyTwoWeekLowChangePercent < b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "fiftyTwoWeekHighChangePercent" ->
+                            when {
+                                a.fiftyTwoWeekHighChangePercent > b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") -1 else 1
+                                a.fiftyTwoWeekHighChangePercent < b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        "marketCap" ->
+                            when {
+                                a.marketCap > b.marketCap -> if (sortDirection == "desc") -1 else 1
+                                a.marketCap < b.marketCap -> if (sortDirection == "desc") 1 else -1
+                                else -> 0
+                            }
+                        else -> 0
+                    }
+                }
                 .chunked(PAGESIZE)
                 .elementAt(page)
                 .map{ getQuoteDto(it) }
@@ -226,4 +282,16 @@ class MarketDataRestController(
             quoteRecord.quoteType,
             listOf(chartData)
         )
+
+    private fun comparator(quoteRecord: QuoteRecord, sortProperty: String, sortDirection: String): Comparator<QuoteRecord> {
+//        return if (sortDirection == "desc"){
+//            when(sortProperty) {
+////                "dayChange" -> compareByDescending {  }
+//            }
+//            compareByDescending { quoteRecord.fiftyDayAverage }
+//        } else
+//            compareBy { quoteRecord.fiftyDayAverage }
+
+        return compareBy { quoteRecord.industry }
+    }
 }

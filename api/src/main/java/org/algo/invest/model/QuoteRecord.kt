@@ -69,7 +69,8 @@ data class QuoteSymbolMetaData(
     val symbol: String? = null,
     val name: String? = null,
     val wkn: String? = null,
-    val industry: Industry? = null
+    val industry: Industry? = null,
+    val category: Category? = null
 )
 
 enum class QuoteType {
@@ -115,6 +116,39 @@ enum class Industry {
     CHINA
 }
 
-enum class Subindustry {
-
+enum class Category {
+    FANG,
+    MANUFACTURING,
+    SEMICONDUCTOR,
+    MEDIA,
+    ECOMMERCE,
+    SOFTWARE,
+    SERVICES,
+    CLOUD,
+    SECURITY,
+    GAMES,
+    GASTRONOMY,
+    MATERIALS,
+    COMMUNICATION,
+    REALESTATE,
+    FINANCE,
+    PHARMA,
+    MEDTECH,
+    BIOTECH,
+    FOOD,
+    DELIVERY,
+    RETAIL,
+    CONSUMER,
+    DRESS,
+    SPORTS,
+    ENERGY,
+    RENEWABLE,
+    AKKU,
+    AEROSPACE,
+    TRAVEL,
+    AUTOMOBILE,
+    PAYMENT,
+    RENTAL,
+    RECYCLING,
+    CHINA
 }

@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { delay } from "rxjs/operators";
 import { TableAnimations} from "../../animations"
 import { ActivatedRoute } from '@angular/router';
+import { dir } from 'console';
 
 @Component({
   selector: 'base-table',
@@ -119,39 +120,33 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
+  page: number = 1
   onTableScroll(e) {
     const tableViewHeight = e.target.offsetHeight // viewport: ~500px
     const tableScrollHeight = e.target.scrollHeight // length of all table
     const scrollLocation = e.target.scrollTop; // how far user scrolled
-    
-    console.log("tableViewHeight " + tableViewHeight)
-    console.log("tableScrollHeight " + tableScrollHeight)
-    console.log("scrollLocation " + scrollLocation)
-
     const buffer = 500
     const limit = tableScrollHeight - tableViewHeight - buffer
-    if (scrollLocation > 200) {
-      console.log(limit)
-      this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/1").subscribe(message => { this.concat(message) })
+    if (scrollLocation > limit) {
+      this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/" + this.page + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
+      this.page++
     }
   }
 
+  column: String
+  direction: String
   onSort({column, direction}: SortEvent) {
 
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = ''
-      }
-    });
+    this.direction = direction
+    this.column = direction == '' ? '' : column
+    this.page = 1
 
-    if (direction === '') {
-      this.data = this.quoteRecords;
-    } else {
-      this.data = [...this.quoteRecords].sort((a, b) => {
-        const res = compare(a[column], b[column]);
-        return direction === 'asc' ? res : -res;
-      });
-    }
+    console.log(column)
+    console.log(direction)
+
+    this.quoteRecords = []
+    this. data = this.quoteRecords
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + "/0" + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
   }
 
   openSite(siteUrl: string) {
