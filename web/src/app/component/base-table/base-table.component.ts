@@ -144,7 +144,8 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   direction: String
   onSort({column, direction}: SortEvent) {
 
-    this.direction = direction
+    if (this.paging == true) {
+      this.direction = direction
     this.column = direction == '' ? '' : column
     this.page = 1
 
@@ -153,7 +154,26 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.quoteRecords = []
     this. data = this.quoteRecords
-    this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging ? "/0" : "") + "?sortProperty=" + this.column + "&sortDirection=" + this.direction).subscribe(message => { this.concat(message) })
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging ? "/0" : "")
+      + "?sortProperty=" + this.column + "&sortDirection=" + this.direction)
+      .subscribe(message => { this.concat(message) })
+    }
+    else {
+      this.headers.forEach(header => {
+        if (header.sortable !== column) {
+          header.direction = ''
+        }
+      });
+  
+      if (direction === '') {
+        this.data = this.quoteRecords;
+      } else {
+        this.data = [...this.quoteRecords].sort((a, b) => {
+          const res = compare(a[column], b[column]);
+          return direction === 'asc' ? res : -res;
+        });
+      }      
+    }    
   }
 
   openSite(siteUrl: string) {
