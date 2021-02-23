@@ -15,8 +15,8 @@
   <tbody (scroll)="onTableScroll($event)">
       <tr *ngFor="let quoteRecord of data">
         <td>
-          <a class='whitelink' (click)="copyMessage(quoteRecord.wkn)" style="cursor:pointer;" [matTooltip]="quoteRecord.name" matTooltipPosition='right'>
-            {{ quoteRecord.symbol }}
+          <a class='whitelink' (click)="copyMessage(quoteRecord.wkn)" style="cursor:pointer;" [matTooltip]="quoteRecord.symbol" matTooltipPosition='right'>
+            {{ quoteRecord.name }}
           </a>
         </td>
         <td>

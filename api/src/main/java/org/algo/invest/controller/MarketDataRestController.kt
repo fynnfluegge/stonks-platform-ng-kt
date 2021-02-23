@@ -20,7 +20,6 @@ import java.io.InputStreamReader
 import java.lang.Exception
 import java.lang.IndexOutOfBoundsException
 import java.util.*
-import kotlin.Comparator
 import kotlin.streams.asSequence
 
 @RestController
@@ -29,11 +28,11 @@ class MarketDataRestController(
     private val marketDataService: MarketDataService,
     private val appConfig: AppConfig)
 {
-    private final val PAGESIZE: Int = 20
+    private val pagesize: Int = 20
 
     @RequestMapping(value = ["/stream/quotes/{industry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun quotesByIndustry(@PathVariable industry: String): Flux<QuoteDto> =
-        Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
+        Mono.just(getQuotes(Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase()) }
@@ -41,7 +40,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/stream/quotes/{industry}/{category}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun quotesByCategory(@PathVariable industry: String, @PathVariable category: String): Flux<QuoteDto> =
-        Mono.just(getQuotes(QuoteType.EQUITY, Industry.valueOf(industry.toUpperCase())))
+        Mono.just(getQuotes(Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY
@@ -121,11 +120,11 @@ class MarketDataRestController(
             .take(10)
             .toList()
 
-    private fun getQuotes(quoteType: QuoteType, industry: Industry): List<QuoteDto> =
+    private fun getQuotes(industry: Industry): List<QuoteDto> =
         appConfig.symbolNameMapping.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
-            .filter{ it.quoteType === quoteType && appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+            .filter{ appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
             .map{ getQuoteDto(it) }
             .toList()
 
@@ -135,54 +134,8 @@ class MarketDataRestController(
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
                 .filter{ appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
-                .sortedWith { a, b ->
-                    when (sortProperty){
-                        "name" ->
-                            when {
-                                a.symbol.toString() > b.symbol.toString() -> if (sortDirection == "desc") -1 else 1
-                                a.symbol.toString() < b.symbol.toString() -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "dayChangePercent" ->
-                            when {
-                                a.regularMarketChangePercent > b.regularMarketChangePercent -> if (sortDirection == "desc") -1 else 1
-                                a.regularMarketChangePercent < b.regularMarketChangePercent -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "fiftyDayAverageChangePercent" ->
-                            when {
-                                a.fiftyDayAverageChangePercent > b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
-                                a.fiftyDayAverageChangePercent < b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "twoHundredDayAverageChangePercent" ->
-                            when {
-                                a.twoHundredDayAverageChangePercent > b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
-                                a.twoHundredDayAverageChangePercent < b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "fiftyTwoWeekLowChangePercent" ->
-                            when {
-                                a.fiftyTwoWeekLowChangePercent > b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") -1 else 1
-                                a.fiftyTwoWeekLowChangePercent < b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "fiftyTwoWeekHighChangePercent" ->
-                            when {
-                                a.fiftyTwoWeekHighChangePercent > b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") -1 else 1
-                                a.fiftyTwoWeekHighChangePercent < b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        "marketCap" ->
-                            when {
-                                a.marketCap > b.marketCap -> if (sortDirection == "desc") -1 else 1
-                                a.marketCap < b.marketCap -> if (sortDirection == "desc") 1 else -1
-                                else -> 0
-                            }
-                        else -> 0
-                    }
-                }
-                .chunked(PAGESIZE)
+                .sortedWith { a, b -> compare(a,b, sortProperty, sortDirection) }
+                .chunked(pagesize)
                 .elementAt(page)
                 .map{ getQuoteDto(it) }
                 .toList()
@@ -263,15 +216,50 @@ class MarketDataRestController(
             listOf(chartData)
         )
 
-    private fun comparator(quoteRecord: QuoteRecord, sortProperty: String, sortDirection: String): Comparator<QuoteRecord> {
-//        return if (sortDirection == "desc"){
-//            when(sortProperty) {
-////                "dayChange" -> compareByDescending {  }
-//            }
-//            compareByDescending { quoteRecord.fiftyDayAverage }
-//        } else
-//            compareBy { quoteRecord.fiftyDayAverage }
-
-        return compareBy { quoteRecord.industry }
-    }
+    private fun compare(a: QuoteRecord, b: QuoteRecord, sortProperty: String?, sortDirection: String?) =
+        when (sortProperty){
+            "name" ->
+                when {
+                    a.symbol.toString() > b.symbol.toString() -> if (sortDirection == "desc") -1 else 1
+                    a.symbol.toString() < b.symbol.toString() -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "dayChangePercent" ->
+                when {
+                    a.regularMarketChangePercent > b.regularMarketChangePercent -> if (sortDirection == "desc") -1 else 1
+                    a.regularMarketChangePercent < b.regularMarketChangePercent -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "fiftyDayAverageChangePercent" ->
+                when {
+                    a.fiftyDayAverageChangePercent > b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
+                    a.fiftyDayAverageChangePercent < b.fiftyDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "twoHundredDayAverageChangePercent" ->
+                when {
+                    a.twoHundredDayAverageChangePercent > b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") -1 else 1
+                    a.twoHundredDayAverageChangePercent < b.twoHundredDayAverageChangePercent -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "fiftyTwoWeekLowChangePercent" ->
+                when {
+                    a.fiftyTwoWeekLowChangePercent > b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") -1 else 1
+                    a.fiftyTwoWeekLowChangePercent < b.fiftyTwoWeekLowChangePercent -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "fiftyTwoWeekHighChangePercent" ->
+                when {
+                    a.fiftyTwoWeekHighChangePercent > b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") -1 else 1
+                    a.fiftyTwoWeekHighChangePercent < b.fiftyTwoWeekHighChangePercent -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            "marketCap" ->
+                when {
+                    a.marketCap > b.marketCap -> if (sortDirection == "desc") -1 else 1
+                    a.marketCap < b.marketCap -> if (sortDirection == "desc") 1 else -1
+                    else -> 0
+                }
+            else -> 0
+        }
 }
