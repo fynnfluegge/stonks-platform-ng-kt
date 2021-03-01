@@ -7,10 +7,10 @@
       <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">200-Ø</th>
       <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-Low</th>
       <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-High</th>
-      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer">Cap.</th>
+      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;">Cap.</th>
       <th scope="col">52-ST</th>
       <th scope="col">Chart</th>
-      <th scope="col">Industry</th>
+      <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer">Industry</th>
     </tr>
   </thead>
   <tbody (scroll)="onTableScroll($event)">
@@ -64,9 +64,9 @@
             {{ (quoteRecord.fiftyTwoWeekHighChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
-        <td>
+        <td style="width:72px;">
           {{ quoteRecord.marketCap === 0 ? ''
-          : (quoteRecord.marketCap / 1000000000).toPrecision(4) + ' B'}}
+          : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
         </td>
         <td>
           <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"

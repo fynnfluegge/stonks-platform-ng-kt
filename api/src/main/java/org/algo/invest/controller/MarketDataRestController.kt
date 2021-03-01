@@ -195,7 +195,7 @@ class MarketDataRestController(
 
     private fun quoteDto(quoteRecord: QuoteRecord, chartData: ChartDataDto) =
         QuoteDto(
-            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).subIndustry.toString(),
+            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).subIndustry?.toString() ?: "",
             quoteRecord.symbol,
             appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).name,
             appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).wkn,
