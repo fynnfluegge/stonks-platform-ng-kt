@@ -70,7 +70,7 @@ data class QuoteSymbolMetaData(
     val name: String? = null,
     val wkn: String? = null,
     val industry: Industry? = null,
-    val category: Category? = null
+    val subIndustry: SubIndustry? = null
 )
 
 enum class QuoteType {
@@ -91,7 +91,7 @@ enum class Industry {
     OTHER
 }
 
-enum class Category {
+enum class SubIndustry {
     ETF,
     FANG,
     MANUFACTURING,

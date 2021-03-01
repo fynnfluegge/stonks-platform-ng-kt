@@ -210,7 +210,7 @@ export interface DialogData {
 export class DialogOverviewExampleDialogComponent {
   apiURL = environment.apiUrl;  
 
-  quoteRecord: QuoteRecord = { wkn: '', symbol: '', country: '', currency: '', dayChange: 0,
+  quoteRecord: QuoteRecord = { subIndustry: '', wkn: '', symbol: '', country: '', currency: '', dayChange: 0,
     dayChangePercent: 0, exchange: '', fiftyDayAverage: 0, fiftyDayAverageChangePercent: 0, fiftyTwoWeekHigh: 0,
     fiftyTwoWeekHighChangePercent: 0, fiftyTwoWeekLow: 0, fiftyTwoWeekLowChangePercent: 0, marketCap: 0,
     name: '', price: 0, quoteType: '', twoHundredDayAverage: 0, twoHundredDayAverageChangePercent: 0,

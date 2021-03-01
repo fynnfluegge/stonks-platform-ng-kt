@@ -5,7 +5,7 @@ import org.algo.invest.core.AppConfig
 import org.algo.invest.dto.ChartDataDto
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
-import org.algo.invest.model.Category
+import org.algo.invest.model.SubIndustry
 import reactor.core.publisher.Mono
 import org.algo.invest.model.QuoteType
 import org.algo.invest.model.Industry
@@ -45,7 +45,7 @@ class MarketDataRestController(
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY
                     && appConfig.quoteSymbolMetaData[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
-                    && appConfig.quoteSymbolMetaData[it.symbol]!!.category == Category.valueOf(category.toUpperCase())
+                    && appConfig.quoteSymbolMetaData[it.symbol]!!.subIndustry == SubIndustry.valueOf(category.toUpperCase())
                 }
                 .map { getQuoteDto(it) })
 
@@ -195,7 +195,7 @@ class MarketDataRestController(
 
     private fun quoteDto(quoteRecord: QuoteRecord, chartData: ChartDataDto) =
         QuoteDto(
-            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).category,
+            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).subIndustry.toString(),
             quoteRecord.symbol,
             appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).name,
             appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).wkn,

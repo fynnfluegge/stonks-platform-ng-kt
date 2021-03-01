@@ -10,6 +10,7 @@
       <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer">Cap.</th>
       <th scope="col">52-ST</th>
       <th scope="col">Chart</th>
+      <th scope="col">Industry</th>
     </tr>
   </thead>
   <tbody (scroll)="onTableScroll($event)">
@@ -96,6 +97,11 @@
                   [colors]="redlineChartColors">
               </canvas>
             </div>
+          </div>
+        </td>
+        <td>
+          <div>
+            {{ quoteRecord.subIndustry }}
           </div>
         </td>
       </tr>

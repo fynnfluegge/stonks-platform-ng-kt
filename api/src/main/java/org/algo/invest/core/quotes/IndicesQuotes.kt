@@ -1,6 +1,6 @@
 package org.algo.invest.core.quotes
 
-import org.algo.invest.model.Category
+import org.algo.invest.model.SubIndustry
 import org.algo.invest.model.QuoteSymbolMetaData
 import java.util.LinkedHashMap
 import org.algo.invest.model.Industry
@@ -34,13 +34,13 @@ object IndicesQuotes {
             symbolNameMapping["^HSI"] = QuoteSymbolMetaData("^HSI", "Hang Seng HK", "", Industry.INDICES)
             symbolNameMapping["^HSCE"] = QuoteSymbolMetaData("^HSCE", "Hang Seng China", "", Industry.INDICES)
 
-            symbolNameMapping["EUNL.DE"] = QuoteSymbolMetaData("EUNL.DE", "iShares Core MSCI World", "A0RPWH", Industry.INDICES, Category.ETF)
-            symbolNameMapping["L0CK.DE"] = QuoteSymbolMetaData("L0CK.DE", "iShares Digital Security", "A2JMGE", Industry.INDICES, Category.ETF)
-            symbolNameMapping["IQQ6.DE"] = QuoteSymbolMetaData("IQQ6.DE", "iShares Developed Markets Property Yield", "A0LEW8", Industry.INDICES, Category.ETF)
-            symbolNameMapping["2B78.DE"] = QuoteSymbolMetaData("2B78.DE", "iShares Healthcare Innovation", "A2ANH2", Industry.INDICES, Category.ETF)
-            symbolNameMapping["IBB"] = QuoteSymbolMetaData("IBB", "iShares Nasdaq Biotechnology", "A2DWAW", Industry.INDICES, Category.ETF)
-            symbolNameMapping["ICLN"] = QuoteSymbolMetaData("ICLN", "iShares Global Clean Energy", "", Industry.INDICES, Category.ETF)
-            symbolNameMapping["ESPO"] = QuoteSymbolMetaData("ESPO", "VanEck Vectors Video Gaming and eSports", "", Industry.INDICES, Category.ETF)
+            symbolNameMapping["EUNL.DE"] = QuoteSymbolMetaData("EUNL.DE", "iShares Core MSCI World", "A0RPWH", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["L0CK.DE"] = QuoteSymbolMetaData("L0CK.DE", "iShares Digital Security", "A2JMGE", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["IQQ6.DE"] = QuoteSymbolMetaData("IQQ6.DE", "iShares Developed Markets Property Yield", "A0LEW8", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["2B78.DE"] = QuoteSymbolMetaData("2B78.DE", "iShares Healthcare Innovation", "A2ANH2", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["IBB"] = QuoteSymbolMetaData("IBB", "iShares Nasdaq Biotechnology", "A2DWAW", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["ICLN"] = QuoteSymbolMetaData("ICLN", "iShares Global Clean Energy", "", Industry.INDICES, SubIndustry.ETF)
+            symbolNameMapping["ESPO"] = QuoteSymbolMetaData("ESPO", "VanEck Vectors Video Gaming and eSports", "", Industry.INDICES, SubIndustry.ETF)
 
             return symbolNameMapping
         }

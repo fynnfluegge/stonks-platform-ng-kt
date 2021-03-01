@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'mobility', component: MobilityComponent },
   { path: 'media', component: MediaComponent },
   { path: 'food', component: FoodComponent },
-  { path: 'china', component: OtherComponent },
+  { path: 'misc', component: OtherComponent },
   { path: 'performance', component: PerformanceComponent }
 ];
 

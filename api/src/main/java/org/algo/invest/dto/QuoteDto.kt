@@ -1,10 +1,9 @@
 package org.algo.invest.dto
 
-import org.algo.invest.model.Category
 import org.algo.invest.model.QuoteType
 
 data class QuoteDto (
-    val category: Category? = null,
+    val subIndustry: String? = null,
     val symbol: String? = null,
     val name: String? = null,
     val wkn: String? = null,
