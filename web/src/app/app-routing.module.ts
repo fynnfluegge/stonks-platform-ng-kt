@@ -15,7 +15,7 @@ import { OtherComponent } from './component/misc/misc.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
-  { path: 'overview', component: OverviewComponent },
+  { path: 'indices', component: OverviewComponent },
   { path: 'tech', component: TechComponent },
   { path: 'health', component: HealthComponent },
   { path: 'finance', component: FinanceComponent },

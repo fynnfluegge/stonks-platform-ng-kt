@@ -126,7 +126,7 @@ public class MarketDataService {
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
 
 		try {
-			for (String symbol : appConfig.getSymbolNameMapping().keySet()) {
+			for (String symbol : appConfig.getQuoteSymbolMetaData().keySet()) {
 				result.put(symbol, getHistory(symbol, cal));
 			}
 		} catch (Exception e) {

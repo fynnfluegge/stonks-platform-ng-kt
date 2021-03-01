@@ -35,7 +35,7 @@ class MarketDataRestController(
         Mono.just(getQuotes(Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
-                .filter { appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase()) }
+                .filter { appConfig.quoteSymbolMetaData[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase()) }
                 .map { getQuoteDto(it) })
 
     @RequestMapping(value = ["/stream/quotes/{industry}/{category}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
@@ -44,8 +44,8 @@ class MarketDataRestController(
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY
-                    && appConfig.symbolNameMapping[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
-                    && appConfig.symbolNameMapping[it.symbol]!!.category == Category.valueOf(category.toUpperCase())
+                    && appConfig.quoteSymbolMetaData[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
+                    && appConfig.quoteSymbolMetaData[it.symbol]!!.category == Category.valueOf(category.toUpperCase())
                 }
                 .map { getQuoteDto(it) })
 
@@ -56,7 +56,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/24hOutPerformer"])
     fun dailyOutPerformer() =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -67,7 +67,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/24hUnderPerformer"])
     fun dailyUnderPerformer() =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -78,7 +78,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/50dOutPerformer"])
     fun get50dOutPerformer() =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType == QuoteType.EQUITY }
@@ -89,7 +89,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/50dUnderPerformer"])
     fun get50dPerformer() =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
                 .filter { it.quoteType == QuoteType.EQUITY }
@@ -100,7 +100,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/200dOutPerformer"])
     fun get200dOutPerformer() =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType === QuoteType.EQUITY }
@@ -111,7 +111,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/200dUnderPerformer"])
     fun get200dUnderPerformer() =
-        appConfig.symbolNameMapping.keys.stream()
+        appConfig.quoteSymbolMetaData.keys.stream()
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType === QuoteType.EQUITY }
@@ -121,19 +121,19 @@ class MarketDataRestController(
             .toList()
 
     private fun getQuotes(industry: Industry): List<QuoteDto> =
-        appConfig.symbolNameMapping.keys
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
-            .filter{ appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+            .filter{ appConfig.quoteSymbolMetaData.getValue(it.symbol!!).industry === industry }
             .map{ getQuoteDto(it) }
             .toList()
 
     private fun getQuotes(industry: Industry, page: Int, sortProperty: String?, sortDirection: String?): List<QuoteDto> =
         try {
-            appConfig.symbolNameMapping.keys
+            appConfig.quoteSymbolMetaData.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
-                .filter{ appConfig.symbolNameMapping.getValue(it.symbol!!).industry === industry }
+                .filter{ appConfig.quoteSymbolMetaData.getValue(it.symbol!!).industry === industry }
                 .sortedWith { a, b -> compare(a,b, sortProperty, sortDirection) }
                 .chunked(pagesize)
                 .elementAt(page)
@@ -195,9 +195,10 @@ class MarketDataRestController(
 
     private fun quoteDto(quoteRecord: QuoteRecord, chartData: ChartDataDto) =
         QuoteDto(
+            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).category,
             quoteRecord.symbol,
-            appConfig.symbolNameMapping.getValue(quoteRecord.symbol!!).name,
-            appConfig.symbolNameMapping.getValue(quoteRecord.symbol).wkn,
+            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).name,
+            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).wkn,
             quoteRecord.regularMarketPrice.toFloat(),
             quoteRecord.regularMarketChange,
             quoteRecord.regularMarketChangePercent,

@@ -12,7 +12,7 @@ import org.algo.invest.core.quotes.IndustryQuotes
 import org.algo.invest.core.quotes.MobilityQuotes
 import org.algo.invest.core.quotes.EnergyQuotes
 import org.algo.invest.core.quotes.MediaQuotes
-import org.algo.invest.core.quotes.ChinaQuotes
+import org.algo.invest.core.quotes.MiscQuotes
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -21,26 +21,26 @@ class AppConfig {
 
     val yahooFinanceQuoteUrl = "https://query1.finance.yahoo.com/v7/finance/quote"
     val allQuoteSymbolsUrl: String
-    val symbolNameMapping: MutableMap<String, QuoteSymbolMetaData> = LinkedHashMap()
+    val quoteSymbolMetaData: MutableMap<String, QuoteSymbolMetaData> = LinkedHashMap()
     val quoteSymbolUrls: Map<Industry, String> = EnumMap(Industry::class.java)
 
     private fun addSymbolNameMappings() {
-        symbolNameMapping.putAll(IndicesQuotes.quotes)
-        symbolNameMapping.putAll(TechQuotes.quotes)
-        symbolNameMapping.putAll(HealthQuotes.quotes)
-        symbolNameMapping.putAll(FoodQuotes.quotes)
-        symbolNameMapping.putAll(RetailQuotes.quotes)
-        symbolNameMapping.putAll(FinanceQuotes.quotes)
-        symbolNameMapping.putAll(IndustryQuotes.quotes)
-        symbolNameMapping.putAll(MobilityQuotes.quotes)
-        symbolNameMapping.putAll(EnergyQuotes.quotes)
-        symbolNameMapping.putAll(MediaQuotes.quotes)
-        symbolNameMapping.putAll(ChinaQuotes.quotes)
+        quoteSymbolMetaData.putAll(IndicesQuotes.quotes)
+        quoteSymbolMetaData.putAll(TechQuotes.quotes)
+        quoteSymbolMetaData.putAll(HealthQuotes.quotes)
+        quoteSymbolMetaData.putAll(FoodQuotes.quotes)
+        quoteSymbolMetaData.putAll(RetailQuotes.quotes)
+        quoteSymbolMetaData.putAll(FinanceQuotes.quotes)
+        quoteSymbolMetaData.putAll(IndustryQuotes.quotes)
+        quoteSymbolMetaData.putAll(MobilityQuotes.quotes)
+        quoteSymbolMetaData.putAll(EnergyQuotes.quotes)
+        quoteSymbolMetaData.putAll(MediaQuotes.quotes)
+        quoteSymbolMetaData.putAll(MiscQuotes.quotes)
     }
 
     init {
         System.setProperty("yahoofinance.histquotes2.enabled", "false")
         addSymbolNameMappings()
-        allQuoteSymbolsUrl = java.lang.String.join(",", symbolNameMapping.keys)
+        allQuoteSymbolsUrl = java.lang.String.join(",", quoteSymbolMetaData.keys)
     }
 }
