@@ -30,6 +30,7 @@ import { MediaComponent } from './component/media/media.component';
 import { EnergyComponent } from './component/energy/energy.component';
 import { PerformanceComponent } from './component/performance/performance.component';
 import { OtherComponent } from './component/misc/misc.component';
+import { WatchlistComponent } from './component/misc/watchlist.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { OtherComponent } from './component/misc/misc.component';
     EnergyComponent,
     PerformanceComponent,
     OtherComponent,
+    WatchlistComponent
   ],
   imports: [
     FormsModule,

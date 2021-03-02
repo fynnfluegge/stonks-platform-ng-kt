@@ -2,6 +2,7 @@ package org.algo.invest.controller
 
 import org.algo.invest.service.MarketDataService
 import org.algo.invest.core.AppConfig
+import org.algo.invest.core.watchlistQuotes
 import org.algo.invest.dto.ChartDataDto
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
@@ -263,4 +264,20 @@ class MarketDataRestController(
                 }
             else -> 0
         }
+
+
+    @RequestMapping(value = ["/stream/quotes/watchlist/Ae8m0X1hj§"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    fun watchlist(): Flux<QuoteDto> =
+        Mono.just(
+            appConfig.quoteSymbolMetaData.keys
+                .asSequence()
+                .map { marketDataService.realtimeStockRecords.getValue(it) }
+                .filter{ watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
+                .map{ getQuoteDto(it) }
+                .toList()
+        )
+        .flatMapMany { Flux.fromIterable(it) }
+        .mergeWith(marketDataService.latestQuotes
+            .filter { watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
+            .map { getQuoteDto(it) })
 }

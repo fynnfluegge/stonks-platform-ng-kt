@@ -1,14 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-energy',
   templateUrl: './energy.component.html'
 })
-export class EnergyComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class EnergyComponent {
 }
