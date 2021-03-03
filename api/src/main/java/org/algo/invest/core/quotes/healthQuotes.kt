@@ -52,6 +52,7 @@ val healthQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["BIO"] = QuoteSymbolMetaData("BIO", "Bio-Rad Laboratories", "865406", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["ASMB"] = QuoteSymbolMetaData("ASMB", "Assembly Biosciences", "A117S1", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["CRSP"] = QuoteSymbolMetaData("CRSP", "CRISPR Therapeutics", "A2AT0Z", Industry.HEALTH, SubIndustry.BIOTECH)
+        symbolNameMapping["NTLA"] = QuoteSymbolMetaData("NTLA", "Intellia", "A2AG6H", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["22UA.F"] = QuoteSymbolMetaData("22UA.F", "Biontech", "A2PSR2", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["MRNA"] = QuoteSymbolMetaData("MRNA", "Moderna", "A2N9D9", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["CVAC"] = QuoteSymbolMetaData("CVAC", "Curevac", "A2P71U", Industry.HEALTH, SubIndustry.BIOTECH)

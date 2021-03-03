@@ -266,18 +266,12 @@ class MarketDataRestController(
         }
 
 
-    @RequestMapping(value = ["/stream/quotes/watchlist/Ae8m0X1hj§"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun watchlist(): Flux<QuoteDto> =
-        Mono.just(
-            appConfig.quoteSymbolMetaData.keys
-                .asSequence()
-                .map { marketDataService.realtimeStockRecords.getValue(it) }
-                .filter{ watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
-                .map{ getQuoteDto(it) }
-                .toList()
-        )
-        .flatMapMany { Flux.fromIterable(it) }
-        .mergeWith(marketDataService.latestQuotes
-            .filter { watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
-            .map { getQuoteDto(it) })
+    @RequestMapping(value = ["/stream/quotes/watchlist/Ae8m0X1h"])
+    fun watchlist() =
+        appConfig.quoteSymbolMetaData.keys
+            .asSequence()
+            .map { marketDataService.realtimeStockRecords.getValue(it) }
+            .filter{ watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
+            .map{ getQuoteDto(it) }
+            .toList()
 }
