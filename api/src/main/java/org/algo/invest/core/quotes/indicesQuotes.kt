@@ -38,9 +38,13 @@ val indicesQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["ICGA.DE"] = QuoteSymbolMetaData("ICGA.DE", "iShares MSCI China UCITS", "A2PGQN", Industry.INDICES, SubIndustry.ETF)
         symbolNameMapping["L0CK.DE"] = QuoteSymbolMetaData("L0CK.DE", "iShares Digital Security", "A2JMGE", Industry.INDICES, SubIndustry.ETF)
         symbolNameMapping["2B78.DE"] = QuoteSymbolMetaData("2B78.DE", "iShares Healthcare Innovation", "A2ANH2", Industry.INDICES, SubIndustry.ETF)
+        symbolNameMapping["IEVD.DE"] = QuoteSymbolMetaData("IEVD.DE", "iShares Electric Vehicles", "A2N9FP", Industry.INDICES, SubIndustry.ETF)
+        symbolNameMapping["IEVD.DE"] = QuoteSymbolMetaData("IEVD.DE", "iShares Expanded Tech-Software", "A2N9FP", Industry.INDICES, SubIndustry.ETF)
         symbolNameMapping["IBB"] = QuoteSymbolMetaData("IBB", "iShares Nasdaq Biotechnology", "A2DWAW", Industry.INDICES, SubIndustry.ETF)
-        symbolNameMapping["ICLN"] = QuoteSymbolMetaData("ICLN", "iShares Global Clean Energy", "", Industry.INDICES, SubIndustry.ETF)
+        symbolNameMapping["IQQH.DE"] = QuoteSymbolMetaData("IQQH.DE", "iShares Global Clean Energy", "", Industry.INDICES, SubIndustry.ETF)
         symbolNameMapping["ESP0.DE"] = QuoteSymbolMetaData("ESP0.DE", "VanEck Vectors Video Gaming and eSports", "", Industry.INDICES, SubIndustry.ETF)
+        symbolNameMapping["WTEJ.DE"] = QuoteSymbolMetaData("WTEJ.DE", "WisdomTree Cloud", "", Industry.INDICES, SubIndustry.ETF)
+        symbolNameMapping["WTI2.DE"] = QuoteSymbolMetaData("WTI2.DE", "WisdomTree AI", "", Industry.INDICES, SubIndustry.ETF)
 
         return symbolNameMapping
     }

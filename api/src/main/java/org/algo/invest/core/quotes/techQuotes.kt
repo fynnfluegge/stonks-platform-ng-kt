@@ -94,7 +94,7 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["PCRFY"] = QuoteSymbolMetaData("PCRFY", "Panasonic", "853666", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["IRBT"] = QuoteSymbolMetaData("IRBT", "iRobot", "A0F5CC", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["GRMN"] = QuoteSymbolMetaData("GRMN", "Garmin", "A1C06B", Industry.TECH, SubIndustry.MANUFACTURING)
-        symbolNameMapping["HMI"] = QuoteSymbolMetaData("HMI", "Huami", "A2JC7A", Industry.TECH, SubIndustry.MANUFACTURING)
+        symbolNameMapping["ZEPP"] = QuoteSymbolMetaData("ZEPP", "Zepp", "A2JC7A", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["BSL.DE"] = QuoteSymbolMetaData("BSL.DE", "Basler", "510200", Industry.TECH, SubIndustry.MANUFACTURING)
 
         return symbolNameMapping

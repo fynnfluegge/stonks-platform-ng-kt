@@ -51,15 +51,16 @@ val healthQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["NVTA"] = QuoteSymbolMetaData("NVTA", "Invitae", "A14NKG", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["BIO"] = QuoteSymbolMetaData("BIO", "Bio-Rad Laboratories", "865406", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["ASMB"] = QuoteSymbolMetaData("ASMB", "Assembly Biosciences", "A117S1", Industry.HEALTH, SubIndustry.BIOTECH)
+        symbolNameMapping["EDIT"] = QuoteSymbolMetaData("EDIT", "Editas", "A2AC4K", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["CRSP"] = QuoteSymbolMetaData("CRSP", "CRISPR Therapeutics", "A2AT0Z", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["NTLA"] = QuoteSymbolMetaData("NTLA", "Intellia", "A2AG6H", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["22UA.F"] = QuoteSymbolMetaData("22UA.F", "Biontech", "A2PSR2", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["MRNA"] = QuoteSymbolMetaData("MRNA", "Moderna", "A2N9D9", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["CVAC"] = QuoteSymbolMetaData("CVAC", "Curevac", "A2P71U", Industry.HEALTH, SubIndustry.BIOTECH)
-        symbolNameMapping["EDIT"] = QuoteSymbolMetaData("EDIT", "Editas", "A2AC4K", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["CGEN"] = QuoteSymbolMetaData("CGEN", "Compugen", "553001", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["2269.HK"] = QuoteSymbolMetaData("2269.HK", "Wuxi Biologics", "A2QJCN", Industry.HEALTH, SubIndustry.BIOTECH)
         symbolNameMapping["DNLI"] = QuoteSymbolMetaData("DNLI", "Denali", "A2H9G8", Industry.HEALTH, SubIndustry.BIOTECH)
+        symbolNameMapping["CNTG"] = QuoteSymbolMetaData("CNTG", "Centogene", "A2PUCU", Industry.HEALTH, SubIndustry.BIOTECH)
 
         return symbolNameMapping
     }
