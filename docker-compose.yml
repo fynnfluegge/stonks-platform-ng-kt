@@ -2,7 +2,8 @@ version: "3.9"
 services:
   web:
     build: ./web/.
-    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:${IMAGE_TAG}
+    precise-data-307722
+    image: eu.gcr.io/precise-data-307722/web:${IMAGE_TAG}
   api:
     build: ./api/.
-    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:${IMAGE_TAG}
+    image: eu.gcr.io/precise-data-307722/api:${IMAGE_TAG}
