@@ -5,7 +5,7 @@ RUN mvn -f /home/app/pom.xml clean install
 
 FROM openjdk:14-jdk-alpine as api
 VOLUME /tmp
-COPY --from=build /home/app/target/algo-invest-core-0.0.1.jar target/app.jar
+COPY --from=build /home/app/target/algo-invest-core-0.0.1.jar ./api/target/app.jar
 ENTRYPOINT ["java","-jar","target/app.jar"]
 
 FROM node:14 AS ui-build
@@ -17,8 +17,8 @@ FROM node:14 AS server-build as web
 
 WORKDIR /root/
 
-COPY --from=ui-build /usr/src/app/dist ./dist
-COPY --from=ui-build /usr/src/app/build ./build
+COPY --from=ui-build /usr/src/app/dist ./web/dist
+COPY --from=ui-build /usr/src/app/build ./web/build
 COPY package*.json ./
 RUN npm install
 COPY server.js ./
