@@ -3,7 +3,7 @@ COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean install
 
-FROM openjdk:14-jdk-alpine as api
+FROM openjdk:14-jdk-alpine AS api
 VOLUME /tmp
 COPY --from=build /home/app/target/algo-invest-core-0.0.1.jar ./api/target/app.jar
 ENTRYPOINT ["java","-jar","target/app.jar"]
@@ -13,7 +13,7 @@ WORKDIR /usr/src/app
 COPY . .
 RUN npm install && npm install @angular/cli && npm install @angular-devkit/build-optimizer && npm install express-static-gzip && npm install compression --save && npm install gzipper -g && npm run build --prod --aot --build-optimizer && gzipper compress ./build ./dist
 
-FROM node:14 AS server-build as web
+FROM node:14 AS web
 
 WORKDIR /root/
 
