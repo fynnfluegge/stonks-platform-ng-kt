@@ -40,4 +40,4 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t eu.gcr.io/${{secrets.GCPID}}/monolith:${IMAGE_TAG} .
-          docker push
+          docker push eu.gcr.io/${{secrets.GCPID}}/monolith:${IMAGE_TAG}
