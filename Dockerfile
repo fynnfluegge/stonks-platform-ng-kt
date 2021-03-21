@@ -19,9 +19,9 @@ WORKDIR /root/
 
 COPY --from=ui-build /usr/src/app/dist dist
 COPY --from=ui-build /usr/src/app/build build
-COPY package*.json .
+COPY web/package*.json .
 RUN npm install
-COPY server.js .
+COPY web/server.js .
 
 EXPOSE 3000
 
