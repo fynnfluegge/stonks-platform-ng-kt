@@ -38,6 +38,7 @@ jobs:
       - name: Docker build and push
         env:
           IMAGE_TAG: ${{ github.sha }}
+          GCPID: ${{ secrets.GCPID }}
         run: |
           docker-compose build
           docker-compose push
