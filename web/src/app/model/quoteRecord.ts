@@ -1,3 +1,7 @@
+import {
+  ApexAxisChartSeries,
+} from "ng-apexcharts";
+
 export interface QuoteRecord {
   symbol: string;
   wkn: string;
@@ -22,6 +26,8 @@ export interface QuoteRecord {
   chartData: [
     { data: HistoricalDayCandle[] }
   ];
+  historicalMarketClose:[ { data: number[] } ];
+  apexCandleStickChartSeries: ApexAxisChartSeries
 }
 
 export interface HistoricalDayCandle {

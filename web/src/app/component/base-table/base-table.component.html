@@ -9,7 +9,7 @@
       <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-High</th>
       <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;">Cap.</th>
       <th scope="col" style="width:72px;">52W</th>
-      <th scope="col">10dChart</th>
+      <th scope="col" style="cursor:pointer;width:110px;">10dChart</th>
       <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer">Industry</th>
     </tr>
   </thead>
@@ -73,34 +73,31 @@
             step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
           </mat-slider>
         </td>
-        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;">
-          <div *ngIf="quoteRecord.chartData[0].data != null">
-            <div *ngIf="quoteRecord.chartData[0].data != null">
-              <div *ngIf="quoteRecord.chartData[0].data[0] <= quoteRecord.chartData[0].data[9]">
+        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;width:110px;padding:0px">
+              <!-- <div *ngIf="quoteRecord.chartData[0].data[0].close <= quoteRecord.chartData[0].data[9].close">
                 <canvas
                     baseChart
                     [chartType]="'line'"
-                    [datasets]="quoteRecord.chartData"
+                    [datasets]="quoteRecord.historicalMarketClose"
                     [options]="chartOptions"
                     [labels]="chartLabels"
                     [legend]="false"
                     [colors]="greenlineChartColors">
                 </canvas>
               </div>
-              <div *ngIf="quoteRecord.chartData[0].data[0] > quoteRecord.chartData[0].data[9]">
+              <div *ngIf="quoteRecord.chartData[0].data[0].close > quoteRecord.chartData[0].data[9].close">
                 <canvas
                     baseChart
                     [chartType]="'line'"
-                    [datasets]="quoteRecord.chartData"
+                    [datasets]="quoteRecord.historicalMarketClose"
                     [options]="chartOptions"
                     [labels]="chartLabels"
                     [legend]="false"
                     [colors]="redlineChartColors">
                 </canvas>
-              </div>
-            </div>
-              <!-- <apx-chart
-                [series]="apexChartOptions.series"
+              </div> -->
+              <apx-chart
+                [series]="quoteRecord.apexCandleStickChartSeries"
                 [chart]="apexChartOptions.chart"
                 [xaxis]="apexChartOptions.xaxis"
                 [yaxis]="apexChartOptions.yaxis"
@@ -108,8 +105,7 @@
                 [tooltip]="apexChartOptions.tooltip"
                 [states]="apexChartOptions.states"
                 [grid]="apexChartOptions.grid">
-              </apx-chart> -->
-            </div>
+              </apx-chart>
         </td>
         <td>
           <div>
