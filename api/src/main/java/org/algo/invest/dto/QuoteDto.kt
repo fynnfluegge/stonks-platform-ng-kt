@@ -26,5 +26,12 @@ data class QuoteDto (
 )
 
 data class ChartDataDto (
-    val data: MutableList<Float>? = null
+    val data: MutableList<HistoricalDayCandle>? = null
+)
+
+data class HistoricalDayCandle (
+    var open: Float,
+    val low: Float,
+    val high: Float,
+    val close: Float
 )

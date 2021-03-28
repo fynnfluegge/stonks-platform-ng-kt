@@ -31,6 +31,7 @@ import { EnergyComponent } from './component/energy/energy.component';
 import { PerformanceComponent } from './component/performance/performance.component';
 import { OtherComponent } from './component/misc/misc.component';
 import { WatchlistComponent } from './component/misc/watchlist.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { WatchlistComponent } from './component/misc/watchlist.component';
     MatSliderModule,
     ChartsModule,
     PlatformModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

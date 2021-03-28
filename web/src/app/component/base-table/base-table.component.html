@@ -8,8 +8,8 @@
       <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-Low</th>
       <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-High</th>
       <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;">Cap.</th>
-      <th scope="col">52-ST</th>
-      <th scope="col">Chart</th>
+      <th scope="col" style="width:72px;">52W</th>
+      <th scope="col">10dChart</th>
       <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer">Industry</th>
     </tr>
   </thead>
@@ -68,36 +68,48 @@
           {{ quoteRecord.marketCap === 0 ? ''
           : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
         </td>
-        <td>
+        <td style="width:72px;padding:0px 8px 8px 0px;">
           <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
             step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
           </mat-slider>
         </td>
-        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer" matTooltip="Open 200d Chart" matTooltipPosition='right'>
+        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;">
           <div *ngIf="quoteRecord.chartData[0].data != null">
-            <div *ngIf="quoteRecord.chartData[0].data[0] <= quoteRecord.chartData[0].data[9]">
-              <canvas
-                  baseChart
-                  [chartType]="'line'"
-                  [datasets]="quoteRecord.chartData"
-                  [options]="chartOptions"
-                  [labels]="chartLabels"
-                  [legend]="false"
-                  [colors]="greenlineChartColors">
-              </canvas>
+            <div *ngIf="quoteRecord.chartData[0].data != null">
+              <div *ngIf="quoteRecord.chartData[0].data[0] <= quoteRecord.chartData[0].data[9]">
+                <canvas
+                    baseChart
+                    [chartType]="'line'"
+                    [datasets]="quoteRecord.chartData"
+                    [options]="chartOptions"
+                    [labels]="chartLabels"
+                    [legend]="false"
+                    [colors]="greenlineChartColors">
+                </canvas>
+              </div>
+              <div *ngIf="quoteRecord.chartData[0].data[0] > quoteRecord.chartData[0].data[9]">
+                <canvas
+                    baseChart
+                    [chartType]="'line'"
+                    [datasets]="quoteRecord.chartData"
+                    [options]="chartOptions"
+                    [labels]="chartLabels"
+                    [legend]="false"
+                    [colors]="redlineChartColors">
+                </canvas>
+              </div>
             </div>
-            <div *ngIf="quoteRecord.chartData[0].data[0] > quoteRecord.chartData[0].data[9]">
-              <canvas
-                  baseChart
-                  [chartType]="'line'"
-                  [datasets]="quoteRecord.chartData"
-                  [options]="chartOptions"
-                  [labels]="chartLabels"
-                  [legend]="false"
-                  [colors]="redlineChartColors">
-              </canvas>
+              <!-- <apx-chart
+                [series]="apexChartOptions.series"
+                [chart]="apexChartOptions.chart"
+                [xaxis]="apexChartOptions.xaxis"
+                [yaxis]="apexChartOptions.yaxis"
+                [title]="apexChartOptions.title"
+                [tooltip]="apexChartOptions.tooltip"
+                [states]="apexChartOptions.states"
+                [grid]="apexChartOptions.grid">
+              </apx-chart> -->
             </div>
-          </div>
         </td>
         <td>
           <div>

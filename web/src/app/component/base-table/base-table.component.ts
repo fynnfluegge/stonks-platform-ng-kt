@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input, ViewChild } from '@angular/core';
 import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
 import { Color } from 'ng2-charts';
@@ -12,6 +12,29 @@ import { TableAnimations} from "../../animations"
 import { ActivatedRoute } from '@angular/router';
 import { delay } from "rxjs/operators";
 
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexYAxis,
+  ApexXAxis,
+  ApexTitleSubtitle,
+  ApexTooltip,
+  ApexStates,
+  ApexGrid
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  tooltip: ApexTooltip;
+  states: ApexStates;
+  grid: ApexGrid;
+};
+
 @Component({
   selector: 'base-table',
   templateUrl: './base-table.component.html',
@@ -23,6 +46,9 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() paging: boolean = true
   @Input() stream: boolean = true
   apiURL = environment.apiUrl;
+
+  @ViewChild("chart") chart: ChartComponent;
+  public apexChartOptions: Partial<ChartOptions>;
 
   @ViewChildren(NgbdSortableHeaderDirective) headers: QueryList<NgbdSortableHeaderDirective>;
 
@@ -41,7 +67,13 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     },
     elements: {
       point: {
-          radius: 2.5
+          radius: 0,
+          borderWidth: 0.0,
+          borderColor: 'rgba(0, 0, 0, 0.0)',
+          hitRadius: 5,
+          hoverRadius: 4,
+          hoverBorderWidth: 0,
+          hoverBorderColor: 'rgba(148,159,177,0.8)'
       }
     }
   };
@@ -52,10 +84,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     {
       backgroundColor: 'rgba(0,255,0,0.3)',
       borderColor: 'rgba(0,255,0,0.5)',
-      pointBackgroundColor: 'rgba(0,255,0,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      pointHoverBackgroundColor: '#fff'
     }
   ];
 
@@ -63,10 +92,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     {
       backgroundColor: 'rgba(255,0,0,0.3)',
       borderColor: 'rgba(255,0,0,0.5)',
-      pointBackgroundColor: 'rgba(255,0,0,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+      pointHoverBackgroundColor: '#fff'
     }
   ];
 
@@ -78,6 +104,138 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   subscription: Subscription
 
   constructor(private http: HttpClient, private quoteService: EventListenerService, private dialog: MatDialog, private route: ActivatedRoute) {
+    this.apexChartOptions = {
+      series: [
+        {
+          name: "candle",
+          data: [
+            {
+              x: new Date(1538778600000),
+              y: [6629.81, 6650.5, 6623.04, 6633.33]
+            },
+            {
+              x: new Date(1538780400000),
+              y: [6632.01, 6643.59, 6620, 6630.11]
+            },
+            {
+              x: new Date(1538782200000),
+              y: [6630.71, 6648.95, 6623.34, 6635.65]
+            },
+            {
+              x: new Date(1538784000000),
+              y: [6635.65, 6651, 6629.67, 6638.24]
+            },
+            {
+              x: new Date(1538785800000),
+              y: [6638.24, 6640, 6620, 6624.47]
+            },
+            {
+              x: new Date(1538787600000),
+              y: [6624.53, 6636.03, 6621.68, 6624.31]
+            },
+            {
+              x: new Date(1538789400000),
+              y: [6624.61, 6632.2, 6617, 6626.02]
+            },
+            {
+              x: new Date(1538791200000),
+              y: [6627, 6627.62, 6584.22, 6603.02]
+            },
+            {
+              x: new Date(1538793000000),
+              y: [6605, 6608.03, 6598.95, 6604.01]
+            },
+            {
+              x: new Date(1538794800000),
+              y: [6604.5, 6614.4, 6602.26, 6608.02]
+            }
+          ]
+        }
+      ],
+      chart: {
+        type: "candlestick",
+        height: 'auto',
+        width: '100px',
+        toolbar: {
+          show: false
+        },
+        sparkline: {
+          enabled: true
+        }
+      },
+      xaxis: {
+        tooltip: {
+          enabled: false
+        },
+        labels: {
+          show: false,
+          maxHeight: 1,
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        tooltip: {
+          enabled: true
+        },
+        labels: {
+          show: false
+        }
+      },
+      tooltip: {
+        enabled: false,
+        enabledOnSeries: undefined,
+        shared: true,
+        followCursor: false,
+        intersect: false,
+        inverseOrder: false,
+        custom: undefined,
+        fillSeriesColor: false,
+        style: {
+          fontSize: '12px',
+          fontFamily: undefined
+        },
+        onDatasetHover: {
+            highlightDataSeries: false,
+        },
+        x: {
+            show: true,
+            format: 'dd MMM',
+            formatter: undefined,
+        },
+        y: {
+            formatter: undefined,
+            title: {
+                formatter: (seriesName) => seriesName,
+            },
+        },
+        z: {
+            formatter: undefined,
+            title: 'Size: '
+        },
+        marker: {
+            show: false,
+        },
+        items: {
+           display: 'flex',
+        },
+        fixed: {
+            enabled: false,
+            position: 'topRight',
+            offsetX: -1000,
+            offsetY: -100,
+        },
+    },
+      grid: {
+        padding: {
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: 0
+         }
+      }
+    };
   }
 
   concat(element: QuoteRecord[]) {
@@ -106,7 +264,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // const id = this.route.snapshot.queryParamMap.get('id')
+    // console.log(this.route.snapshot.queryParamMap.get('industry'))
     this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging == true ? "/0" : ""))
       .pipe(delay(this.initDelay))
       .subscribe(message => { this.concat(message) })

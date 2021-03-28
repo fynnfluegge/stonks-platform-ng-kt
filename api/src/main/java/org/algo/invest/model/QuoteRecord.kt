@@ -8,7 +8,6 @@ data class QuoteRecord(
     val quoteType: QuoteType? = null,
     val region: String? = null,
     val currency: String? = null,
-    val regularMarketDayLow: Float = 0f,
     val regularMarketVolume: Long = 0,
     val regularMarketPreviousClose: Float = 0f,
     val bid: Float = 0f,
@@ -17,7 +16,6 @@ data class QuoteRecord(
     val askSize: Int = 0,
     val fullExchangeName: String? = null,
     val financialCurrency: String? = null,
-    val regularMarketOpen: Float = 0f,
     val averageDailyVolume3Month: Long = 0,
     val averageDailyVolume10Day: Long = 0,
     val fiftyTwoWeekLowChange: Float = 0f,
@@ -61,7 +59,9 @@ data class QuoteRecord(
     val regularMarketChangePercent: Float = 0f,
     val regularMarketTime: Long = 0,
     val regularMarketPrice: BigDecimal = BigDecimal(0),
+    val regularMarketOpen: Float = 0f,
     val regularMarketDayHigh: Float = 0f,
+    val regularMarketDayLow: Float = 0f,
     val regularMarketDayRange: String? = null
 )
 

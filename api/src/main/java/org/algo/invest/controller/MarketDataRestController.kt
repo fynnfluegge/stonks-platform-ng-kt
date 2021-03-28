@@ -4,6 +4,7 @@ import org.algo.invest.service.MarketDataService
 import org.algo.invest.core.AppConfig
 import org.algo.invest.core.watchlistQuotes
 import org.algo.invest.dto.ChartDataDto
+import org.algo.invest.dto.HistoricalDayCandle
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
 import org.algo.invest.model.SubIndustry
@@ -148,13 +149,14 @@ class MarketDataRestController(
         val chartData = ChartDataDto(
             if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol) && marketDataService.historyQuotes.getValue(quoteRecord.symbol).size > 10)
                 marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10)
-                    .stream().map { x: Map.Entry<Calendar?, HistoricalQuote> -> x.value.close.toFloat() }
+                    .stream().map { x: Map.Entry<Calendar?, HistoricalQuote>
+                        -> HistoricalDayCandle(x.value.open.toFloat(), x.value.low.toFloat(), x.value.high.toFloat(), x.value.close.toFloat()) }
                     .collect(Collectors.toList())
             else ArrayList())
-        if (chartData.data?.size == 10 && chartData.data[9] != quoteRecord.regularMarketPrice.toFloat()) {
+        if (chartData.data?.size == 10 && chartData.data[9].close == quoteRecord.regularMarketPreviousClose) {
             Collections.rotate(chartData.data, -1)
             chartData.data.removeLast()
-            chartData.data.add(quoteRecord.regularMarketPrice.toFloat())
+            chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice.toFloat()))
         }
         return quoteDto(quoteRecord, chartData)
     }
@@ -165,14 +167,14 @@ class MarketDataRestController(
         val chartData = ChartDataDto(
             if (marketDataService.historyQuotes.containsKey(symbol) && marketDataService.historyQuotes.getValue(symbol).size >= 200)
                 marketDataService.historyQuotes.getValue(symbol).values.toList().takeLast(200)
-                    .stream().map { it.close.toFloat() }
+                    .stream().map { HistoricalDayCandle(it.open.toFloat(), it.low.toFloat(), it.high.toFloat(), it.close.toFloat()) }
                     .collect(Collectors.toList())
             else ArrayList()
         )
-        if (chartData.data?.size == 200 && chartData.data[199] != quoteRecord.regularMarketPrice.toFloat()) {
+        if (chartData.data?.size == 200 && chartData.data[199].close == quoteRecord.regularMarketPreviousClose) {
             Collections.rotate(chartData.data, -1)
             chartData.data.removeLast()
-            chartData.data.add(quoteRecord.regularMarketPrice.toFloat())
+            chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice.toFloat()))
         }
         return quoteDto(quoteRecord!!, chartData)
     }

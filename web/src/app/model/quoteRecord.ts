@@ -1,10 +1,3 @@
-import { Quote } from '@angular/compiler';
-import { logging } from 'protractor';
-
-export interface asjaskf {
-  data: QuoteRecord
-}
-
 export interface QuoteRecord {
   symbol: string;
   wkn: string;
@@ -27,6 +20,13 @@ export interface QuoteRecord {
   fiftyTwoWeekLow: number;
   fiftyTwoWeekLowChangePercent: number;
   chartData: [
-    { data: number[] }
+    { data: HistoricalDayCandle[] }
   ];
+}
+
+export interface HistoricalDayCandle {
+  open: number,
+  low: number,
+  high: number,
+  close: number
 }
