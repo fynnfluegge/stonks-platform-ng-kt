@@ -78,8 +78,6 @@ public class MarketDataService {
 
 		// Init RealtimeMarketDataController.RealtimeStockRecords
 		Objects.requireNonNull(mono.block()).getQuoteResponse().getResult().forEach(quoteRecord -> realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord));
-
-		initHistoricalData();
     }
 
 	@Scheduled(fixedRate = 1000, initialDelay = 1000)
@@ -103,12 +101,13 @@ public class MarketDataService {
 	@Scheduled(cron = "0 0 0 * * *")
 	public void updateHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 6.048e+8).entrySet()) {
-			for(HistoricalQuote quote : entry.getValue()) {
+			for (HistoricalQuote quote : entry.getValue()) {
 				historyQuotes.get(quote.getSymbol()).put(quote.getDate(), quote);
 			}
 		}
 	}
-	
+
+	@Scheduled(initialDelay = 1000 * 180, fixedDelay=Long.MAX_VALUE)
 	public void initHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 2.592e+10).entrySet()) {
 			historyQuotes.put(entry.getKey(), new LinkedHashMap<>());
@@ -125,14 +124,16 @@ public class MarketDataService {
 		
 		Map<String, List<HistoricalQuote>> result = new HashMap<>();
 
-		try {
-			for (String symbol : appConfig.getQuoteSymbolMetaData().keySet()) {
-				result.put(symbol, getHistory(symbol, cal));
+		for (String symbol : appConfig.getQuoteSymbolMetaData().keySet()) {
+			List<HistoricalQuote> historicalQuotes = new ArrayList<>();
+			try {
+				historicalQuotes = getHistory(symbol, cal);
+			} catch (Exception e) {
+				log.info(e.getMessage());
 			}
-		} catch (Exception e) {
-			log.info(e.getMessage());
+			result.put(symbol, historicalQuotes);
 		}
-		
+
 		return result;
 	}
 	
