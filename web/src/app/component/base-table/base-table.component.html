@@ -73,7 +73,7 @@
             step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
           </mat-slider>
         </td>
-        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;width:110px;padding:0px">
+        <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;width:110px;padding:0px" matTooltip="Open 200d Chart" matTooltipPosition='right'>
               <!-- <div *ngIf="quoteRecord.chartData[0].data[0].close <= quoteRecord.chartData[0].data[9].close">
                 <canvas
                     baseChart

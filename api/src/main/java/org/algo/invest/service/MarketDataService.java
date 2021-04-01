@@ -78,9 +78,11 @@ public class MarketDataService {
 
 		// Init RealtimeMarketDataController.RealtimeStockRecords
 		Objects.requireNonNull(mono.block()).getQuoteResponse().getResult().forEach(quoteRecord -> realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord));
+
+		initHistoricalData();
     }
 
-	@Scheduled(fixedRate = 1000, initialDelay = 1000)
+	@Scheduled(fixedRate = 2000, initialDelay = 2000)
 	public void updateStockData() {
 		try {
 			mono.flatMapMany(it -> Flux.fromIterable(it.getQuoteResponse().getResult()))
@@ -107,7 +109,6 @@ public class MarketDataService {
 		}
 	}
 
-	@Scheduled(initialDelay = 1000 * 180, fixedDelay=Long.MAX_VALUE)
 	public void initHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 2.592e+10).entrySet()) {
 			historyQuotes.put(entry.getKey(), new LinkedHashMap<>());
@@ -127,6 +128,7 @@ public class MarketDataService {
 		for (String symbol : appConfig.getQuoteSymbolMetaData().keySet()) {
 			List<HistoricalQuote> historicalQuotes = new ArrayList<>();
 			try {
+				Thread.sleep(1000);
 				historicalQuotes = getHistory(symbol, cal);
 			} catch (Exception e) {
 				log.info(e.getMessage());
@@ -160,8 +162,6 @@ public class MarketDataService {
 
         String url = YahooFinance.HISTQUOTES2_BASE_URL + URLEncoder.encode(vSymbol , "UTF-8") + "?" + Utils.getURLParameters(params);
         
-        System.out.println(url);
-
         URL request = new URL(url);
         RedirectableRequest redirectableRequest = new RedirectableRequest(request, 5);
         redirectableRequest.setConnectTimeout(YahooFinance.CONNECTION_TIMEOUT);
