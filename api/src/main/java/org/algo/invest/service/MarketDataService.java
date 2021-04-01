@@ -78,11 +78,9 @@ public class MarketDataService {
 
 		// Init RealtimeMarketDataController.RealtimeStockRecords
 		Objects.requireNonNull(mono.block()).getQuoteResponse().getResult().forEach(quoteRecord -> realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord));
-
-		initHistoricalData();
     }
 
-	@Scheduled(fixedRate = 2000, initialDelay = 2000)
+	@Scheduled(fixedRate = 2000, initialDelay = 1000)
 	public void updateStockData() {
 		try {
 			mono.flatMapMany(it -> Flux.fromIterable(it.getQuoteResponse().getResult()))
@@ -109,6 +107,7 @@ public class MarketDataService {
 		}
 	}
 
+	@Scheduled(initialDelay = 1000, fixedDelay=Long.MAX_VALUE)
 	public void initHistoricalData() {
 		for(Entry<String, List<HistoricalQuote>> entry : getYahooHistoricalData((long) 2.592e+10).entrySet()) {
 			historyQuotes.put(entry.getKey(), new LinkedHashMap<>());
