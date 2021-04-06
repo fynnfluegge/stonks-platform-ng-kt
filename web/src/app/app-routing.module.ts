@@ -1,35 +1,35 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OverviewComponent } from './component/overview/overview.component';
-import { TechComponent } from './component/tech/tech.component';
-import { HealthComponent } from './component/health/health.component';
-import { FinanceComponent } from './component/finance/finance.component';
-import { RetailComponent } from './component/retail/retail.component';
-import { IndustryComponent } from './component/industry/industry.component';
-import { MobilityComponent } from './component/mobility/mobility.component';
-import { MediaComponent } from './component/media/media.component';
-import { FoodComponent } from './component/food/food.component';
-import { EnergyComponent } from './component/energy/energy.component';
 import { PerformanceComponent } from './component/performance/performance.component';
-import { OtherComponent } from './component/misc/misc.component';
-import { WatchlistComponent } from './component/misc/watchlist.component';
+import { BaseTableComponent } from './component/base-table/base-table.component';
+import { CardsTableComponent } from './component/cards-table/cards-table.component';
 
 
 const routes: Routes = [
-  { path: '', component: OverviewComponent },
-  { path: 'indices', component: OverviewComponent },
-  { path: 'tech', component: TechComponent },
-  { path: 'health', component: HealthComponent },
-  { path: 'finance', component: FinanceComponent },
-  { path: 'retail', component: RetailComponent },
-  { path: 'energy', component: EnergyComponent },
-  { path: 'industry', component: IndustryComponent },
-  { path: 'mobility', component: MobilityComponent },
-  { path: 'media', component: MediaComponent },
-  { path: 'food', component: FoodComponent },
-  { path: 'misc', component: OtherComponent },
+  { path: '', redirectTo: 'list/indices' },
+  { path: 'list/indices', component: BaseTableComponent },
+  { path: 'cards/indices', component: CardsTableComponent },
+  { path: 'list/tech', component: BaseTableComponent },
+  { path: 'cards/tech', component: CardsTableComponent },
+  { path: 'list/health', component: BaseTableComponent },
+  { path: 'cards/health', component: CardsTableComponent },
+  { path: 'list/finance', component: BaseTableComponent },
+  { path: 'cards/finance', component: CardsTableComponent },
+  { path: 'list/retail', component: BaseTableComponent },
+  { path: 'cards/retail', component: CardsTableComponent },
+  { path: 'list/energy', component: BaseTableComponent },
+  { path: 'cards/energy', component: CardsTableComponent },
+  { path: 'list/industrial', component: BaseTableComponent },
+  { path: 'cards/industrial', component: CardsTableComponent },
+  { path: 'list/mobility', component: BaseTableComponent },
+  { path: 'cards/mobility', component: CardsTableComponent },
+  { path: 'list/media', component: BaseTableComponent },
+  { path: 'cards/media', component: CardsTableComponent },
+  { path: 'list/food', component: BaseTableComponent },
+  { path: 'cards/food', component: CardsTableComponent },
+  { path: 'list/other', component: BaseTableComponent },
+  { path: 'cards/other', component: CardsTableComponent },
   { path: 'performance', component: PerformanceComponent },
-  { path: 'watchlist', component: WatchlistComponent }
 ];
 
 @NgModule({

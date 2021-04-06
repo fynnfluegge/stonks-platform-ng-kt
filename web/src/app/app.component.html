@@ -3,46 +3,52 @@
     <button mat-icon-button mat-button (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <button type="button" mat-button style="margin-left: auto;" (click)='showList()'>
+      <mat-icon>list</mat-icon>
+    </button>
+    <button type="button" mat-button (click)='showCards()'>
+      <mat-icon>view_module</mat-icon>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-drawer-container>
   <mat-drawer #drawer mode="side">
     <div>
-      <a mat-button [routerLink]="'/indices'" [queryParams]="{industry: 'indices'}">Indices</a>
+      <a mat-button [routerLink]="viewmode + '/indices'">Indices</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/tech'">Tech</a>
+      <a mat-button [routerLink]="viewmode + '/tech'">Tech</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/health'">Health</a>
+      <a mat-button [routerLink]="viewmode + '/health'">Health</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/finance'">Finance</a>
+      <a mat-button [routerLink]="viewmode + '/finance'">Finance</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/food'">Food</a>
+      <a mat-button [routerLink]="viewmode + '/food'">Food</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/retail'">Retail</a>
+      <a mat-button [routerLink]="viewmode + '/retail'">Retail</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/energy'">Energy</a>
+      <a mat-button [routerLink]="viewmode + '/energy'">Energy</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/industry'">Industrial</a>
+      <a mat-button [routerLink]="viewmode + '/industrial'">Industrial</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/mobility'">Mobility</a>
+      <a mat-button [routerLink]="viewmode + '/mobility'">Mobility</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/media'">Media</a>
+      <a mat-button [routerLink]="viewmode + '/media'">Media</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/misc'">Misc</a>
+      <a mat-button [routerLink]="viewmode + '/other'">Misc</a>
     </div>
     <div>
-      <a mat-button [routerLink]="'/performance'">Performance</a>
+      <a mat-button [routerLink]="'/performance'" [queryParams]="{industry:'none'}">Performance</a>
     </div>
   </mat-drawer>
 

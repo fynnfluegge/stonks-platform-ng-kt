@@ -22,17 +22,17 @@
         </td>
         <td>
           <div
-          [@cellValueChangedAnimation]="quoteRecord.price">
-          {{ (quoteRecord.price).toPrecision(5) }}
-          {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
-        </div>
-        <div>
-          {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) }}
-        </div>
-        <div
-          [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
-          {{ (quoteRecord.dayChangePercent).toPrecision(3) }} %
-        </div>
+            [@cellValueChangedAnimation]="quoteRecord.price">
+            {{ (quoteRecord.price).toPrecision(5) }}
+            {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
+          </div>
+          <div>
+            {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) }}
+          </div>
+          <div
+            [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.dayChangePercent).toPrecision(3) }} %
+          </div>
         </td>
         <td>
           <div>
@@ -74,28 +74,6 @@
           </mat-slider>
         </td>
         <td (click) ="openDialog(quoteRecord.symbol)" style="cursor:pointer;width:110px;padding:0px" matTooltip="Open 200d Chart" matTooltipPosition='right'>
-              <!-- <div *ngIf="quoteRecord.chartData[0].data[0].close <= quoteRecord.chartData[0].data[9].close">
-                <canvas
-                    baseChart
-                    [chartType]="'line'"
-                    [datasets]="quoteRecord.historicalMarketClose"
-                    [options]="chartOptions"
-                    [labels]="chartLabels"
-                    [legend]="false"
-                    [colors]="greenlineChartColors">
-                </canvas>
-              </div>
-              <div *ngIf="quoteRecord.chartData[0].data[0].close > quoteRecord.chartData[0].data[9].close">
-                <canvas
-                    baseChart
-                    [chartType]="'line'"
-                    [datasets]="quoteRecord.historicalMarketClose"
-                    [options]="chartOptions"
-                    [labels]="chartLabels"
-                    [legend]="false"
-                    [colors]="redlineChartColors">
-                </canvas>
-              </div> -->
               <apx-chart
                 [series]="quoteRecord.apexCandleStickChartSeries"
                 [chart]="apexChartOptions.chart"

@@ -30,7 +30,7 @@ class MarketDataRestController(
     private val marketDataService: MarketDataService,
     private val appConfig: AppConfig)
 {
-    private val pagesize: Int = 20
+    private val pagesize: Int = 30
 
     @RequestMapping(value = ["/stream/quotes/{industry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun quotesByIndustry(@PathVariable industry: String): Flux<QuoteDto> =

@@ -20,7 +20,7 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["BIDU"] = QuoteSymbolMetaData("BIDU", "Baidu", "A0F5DE", Industry.TECH, SubIndustry.FANG)
 
         symbolNameMapping["NVDA"] = QuoteSymbolMetaData("NVDA", "Nvidia", "918422", Industry.TECH, SubIndustry.SEMICONDUCTOR)
-        symbolNameMapping["TSFA.F"] = QuoteSymbolMetaData("TSFA.F", "TSMC", "909800", Industry.TECH, SubIndustry.SEMICONDUCTOR)
+        symbolNameMapping["TSM"] = QuoteSymbolMetaData("TSFA.F", "TSMC", "909800", Industry.TECH, SubIndustry.SEMICONDUCTOR)
         symbolNameMapping["AMD"] = QuoteSymbolMetaData("AMD", "AMD", "863186", Industry.TECH, SubIndustry.SEMICONDUCTOR)
         symbolNameMapping["INTC"] = QuoteSymbolMetaData("INTC", "Intel", "855681", Industry.TECH, SubIndustry.SEMICONDUCTOR)
         symbolNameMapping["QCOM"] = QuoteSymbolMetaData("QCOM", "Qualcomm", "883121", Industry.TECH, SubIndustry.SEMICONDUCTOR)
@@ -83,6 +83,7 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["ZS"] = QuoteSymbolMetaData("ZS", "ZScaler", "A2JF28", Industry.TECH, SubIndustry.SECURITY)
         symbolNameMapping["CRWD"] = QuoteSymbolMetaData("CRWD", "Crowdstrike", "A2PK2R", Industry.TECH, SubIndustry.SECURITY)
         symbolNameMapping["QLYS"] = QuoteSymbolMetaData("QLYS", "Qualys", "A1J423", Industry.TECH, SubIndustry.SECURITY)
+        symbolNameMapping["QLYS"] = QuoteSymbolMetaData("OKTA", "Okta", "A2DNKR", Industry.TECH, SubIndustry.SECURITY)
 
         symbolNameMapping["SNE"] = QuoteSymbolMetaData("SNE", "SONY", "853688", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["1810.HK"] = QuoteSymbolMetaData("1810.HK", "Xiaomi", "A2JNY1", Industry.TECH, SubIndustry.MANUFACTURING)

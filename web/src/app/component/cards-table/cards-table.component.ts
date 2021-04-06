@@ -22,6 +22,7 @@ import {
   ApexStates,
   ApexGrid
 } from "ng-apexcharts";
+import { DialogOverviewExampleDialogComponent } from '../base-table/base-table.component';
 
 export type ChartOptions = {
   chart: ApexChart;
@@ -34,11 +35,11 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'base-table',
-  templateUrl: './base-table.component.html',
+  selector: 'cards-table',
+  templateUrl: './cards-table.component.html',
   animations: [TableAnimations.animations]
 })
-export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
+export class CardsTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() url: string = "/stream/quotes"
   @Input() initDelay: number = 0
   @Input() paging: boolean = true
@@ -62,7 +63,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
       chart: {
         type: "candlestick",
         height: 'auto',
-        width: '100px',
+        width: '160px',
         toolbar: {
           show: false
         },
@@ -142,7 +143,7 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
           left: 0,
           right: 0,
           bottom: 0,
-          top: 15
+          top: 0
          }
       }
     };
@@ -229,14 +230,18 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
   column: String
   direction: String
   onSort({column, direction}: SortEvent) {
+
     if (this.paging == true) {
       this.direction = direction
     this.column = direction == '' ? '' : column
     this.page = 1
 
+    console.log(column)
+    console.log(direction)
+
     this.quoteRecords = []
     this. data = this.quoteRecords
-    this.http.get<QuoteRecord[]>(this.apiURL + this.url + this.path + (this.paging ? "/0" : "")
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + (this.paging ? "/0" : "")
       + "?sortProperty=" + this.column + "&sortDirection=" + this.direction)
       .subscribe(message => { this.concat(message) })
     }
@@ -258,12 +263,8 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     }    
   }
 
-  openSite(siteUrl: string) {
-    window.open(siteUrl, '_blank');
-  }
-
   openDialog(vSymbol: string): void {
-      const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {data: { symbol: vSymbol }});
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {data: { symbol: vSymbol }});
   }
 
   copyMessage(val: string){
@@ -280,94 +281,3 @@ export class BaseTableComponent implements AfterViewInit, OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 }
-
-export interface DialogData {
-  symbol: string;
-}
-
-@Component({
-  selector: 'app-dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
-})
-export class DialogOverviewExampleDialogComponent {
-  apiURL = environment.apiUrl;  
-
-  quoteRecord: QuoteRecord = { subIndustry: '', wkn: '', symbol: '', country: '', currency: '', dayChange: 0,
-    dayChangePercent: 0, exchange: '', fiftyDayAverage: 0, fiftyDayAverageChangePercent: 0, fiftyTwoWeekHigh: 0,
-    fiftyTwoWeekHighChangePercent: 0, fiftyTwoWeekLow: 0, fiftyTwoWeekLowChangePercent: 0, marketCap: 0,
-    name: '', price: 0, quoteType: '', twoHundredDayAverage: 0, twoHundredDayAverageChangePercent: 0,
-    chartData: [{ data: [] }], historicalMarketClose: [{ data: [] }], apexCandleStickChartSeries: null };
-
-  service: BasicRestService;
-
-  constructor(public http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-    this.service = new BasicRestService(http, this.apiURL + '/quote/' + data.symbol);
-    this.service.getQuoteRecord().subscribe(x => this.merge(x));
-
-    for (let i = 0; i < 200; i++) {
-      this.chartLabels.push('');
-    }
-  }
-
-  merge(vData: QuoteRecord) {
-    this.quoteRecord = vData;
-    this.quoteRecord.historicalMarketClose = [{ data: vData.chartData[0].data.map(x => x.close) }]
-  }
-
-  formatLabel(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-
-    return value;
-  }
-
-  // tslint:disable-next-line: member-ordering
-  chartOptions = {
-    responsive: true,
-    scales: {
-      yAxes: [{
-        display: true
-      }],
-      xAxes: [{
-        display: false
-      }]
-    },
-    animation: {
-      duration: 0
-    },
-    elements: {
-      point: {
-          radius: 0
-      }
-    }
-  };
-
-  // tslint:disable-next-line: member-ordering
-  chartLabels = [];
-
-  // tslint:disable-next-line: member-ordering
-  public greenlineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(0,255,0,0.3)',
-      borderColor: 'rgba(0,255,0,0.5)',
-      pointBackgroundColor: 'rgba(0,255,0,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-
-  // tslint:disable-next-line: member-ordering
-  public redlineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'rgba(255,0,0,0.5)',
-      pointBackgroundColor: 'rgba(255,0,0,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-}
-

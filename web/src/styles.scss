@@ -151,3 +151,25 @@ td.ng-tns-c3-0 {
   height: 100%;
   overflow: visible;
 }
+
+.mat-card-header-text {
+  margin: 0px 4px !important;
+}
+
+.mat-button-toggle-label-content {
+  color: white;
+  background-color: #282828;
+  border-radius: 0px;
+  border-color: #282828;
+}
+
+.mat-button-toggle-checked {
+  border-radius: 0px;
+  border-color: red;
+  border: none;
+}
+
+.mat-button-toggle-standalone, .mat-button-toggle-group {
+  border-radius: 0px !important;
+  border:none;
+}

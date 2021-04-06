@@ -1,0 +1,54 @@
+<div style="height:100%;overflow: scroll;" (scroll)="onTableScroll($event)">
+<div *ngFor="let quoteRecord of data">
+  <div style="display:flex;float:left;">
+    <mat-card style="width:200px;height:220px;margin:4px;">
+      <mat-card-header style="margin: 0px;">
+        <mat-card-title>
+          <div style="width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">
+            {{ quoteRecord.name }}
+          </div>  
+        </mat-card-title>
+        <mat-card-subtitle>
+          <div style="float:left;display:flex;margin-right:8px;color:#000;"
+            [@cellValueChangedAnimation]="quoteRecord.price">
+            {{ (quoteRecord.price).toPrecision(5) | number:'1.0-2' }}
+          </div>
+          <div style="float:left;display:flex;margin-right:8px;color:#000;">
+            {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) | number:'1.0-2' }}
+          </div>
+          <div style="float:left;display:flex;font-weight:500;"
+            [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.dayChangePercent) | number:'1.0-2' }}%
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <apx-chart
+          (click) ="openDialog(quoteRecord.symbol)" 
+          style="cursor:pointer;width:110px;padding:0px;"
+          [series]="quoteRecord.apexCandleStickChartSeries"
+          [chart]="apexChartOptions.chart"
+          [xaxis]="apexChartOptions.xaxis"
+          [yaxis]="apexChartOptions.yaxis"
+          [title]="apexChartOptions.title"
+          [tooltip]="apexChartOptions.tooltip"
+          [states]="apexChartOptions.states"
+          [grid]="apexChartOptions.grid">
+        </apx-chart>
+            <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
+              <span style="margin-left:auto;">{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) | number:'1.0-2' }}</span>
+            </div>
+            <div style="width:50%;display:flex;float:left;padding:0px;height:10px;">
+              <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
+                step="0.001" [(ngModel)]="quoteRecord.price" disabled="true" 
+                style="padding:0px;height:34px;">
+              </mat-slider>
+            </div>
+            <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
+              {{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) | number:'1.0-2' }}
+            </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+</div>
