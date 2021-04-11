@@ -1,4 +1,4 @@
-<div style="height:100%;overflow: scroll;" (scroll)="onTableScroll($event)">
+<div style="height:100%;overflow:scroll;" (scroll)="onTableScroll($event)">
   <div *ngFor="let quoteRecord of data">
     <mat-card style="width:178px;height:296px;margin:4px;padding:8px;float:left;" class="card-small">
       <mat-card-header style="margin: 0px;">
@@ -60,8 +60,8 @@
           [grid]="apexChartOptions.grid">
         </apx-chart>
         <div>
-          <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
-            <span style="margin-left:auto;">{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) | number:'1.0-2' }}</span>
+          <div style="width:24%;display:flex;float:left;height:34px;align-items:flex-end;">
+            <span style="margin-left:auto;margin-right:2px;">{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(4) | number:'1.0-2' }}</span>
           </div>
           <div style="width:50%;display:flex;float:left;padding:0px;height:10px;">
             <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
@@ -69,8 +69,8 @@
               style="padding:0px;height:34px;">
             </mat-slider>
           </div>
-          <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
-            {{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) | number:'1.0-2' }}
+          <div style="width:24%;display:flex;float:left;height:34px;align-items:flex-end;margin-left:2px;">
+            {{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(4) | number:'1.0-2' }}
           </div>
         </div>
         <div>
@@ -78,11 +78,13 @@
             {{ quoteRecord.averageAnalystRating }}
           </div>
           <div style="text-align: center;">
-            <span style="margin-right:12px;" matTooltip='trailing P/E' matTooltipPosition='left'>
-              {{ (quoteRecord.trailingPE).toPrecision(3) | number:'1.0-2' }}
+            <span style="margin-right:8px;" matTooltip='trailing P/E' matTooltipPosition='left'
+              *ngIf="quoteRecord.trailingPE != 0.0">
+              TPE {{ (quoteRecord.trailingPE).toPrecision(3) | number:'1.0-2' }}
             </span>
-            <span matTooltip='forward P/E' matTooltipPosition='right'>
-              {{ (quoteRecord.forwardPE).toPrecision(3) | number:'1.0-2' }}
+            <span matTooltip='forward P/E' matTooltipPosition='right'
+              *ngIf="quoteRecord.forwardPE != 0.0">
+              FPE {{ (quoteRecord.forwardPE).toPrecision(3) | number:'1.0-2' }}
             </span>
           </div>
           <div *ngIf="quoteRecord.trailingAnnualDividendYield != 0.0" style="text-align: center;">

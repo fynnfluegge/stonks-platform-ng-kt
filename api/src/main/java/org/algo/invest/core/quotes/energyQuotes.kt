@@ -20,14 +20,14 @@ val energyQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["GTQ1.DE"] = QuoteSymbolMetaData("GTQ1.DE", "Siemens Gamesa", "A0B5Z8", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["ECV.DE"] = QuoteSymbolMetaData("ECV.DE", "Encavis", "609500", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["ENPH"] = QuoteSymbolMetaData("ENPH", "Enphase Energy", "A1JC82", Industry.ENERGY, SubIndustry.RENEWABLE)
-        symbolNameMapping["CXGH.F"] = QuoteSymbolMetaData("CXGH.F", "Goldwind", "A1C0QD", Industry.ENERGY, SubIndustry.RENEWABLE)
+        symbolNameMapping["2208.HK"] = QuoteSymbolMetaData("2208.HK", "Goldwind", "A1C0QD", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["BLDP"] = QuoteSymbolMetaData("BLDP", "Ballard Power Systems", "A0RENB", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["D7G.F"] = QuoteSymbolMetaData("D7G.F", "Nel Asa", "A0B733", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["27W.F"] = QuoteSymbolMetaData("27W.F", "Powercell", "A14TK6", Industry.ENERGY, SubIndustry.RENEWABLE)
         symbolNameMapping["PLUG"] = QuoteSymbolMetaData("PLUG", "Plug Power", "A1JA81", Industry.ENERGY, SubIndustry.RENEWABLE)
 
         symbolNameMapping["VAR1.DE"] = QuoteSymbolMetaData("VAR1.DE", "Varta", "A0TGJ5", Industry.ENERGY, SubIndustry.AKKU)
-        symbolNameMapping["BY6.F"] = QuoteSymbolMetaData("BY6.F", "BYD", "A0M4W9", Industry.ENERGY, SubIndustry.AKKU)
+        symbolNameMapping["BYDDF"] = QuoteSymbolMetaData("BYDDF", "BYD", "A0M4W9", Industry.ENERGY, SubIndustry.AKKU)
 
         return symbolNameMapping
     }
