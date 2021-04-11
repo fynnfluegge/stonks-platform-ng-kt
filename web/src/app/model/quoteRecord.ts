@@ -11,11 +11,17 @@ export interface QuoteRecord {
   currency: string;
   exchange: string;
   quoteType: string;
-  premarket: number;
+  marketCap: number;
+  priceToBookRatio: number,
+
+  preMarketChange: number,
+  preMarketChangePercent: number,
+  postMarketChange: number,
+  postMarketChangePercent: number,
+
   price: number;
   dayChange: number;
   dayChangePercent: number;
-  marketCap: number;
   fiftyDayAverage: number;
   fiftyDayAverageChangePercent: number;
   twoHundredDayAverage: number;
@@ -24,6 +30,18 @@ export interface QuoteRecord {
   fiftyTwoWeekHighChangePercent: number;
   fiftyTwoWeekLow: number;
   fiftyTwoWeekLowChangePercent: number;
+
+  earningsDate: Date,
+  trailingPE: number,
+  forwardPE: number,
+  epsTrailingTwelveMonths: number,
+  epsForward: number,
+  epsCurrentYear: number,
+  priceEpsCurrentYear: number,
+  trailingAnnualDividendYield: number,
+  sharesOutstanding: number,
+  averageAnalystRating: string,
+
   chartData: [
     { data: HistoricalDayCandle[] }
   ];

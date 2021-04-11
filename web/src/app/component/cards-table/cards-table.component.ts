@@ -1,16 +1,15 @@
-import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, Inject, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, OnDestroy, Input, ViewChild } from '@angular/core';
 import { QuoteRecord } from '../../model/quoteRecord';
 import { NgbdSortableHeaderDirective, SortEvent, compare } from '../../directive/sortable/sortableheader.component';
-import { Color } from 'ng2-charts';
 import { EventListenerService } from '../../service/eventListenerService';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BasicRestService } from 'src/app/service/basic-rest.service';
+import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TableAnimations} from "../../animations"
 import { ActivatedRoute } from '@angular/router';
 import { delay } from "rxjs/operators";
+import { DialogChartComponent } from '../dialog-chart/dialog-chart.component'
 
 import {
   ChartComponent,
@@ -22,7 +21,6 @@ import {
   ApexStates,
   ApexGrid
 } from "ng-apexcharts";
-import { DialogOverviewExampleDialogComponent } from '../base-table/base-table.component';
 
 export type ChartOptions = {
   chart: ApexChart;
@@ -63,7 +61,7 @@ export class CardsTableComponent implements AfterViewInit, OnInit, OnDestroy {
       chart: {
         type: "candlestick",
         height: 'auto',
-        width: '160px',
+        width: '148px',
         toolbar: {
           show: false
         },
@@ -264,7 +262,7 @@ export class CardsTableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   openDialog(vSymbol: string): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {data: { symbol: vSymbol }});
+    const dialogRef = this.dialog.open(DialogChartComponent, {data: { symbol: vSymbol }});
   }
 
   copyMessage(val: string){

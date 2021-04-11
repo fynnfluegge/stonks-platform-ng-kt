@@ -47,10 +47,6 @@ a.whitelink:hover {
   text-decoration: none;
 }
 
-span:hover {
-  color: white;
-}
-
 .table .thead-dark th {
   background-color: #282828;
   border-color: transparent;
@@ -174,17 +170,35 @@ td.ng-tns-c3-0 {
 }
 
 .mat-card {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px !important;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px !important;
 }
 
 @media (max-width:768px) {
   .hide-column-768 {
     display: none;
   }
+  table th:nth-child(9){
+    border-radius:0 10px 0 0;
+  }
  }
 
- @media (max-width:420px) {
+@media (max-width:420px) {
   .hide-column-420 {
     display: none;
   }
- }
+  .container {
+    padding: 4px 4px 4px 4px;
+  }
+  table th:nth-child(9){
+    border-radius:0 10px 0 0;
+  }
+}
+
+@media (max-width:768px) {
+  .card-small {
+    width: 174px !important;
+  }
+  .container {
+    max-width: 752px;
+  }
+}

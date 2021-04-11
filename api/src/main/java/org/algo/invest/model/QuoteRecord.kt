@@ -2,6 +2,12 @@ package org.algo.invest.model
 
 import org.algo.invest.dto.ChartDataDto
 import org.algo.invest.dto.QuoteDto
+import java.time.Instant
+import java.util.*
+import java.text.SimpleDateFormat
+
+
+
 
 data class QuoteRecord(
     val symbol: String? = null,
@@ -21,8 +27,9 @@ data class QuoteRecord(
     val averageDailyVolume3Month: Long = 0,
     val averageDailyVolume10Day: Long = 0,
 
-    val trailingPE: Float = 0f, // This is the price/earnings ratio based on EPS for the trailing four quarters or 12 months
-    val forwardPE: Float = 0f, // This price/earnings ratio is based on future estimated EPS, such as the current fiscal or calendar year, or the next year
+    val earningsTimestamp: Long = 0,
+    val trailingPE: Float = 0f,
+    val forwardPE: Float = 0f,
     val epsTrailingTwelveMonths: Float = 0f,
     val epsForward: Float = 0f,
     val epsCurrentYear: Float = 0f,
@@ -74,6 +81,8 @@ data class QuoteRecord(
     val firstTradeDateMilliseconds: Long = 0,
 )
 
+var format = SimpleDateFormat("dd-MM-yyyy")
+
 fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolMetaData) =
     QuoteDto(
         subIndustry = quoteSymbolMetaData.subIndustry?.toString() ?: "",
@@ -107,6 +116,7 @@ fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolM
         trailingAnnualDividendYield = trailingAnnualDividendYield,
         sharesOutstanding = sharesOutstanding,
         averageAnalystRating = averageAnalystRating,
+        earningsDate = format.format(Date.from(Instant.ofEpochMilli(earningsTimestamp*1000))),
         quoteType = quoteType,
         chartData = listOf(chartData)
     )

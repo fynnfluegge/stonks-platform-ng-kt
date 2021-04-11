@@ -8,7 +8,7 @@
       <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;" class="hide-column-420">52-Low</th>
       <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;" class="hide-column-420">52-High</th>
       <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;" class="hide-column-768">Cap.</th>
-      <th scope="col" style="width:72px;" class="hide-column-768">52-Range</th>
+      <th scope="col" style="width:86px;white-space:nowrap;" class="hide-column-768">52-Range</th>
       <th scope="col" style="cursor:pointer;width:110px;">10d-Chart</th>
       <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer" class="hide-column-768">Industry</th>
     </tr>
@@ -64,9 +64,14 @@
           </div>
         </td>
         <td style="width:72px;" class="hide-column-768">
-          {{ quoteRecord.marketCap === 0 ? '' : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
+          <span>
+            {{ quoteRecord.marketCap === 0 ? '' : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
+          </span>
+          <span style="cursor:pointer;" matTooltip='price to book' matTooltipPosition='right'>
+            {{ quoteRecord.priceToBookRatio === 0 ? '' : (quoteRecord.priceToBookRatio).toPrecision(3) | number:'1.0-1'}}
+          </span>
         </td>
-        <td style="width:72px;padding:0px 8px 8px 0px;" class="hide-column-768">
+        <td style="width:86px;padding:0px 8px 8px 0px;" class="hide-column-768">
           <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
             step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
           </mat-slider>

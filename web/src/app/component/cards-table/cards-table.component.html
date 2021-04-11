@@ -1,27 +1,49 @@
 <div style="height:100%;overflow: scroll;" (scroll)="onTableScroll($event)">
-<div *ngFor="let quoteRecord of data">
-  <div style="display:flex;float:left;">
-    <mat-card style="width:170px;height:200px;margin:4px;padding:8px;">
+  <div *ngFor="let quoteRecord of data">
+    <mat-card style="width:178px;height:296px;margin:4px;padding:8px;float:left;" class="card-small">
       <mat-card-header style="margin: 0px;">
         <mat-card-title>
           <div style="width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;font-size:16px;">
             {{ quoteRecord.name }}
           </div>  
         </mat-card-title>
-        <mat-card-subtitle>
-          <!-- <div style="display:inline-block;margin:auto;"> -->
-            <p style="color:#000;float:left;width:30%;text-align:right;margin:0;"
-              [@cellValueChangedAnimation]="quoteRecord.price">
-              {{ (quoteRecord.price).toPrecision(4) | number:'1.0-3' }}
-            </p>
-            <p style="color:#000;float:left;text-align:center;padding: 0px 8px 0px 8px;margin:0;">
-              {{ quoteRecord.dayChange >= 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(4) | number:'1.0-3' }}
-            </p>
-            <p style="font-weight:500;float:left;width:30%;text-align:left;margin:0;"
-              [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
-              {{ (quoteRecord.dayChangePercent) | number:'1.0-2' }}%
-            </p>
-        <!-- </div> -->
+        <mat-card-subtitle style="height:24px;text-align:center;">
+          <span style="color:#000;margin-right:4px;">
+            {{ (quoteRecord.price).toPrecision(4) | number:'1.0-3' }}
+          </span>
+          <span style="color:#000;margin-right:4px;"
+            [@cellValueChangedAnimation]="quoteRecord.price">
+            {{ quoteRecord.dayChange >= 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(4) | number:'1.0-3' }}
+          </span>
+          <span style="font-weight:500;"
+            [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+            {{ (quoteRecord.dayChangePercent) | number:'1.0-2' }}%
+          </span>
+          <div *ngIf="quoteRecord.postMarketChange != 0.0">
+            <span style="margin-right:4px;">
+              post:
+            </span>
+            <span style="margin-right:4px;"
+              [@cellValueChangedAnimation]="quoteRecord.postMarketChange">
+              {{ (quoteRecord.postMarketChange).toPrecision(4) | number:'1.0-3' }}
+            </span>
+            <span style="font-weight:400;"
+              [ngStyle]="{'color': quoteRecord.postMarketChangePercent > 0.0 ? 'green' : 'red'}">
+              {{ (quoteRecord.postMarketChangePercent).toPrecision(4) | number:'1.0-3' }}%
+            </span>
+          </div>
+          <div *ngIf="quoteRecord.preMarketChange != 0.0">
+            <span>
+              pre:
+            </span>
+            <span [@cellValueChangedAnimation]="quoteRecord.preMarketChange">
+              {{ (quoteRecord.preMarketChange).toPrecision(4) | number:'1.0-3' }}
+            </span>
+            <span style="font-weight:400;"
+              [ngStyle]="{'color': quoteRecord.preMarketChangePercent > 0.0 ? 'green' : 'red'}">
+              {{ (quoteRecord.preMarketChangePercent).toPrecision(4) | number:'1.0-3' }}%
+            </span>
+          </div>
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -37,20 +59,40 @@
           [states]="apexChartOptions.states"
           [grid]="apexChartOptions.grid">
         </apx-chart>
-            <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
-              <span style="margin-left:auto;">{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) | number:'1.0-2' }}</span>
-            </div>
-            <div style="width:50%;display:flex;float:left;padding:0px;height:10px;">
-              <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
-                step="0.001" [(ngModel)]="quoteRecord.price" disabled="true" 
-                style="padding:0px;height:34px;">
-              </mat-slider>
-            </div>
-            <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
-              {{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) | number:'1.0-2' }}
-            </div>
+        <div>
+          <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
+            <span style="margin-left:auto;">{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) | number:'1.0-2' }}</span>
+          </div>
+          <div style="width:50%;display:flex;float:left;padding:0px;height:10px;">
+            <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
+              step="0.001" [(ngModel)]="quoteRecord.price" disabled="true" 
+              style="padding:0px;height:34px;">
+            </mat-slider>
+          </div>
+          <div style="width:25%;display:flex;float:left;height:34px;align-items:flex-end;">
+            {{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) | number:'1.0-2' }}
+          </div>
+        </div>
+        <div>
+          <div style="text-align: center;">
+            {{ quoteRecord.averageAnalystRating }}
+          </div>
+          <div style="text-align: center;">
+            <span style="margin-right:12px;" matTooltip='trailing P/E' matTooltipPosition='left'>
+              {{ (quoteRecord.trailingPE).toPrecision(3) | number:'1.0-2' }}
+            </span>
+            <span matTooltip='forward P/E' matTooltipPosition='right'>
+              {{ (quoteRecord.forwardPE).toPrecision(3) | number:'1.0-2' }}
+            </span>
+          </div>
+          <div *ngIf="quoteRecord.trailingAnnualDividendYield != 0.0" style="text-align: center;">
+            dividend {{ (quoteRecord.trailingAnnualDividendYield).toPrecision(3) * 100 | number:'1.0-2' }} %
+          </div>
+          <div *ngIf="quoteRecord.earningsDate != '1970-01-01'" style="text-align: center;">
+            quart. rep. {{ quoteRecord.earningsDate }}
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
-</div>
 </div>

@@ -1,6 +1,7 @@
 package org.algo.invest.dto
 
 import org.algo.invest.model.QuoteType
+import java.util.*
 
 data class QuoteDto (
     val subIndustry: String? = null,
@@ -10,6 +11,11 @@ data class QuoteDto (
     val currency: String? = null,
     val marketCap: Long = 0,
     val priceToBookRatio: Float = 0f,
+
+    val preMarketChange: Float = 0f,
+    val preMarketChangePercent: Float = 0f,
+    val postMarketChange: Float = 0f,
+    val postMarketChangePercent: Float= 0f,
 
     val price: Float = 0f,
     val dayChange: Float = 0f,
@@ -23,11 +29,7 @@ data class QuoteDto (
     val fiftyTwoWeekLow: Float = 0f,
     val fiftyTwoWeekLowChangePercent: Float = 0f,
 
-    val preMarketChange: Float = 0f,
-    val preMarketChangePercent: Float = 0f,
-    val postMarketChange: Float = 0f,
-    val postMarketChangePercent: Float= 0f,
-
+    val earningsDate: String? = null,
     val trailingPE: Float = 0f,
     val forwardPE: Float = 0f,
     val epsTrailingTwelveMonths: Float = 0f,

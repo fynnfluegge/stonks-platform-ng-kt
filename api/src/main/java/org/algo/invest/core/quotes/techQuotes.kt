@@ -85,7 +85,7 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["QLYS"] = QuoteSymbolMetaData("QLYS", "Qualys", "A1J423", Industry.TECH, SubIndustry.SECURITY)
         symbolNameMapping["QLYS"] = QuoteSymbolMetaData("OKTA", "Okta", "A2DNKR", Industry.TECH, SubIndustry.SECURITY)
 
-        symbolNameMapping["SNE"] = QuoteSymbolMetaData("SNE", "SONY", "853688", Industry.TECH, SubIndustry.MANUFACTURING)
+        symbolNameMapping["SONY"] = QuoteSymbolMetaData("SONY", "SONY", "853688", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["1810.HK"] = QuoteSymbolMetaData("1810.HK", "Xiaomi", "A2JNY1", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["LGLG.F"] = QuoteSymbolMetaData("LGLG.F", "LG Electronics", "576798", Industry.TECH, SubIndustry.MANUFACTURING)
         symbolNameMapping["SSUN.F"] = QuoteSymbolMetaData("SSUN.F", "Samsung", "881823", Industry.TECH, SubIndustry.MANUFACTURING)

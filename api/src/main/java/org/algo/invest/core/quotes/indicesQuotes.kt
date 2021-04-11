@@ -24,7 +24,7 @@ val indicesQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["^IXIC"] = QuoteSymbolMetaData("^IXIC", "Nasdaq Comp", "", Industry.INDICES)
         symbolNameMapping["^NDX"] = QuoteSymbolMetaData("^NDX", "Nasdaq 100", "", Industry.INDICES)
         symbolNameMapping["^NDXT"] = QuoteSymbolMetaData("^NDXT", "Nasdaq 100 Tech", "", Industry.INDICES)
-        symbolNameMapping["^GSPC"] = QuoteSymbolMetaData("^GSCP", "S&P 500", "", Industry.INDICES)
+        symbolNameMapping["^GSPC"] = QuoteSymbolMetaData("^GSPC", "S&P 500", "", Industry.INDICES)
         symbolNameMapping["NQ=F"] = QuoteSymbolMetaData("NQ=F", "Nasdaq 100 Future", "", Industry.INDICES)
         symbolNameMapping["YM=F"] = QuoteSymbolMetaData("YM=F", "Dow Jones Future", "", Industry.INDICES)
         symbolNameMapping["ES=F"] = QuoteSymbolMetaData("ES=F", "S&P 500 Future", "", Industry.INDICES)

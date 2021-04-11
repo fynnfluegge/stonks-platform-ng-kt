@@ -110,7 +110,7 @@ class MarketDataRestController(
 
     @RequestMapping(value = ["/200dUnderPerformer"])
     fun get200dUnderPerformer() =
-        appConfig.quoteSymbolMetaData.keys.stream()
+        appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
             .filter { it.quoteType === QuoteType.EQUITY }
@@ -120,19 +120,16 @@ class MarketDataRestController(
             .toList()
 
     private fun getQuotes(industry: Industry): List<QuoteDto> =
-        appConfig.quoteSymbolMetaData.keys
+        appConfig.quoteSymbolMetaData.filter{ it.value.industry === industry }.keys
             .asSequence()
-            .map { marketDataService.realtimeStockRecords.getValue(it) }
-            .filter{ appConfig.quoteSymbolMetaData.getValue(it.symbol!!).industry === industry }
-            .map{ getQuoteDto(it) }
+            .map { getQuoteDto(marketDataService.realtimeStockRecords.getValue(it)) }
             .toList()
 
     private fun getQuotes(industry: Industry, page: Int, sortProperty: String?, sortDirection: String?): List<QuoteDto> =
         try {
-            appConfig.quoteSymbolMetaData.keys
+            appConfig.quoteSymbolMetaData.filter{ it.value.industry === industry }.keys
                 .asSequence()
                 .map { marketDataService.realtimeStockRecords.getValue(it) }
-                .filter{ appConfig.quoteSymbolMetaData.getValue(it.symbol!!).industry === industry }
                 .sortedWith { a, b -> compare(a,b, sortProperty, sortDirection) }
                 .chunked(pagesize)
                 .elementAt(page)

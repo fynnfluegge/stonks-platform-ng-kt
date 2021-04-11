@@ -18,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ChartsModule } from 'ng2-charts';
 import { NgbdSortableHeaderDirective } from './directive/sortable/sortableheader.component';
-import { BaseTableComponent, DialogOverviewExampleDialogComponent } from './component/base-table/base-table.component';
+import { BaseTableComponent } from './component/base-table/base-table.component';
+import { DialogChartComponent } from './component/dialog-chart/dialog-chart.component'
 import { PerformanceComponent } from './component/performance/performance.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CardsTableComponent } from './component/cards-table/cards-table.component';
@@ -27,7 +28,7 @@ import { CardsTableComponent } from './component/cards-table/cards-table.compone
   declarations: [
     AppComponent,
     NgbdSortableHeaderDirective,
-    DialogOverviewExampleDialogComponent,
+    DialogChartComponent,
     BaseTableComponent,
     PerformanceComponent,
     CardsTableComponent
@@ -55,7 +56,7 @@ import { CardsTableComponent } from './component/cards-table/cards-table.compone
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogOverviewExampleDialogComponent
+    DialogChartComponent
   ]
 })
 export class AppModule { }
