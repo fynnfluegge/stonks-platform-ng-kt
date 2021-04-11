@@ -1,25 +1,27 @@
 <div style="height:100%;overflow: scroll;" (scroll)="onTableScroll($event)">
 <div *ngFor="let quoteRecord of data">
   <div style="display:flex;float:left;">
-    <mat-card style="width:200px;height:220px;margin:4px;">
+    <mat-card style="width:170px;height:200px;margin:4px;padding:8px;">
       <mat-card-header style="margin: 0px;">
         <mat-card-title>
-          <div style="width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">
+          <div style="width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;font-size:16px;">
             {{ quoteRecord.name }}
           </div>  
         </mat-card-title>
         <mat-card-subtitle>
-          <div style="float:left;display:flex;margin-right:8px;color:#000;"
-            [@cellValueChangedAnimation]="quoteRecord.price">
-            {{ (quoteRecord.price).toPrecision(5) | number:'1.0-2' }}
-          </div>
-          <div style="float:left;display:flex;margin-right:8px;color:#000;">
-            {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) | number:'1.0-2' }}
-          </div>
-          <div style="float:left;display:flex;font-weight:500;"
-            [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
-            {{ (quoteRecord.dayChangePercent) | number:'1.0-2' }}%
-          </div>
+          <!-- <div style="display:inline-block;margin:auto;"> -->
+            <p style="color:#000;float:left;width:30%;text-align:right;margin:0;"
+              [@cellValueChangedAnimation]="quoteRecord.price">
+              {{ (quoteRecord.price).toPrecision(4) | number:'1.0-3' }}
+            </p>
+            <p style="color:#000;float:left;text-align:center;padding: 0px 8px 0px 8px;margin:0;">
+              {{ quoteRecord.dayChange >= 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(4) | number:'1.0-3' }}
+            </p>
+            <p style="font-weight:500;float:left;width:30%;text-align:left;margin:0;"
+              [ngStyle]="{'color': quoteRecord.dayChangePercent > 0 ? 'green' : 'red'}">
+              {{ (quoteRecord.dayChangePercent) | number:'1.0-2' }}%
+            </p>
+        <!-- </div> -->
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>

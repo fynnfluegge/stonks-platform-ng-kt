@@ -3,14 +3,14 @@
     <tr>
       <th scope="col" sortable="name" (sort)="onSort($event)" style="cursor:pointer">Name</th>
       <th scope="col" sortable="dayChangePercent" (sort)="onSort($event)" style="cursor:pointer">Price</th>
-      <th scope="col" sortable="fiftyDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">50-Ø</th>
-      <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer">200-Ø</th>
-      <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-Low</th>
-      <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer">52-High</th>
-      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;">Cap.</th>
-      <th scope="col" style="width:72px;">52W</th>
-      <th scope="col" style="cursor:pointer;width:110px;">10dChart</th>
-      <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer">Industry</th>
+      <th scope="col" sortable="fiftyDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;">50-Ø</th>
+      <th scope="col" sortable="twoHundredDayAverageChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;" class="hide-column-420">200-Ø</th>
+      <th scope="col" sortable="fiftyTwoWeekLowChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;" class="hide-column-420">52-Low</th>
+      <th scope="col" sortable="fiftyTwoWeekHighChangePercent" (sort)="onSort($event)" style="cursor:pointer;white-space:nowrap;" class="hide-column-420">52-High</th>
+      <th scope="col" sortable="marketCap" (sort)="onSort($event)" style="cursor:pointer;width:72px;" class="hide-column-768">Cap.</th>
+      <th scope="col" style="width:72px;" class="hide-column-768">52-Range</th>
+      <th scope="col" style="cursor:pointer;width:110px;">10d-Chart</th>
+      <th scope="col" sortable="subIndustry" (sort)="onSort($event)" style="cursor:pointer" class="hide-column-768">Industry</th>
     </tr>
   </thead>
   <tbody (scroll)="onTableScroll($event)">
@@ -24,7 +24,6 @@
           <div
             [@cellValueChangedAnimation]="quoteRecord.price">
             {{ (quoteRecord.price).toPrecision(5) }}
-            {{ quoteRecord.quoteType === 'EQUITY' ? (quoteRecord.currency === 'USD' ? '$' : '€') : '' }}
           </div>
           <div>
             {{ quoteRecord.dayChange > 0 ? '+' : ''}}{{ (quoteRecord.dayChange).toPrecision(3) }}
@@ -43,7 +42,7 @@
             {{ (quoteRecord.fiftyDayAverageChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
-        <td>
+        <td class="hide-column-420">
           <div>
             {{ (quoteRecord.twoHundredDayAverage).toPrecision(5) }}
           </div>
@@ -52,23 +51,22 @@
             {{ (quoteRecord.twoHundredDayAverageChangePercent * 100).toFixed(3) }} %
           </div>
         </td>
-        <td>
+        <td class="hide-column-420">
           <div>{{ (quoteRecord.fiftyTwoWeekLow).toPrecision(5) }}</div>
           <div [ngStyle]="{'color': quoteRecord.fiftyTwoWeekLowChangePercent > 0 ? 'green' : 'red'}">
             {{ (quoteRecord.fiftyTwoWeekLowChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
-        <td>
+        <td class="hide-column-420">
           <div>{{ (quoteRecord.fiftyTwoWeekHigh).toPrecision(5) }}</div>
           <div [ngStyle]="{'color': 'red'}">
             {{ (quoteRecord.fiftyTwoWeekHighChangePercent * 100).toPrecision(3) }} %
           </div>
         </td>
-        <td style="width:72px;">
-          {{ quoteRecord.marketCap === 0 ? ''
-          : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
+        <td style="width:72px;" class="hide-column-768">
+          {{ quoteRecord.marketCap === 0 ? '' : (quoteRecord.marketCap / 1000000000).toPrecision(4)}}
         </td>
-        <td style="width:72px;padding:0px 8px 8px 0px;">
+        <td style="width:72px;padding:0px 8px 8px 0px;" class="hide-column-768">
           <mat-slider min="{{ quoteRecord.fiftyTwoWeekLow }}" max="{{ quoteRecord.fiftyTwoWeekHigh }}"
             step="0.001" [(ngModel)]="quoteRecord.price" disabled="true">
           </mat-slider>
@@ -85,7 +83,7 @@
                 [grid]="apexChartOptions.grid">
               </apx-chart>
         </td>
-        <td>
+        <td class="hide-column-768">
           <div>
             {{ quoteRecord.subIndustry }}
           </div>

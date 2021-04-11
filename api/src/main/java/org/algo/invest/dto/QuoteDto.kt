@@ -7,12 +7,13 @@ data class QuoteDto (
     val symbol: String? = null,
     val name: String? = null,
     val wkn: String? = null,
+    val currency: String? = null,
+    val marketCap: Long = 0,
+    val priceToBookRatio: Float = 0f,
+
     val price: Float = 0f,
     val dayChange: Float = 0f,
     val dayChangePercent: Float = 0f,
-    val currency: String? = null,
-    val exchange: String? = null,
-    val marketCap: Long = 0,
     val fiftyDayAverage: Float = 0f,
     val fiftyDayAverageChangePercent: Float = 0f,
     val twoHundredDayAverage: Float = 0f,
@@ -21,6 +22,22 @@ data class QuoteDto (
     val fiftyTwoWeekHighChangePercent: Float = 0f,
     val fiftyTwoWeekLow: Float = 0f,
     val fiftyTwoWeekLowChangePercent: Float = 0f,
+
+    val preMarketChange: Float = 0f,
+    val preMarketChangePercent: Float = 0f,
+    val postMarketChange: Float = 0f,
+    val postMarketChangePercent: Float= 0f,
+
+    val trailingPE: Float = 0f,
+    val forwardPE: Float = 0f,
+    val epsTrailingTwelveMonths: Float = 0f,
+    val epsForward: Float = 0f,
+    val epsCurrentYear: Float = 0f,
+    val priceEpsCurrentYear: Float = 0f,
+    val trailingAnnualDividendYield: Float = 0f,
+    val sharesOutstanding: Long = 0,
+    val averageAnalystRating: String? = null,
+
     val quoteType: QuoteType? = null,
     val chartData: List<ChartDataDto>? = null
 )

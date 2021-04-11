@@ -11,6 +11,7 @@ export interface QuoteRecord {
   currency: string;
   exchange: string;
   quoteType: string;
+  premarket: number;
   price: number;
   dayChange: number;
   dayChangePercent: number;

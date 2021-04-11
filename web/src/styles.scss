@@ -71,7 +71,7 @@ span:hover {
 }
 
 .table {
-  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 8px 1px rgba(0,0,0,.14), 0 3px 8px 2px rgba(0,0,0,.12);
   border-radius:10px 10px 0 0;
   thead tr:nth-child(1) th{
     position: sticky;
@@ -136,8 +136,7 @@ td.ng-tns-c3-0 {
 
 .container {
   height: 100%;
-  min-width: 812px;
-  padding: 12px 12px 24px 12px;
+  padding: 8px 8px 12px 8px;
   overflow-x: auto;
   overflow-y: visible;
 }
@@ -173,3 +172,19 @@ td.ng-tns-c3-0 {
   border-radius: 0px !important;
   border:none;
 }
+
+.mat-card {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px !important;
+}
+
+@media (max-width:768px) {
+  .hide-column-768 {
+    display: none;
+  }
+ }
+
+ @media (max-width:420px) {
+  .hide-column-420 {
+    display: none;
+  }
+ }

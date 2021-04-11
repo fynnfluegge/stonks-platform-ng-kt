@@ -7,12 +7,9 @@ import org.algo.invest.dto.ChartDataDto
 import org.algo.invest.dto.HistoricalDayCandle
 import reactor.core.publisher.Flux
 import org.algo.invest.dto.QuoteDto
-import org.algo.invest.model.SubIndustry
+import org.algo.invest.model.*
 import reactor.core.publisher.Mono
-import org.algo.invest.model.QuoteType
-import org.algo.invest.model.Industry
 import java.util.stream.Collectors
-import org.algo.invest.model.QuoteRecord
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import yahoofinance.histquotes.HistoricalQuote
@@ -158,7 +155,7 @@ class MarketDataRestController(
             chartData.data.removeLast()
             chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice.toFloat()))
         }
-        return quoteDto(quoteRecord, chartData)
+        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!))
     }
 
     @RequestMapping(value = ["/quote/{symbol}"], method = [RequestMethod.GET])
@@ -176,7 +173,7 @@ class MarketDataRestController(
             chartData.data.removeLast()
             chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice.toFloat()))
         }
-        return quoteDto(quoteRecord!!, chartData)
+        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!))
     }
 
     @get:RequestMapping(value = ["/log"], method = [RequestMethod.GET])
@@ -195,30 +192,6 @@ class MarketDataRestController(
             }
             return sLog
         }
-
-    private fun quoteDto(quoteRecord: QuoteRecord, chartData: ChartDataDto) =
-        QuoteDto(
-            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!).subIndustry?.toString() ?: "",
-            quoteRecord.symbol,
-            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).name,
-            appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol).wkn,
-            quoteRecord.regularMarketPrice.toFloat(),
-            quoteRecord.regularMarketChange,
-            quoteRecord.regularMarketChangePercent,
-            quoteRecord.currency,
-            quoteRecord.fullExchangeName,
-            quoteRecord.marketCap,
-            quoteRecord.fiftyDayAverage,
-            quoteRecord.fiftyDayAverageChangePercent,
-            quoteRecord.twoHundredDayAverage,
-            quoteRecord.twoHundredDayAverageChangePercent,
-            quoteRecord.fiftyTwoWeekHigh,
-            quoteRecord.fiftyTwoWeekHighChangePercent,
-            quoteRecord.fiftyTwoWeekLow,
-            quoteRecord.fiftyTwoWeekLowChangePercent,
-            quoteRecord.quoteType,
-            listOf(chartData)
-        )
 
     private fun compare(a: QuoteRecord, b: QuoteRecord, sortProperty: String?, sortDirection: String?) =
         when (sortProperty){

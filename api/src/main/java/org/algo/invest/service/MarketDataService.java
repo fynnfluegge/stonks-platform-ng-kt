@@ -86,8 +86,7 @@ public class MarketDataService {
 			mono.flatMapMany(it -> Flux.fromIterable(it.getQuoteResponse().getResult()))
 			.doOnNext(quoteRecord -> {
 				if (realtimeStockRecords.containsKey(quoteRecord.getSymbol()))
-					if (realtimeStockRecords.get(quoteRecord.getSymbol()).getRegularMarketPrice().round(mathContext).floatValue()
-							!= quoteRecord.getRegularMarketPrice().round(mathContext).floatValue()) {
+					if (realtimeStockRecords.get(quoteRecord.getSymbol()).getRegularMarketPrice() != quoteRecord.getRegularMarketPrice()) {
 						realtimeStockRecords.put(quoteRecord.getSymbol(), quoteRecord);
 						sink.tryEmitNext(quoteRecord);
 					}
