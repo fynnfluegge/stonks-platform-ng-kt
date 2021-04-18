@@ -12,7 +12,6 @@ import java.util.stream.Collectors
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.stonkmonitor.model.*
-import yahoofinance.histquotes.HistoricalQuote
 import java.io.FileInputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -128,18 +127,18 @@ class MarketDataRestController(
 
     private fun getQuoteDto(quoteRecord: QuoteRecord): QuoteDto {
         val chartData = ChartDataDto(
-            if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol) && marketDataService.historyQuotes.getValue(quoteRecord.symbol).size > 10)
+            if (marketDataService.historyQuotes.containsKey(quoteRecord.symbol) && marketDataService.historyQuotes.getValue(quoteRecord.symbol!!).size > 10)
                 marketDataService.historyQuotes[quoteRecord.symbol]!!.entries.toList().takeLast(10)
                     .stream().map { x: Map.Entry<Calendar?, HistoricalQuote>
-                        -> HistoricalDayCandle(x.value.open.toFloat(), x.value.low.toFloat(), x.value.high.toFloat(), x.value.close.toFloat()) }
+                        -> HistoricalDayCandle(x.value.open!!.toFloat(), x.value.low!!.toFloat(), x.value.high!!.toFloat(), x.value.close!!.toFloat()) }
                     .collect(Collectors.toList())
             else ArrayList())
         if (chartData.data?.size == 10 && chartData.data[9].close == quoteRecord.regularMarketPreviousClose) {
             Collections.rotate(chartData.data, -1)
             chartData.data.removeLast()
-            chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice.toFloat()))
+            chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice))
         }
-        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!))
+        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol))
     }
 
     @RequestMapping(value = ["/quote/{symbol}"], method = [RequestMethod.GET])
@@ -148,7 +147,7 @@ class MarketDataRestController(
         val chartData = ChartDataDto(
             if (marketDataService.historyQuotes.containsKey(symbol) && marketDataService.historyQuotes.getValue(symbol).size >= 200)
                 marketDataService.historyQuotes.getValue(symbol).values.toList().takeLast(200)
-                    .stream().map { HistoricalDayCandle(it.open.toFloat(), it.low.toFloat(), it.high.toFloat(), it.close.toFloat()) }
+                    .stream().map { HistoricalDayCandle(it.open!!.toFloat(), it.low!!.toFloat(), it.high!!.toFloat(), it.close!!.toFloat()) }
                     .collect(Collectors.toList())
             else ArrayList()
         )

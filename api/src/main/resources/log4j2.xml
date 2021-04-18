@@ -5,7 +5,7 @@
             <PatternLayout
                 pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
         </Console>
-        <File name="LogFile" fileName="logs/bot-app.log">
+        <File name="LogFile" fileName="logs/app.log">
         	<PatternLayout pattern="[%-5level] %d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
     	</File>
     </Appenders>

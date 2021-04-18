@@ -10,7 +10,6 @@
 	<maven.compiler.target>1.8</maven.compiler.target>
 	<spring-boot.version>2.4.2</spring-boot.version>
 	<maven.test.skip>true</maven.test.skip>
-	<java.version>14.0.1</java.version>
     <kotlin.version>1.4.30-RC</kotlin.version>
   </properties>
   
@@ -24,37 +23,32 @@
   </repositories>
   
   <dependencies>
-      <dependency>
-          <groupId>com.yahoofinance-api</groupId>
-          <artifactId>YahooFinanceAPI</artifactId>
-          <version>3.15.0</version>
-      </dependency>
-	  <dependency>
-		  <groupId>com.squareup.okhttp</groupId>
-		  <artifactId>okhttp</artifactId>
-		  <version>2.7.5</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>org.apache.logging.log4j</groupId>
-		  <artifactId>log4j-web</artifactId>
-		  <version>2.13.3</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>com.google.code.gson</groupId>
-		  <artifactId>gson</artifactId>
-		  <version>2.8.5</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>com.fasterxml.jackson.core</groupId>
-		  <artifactId>jackson-databind</artifactId>
-		  <version>2.11.0</version>
-	  </dependency>
-	<dependency>
-	  <groupId>org.projectlombok</groupId>
-	  <artifactId>lombok</artifactId>
-	  <version>1.18.12</version>
-	  <scope>provided</scope>
-	</dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>2.7.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-web</artifactId>
+      <version>2.13.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.12</version>
+      <scope>provided</scope>
+    </dependency>
 	
 	<!--  Spring Boot -->
 	<dependency>
@@ -159,7 +153,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.stonkmonitor.AlgoInvestApp</mainClass>
+                    <mainClass>org.stonkmonitor.StonkMonitorApp</mainClass>
                 </configuration>
                 <executions>
                     <execution>

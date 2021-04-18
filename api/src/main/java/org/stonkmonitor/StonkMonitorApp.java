@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class AlgoInvestApp {
+public class StonkMonitorApp {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(AlgoInvestApp.class, args);
+		SpringApplication.run(StonkMonitorApp.class, args);
 	}
 }
