@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.algoinvest</groupId>
-  <artifactId>algo-invest-core</artifactId>
+  <groupId>org.stonk-monitor</groupId>
+  <artifactId>stonk-api</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
   
@@ -159,7 +159,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.algo.invest.AlgoInvestApp</mainClass>
+                    <mainClass>org.stonkmonitor.AlgoInvestApp</mainClass>
                 </configuration>
                 <executions>
                     <execution>
