@@ -182,5 +182,6 @@ enum class SubIndustry {
     CONSUMER,
     SERVICES,
     OTHER,
-    PUMPNDUMP
+    PUMPNDUMP,
+    SHIPPING
 }

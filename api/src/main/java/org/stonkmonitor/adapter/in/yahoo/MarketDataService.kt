@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.Consumer
-import javax.annotation.PostConstruct
 
 @Service
 class MarketDataService(
@@ -36,16 +35,16 @@ class MarketDataService(
 ) {
     var realtimeStockRecords: MutableMap<String, QuoteRecord> = ConcurrentHashMap()
     var historyQuotes: MutableMap<String, MutableMap<Calendar, HistoricalQuote>> = ConcurrentHashMap()
-    lateinit var latestQuotes: Flux<QuoteRecord>
-    lateinit var sink: Many<QuoteRecord>
-    lateinit var mono: Mono<YahooFinanceResponse>
+    var latestQuotes: Flux<QuoteRecord>
+    var sink: Many<QuoteRecord> = Sinks.many().replay().latest()
+    var mono: Mono<YahooFinanceResponse>
+
     private val webClient: WebClient = webClientBuilder
         .baseUrl("https://query1.finance.yahoo.com/v7/finance")
         .exchangeStrategies(exchangeStrategies)
         .build()
 
     init {
-        sink = Sinks.many().replay().latest()
         latestQuotes = sink.asFlux()
         mono = webClient
             .get()
@@ -120,7 +119,6 @@ class MarketDataService(
 
     @Throws(IOException::class)
     private fun getHistory(vSymbol: String, vFrom: Calendar): List<HistoricalQuote> {
-        log.info("History: $vSymbol")
         val result: MutableList<HistoricalQuote> = ArrayList()
         val dateTo = Calendar.getInstance()
         if (vFrom.after(dateTo)) {
@@ -222,7 +220,6 @@ fun parseHistDate(date: String): Calendar? {
             return c
         }
     } catch (var3: ParseException) {
-        log.warn("Failed to parse hist date: $date")
         log.debug("Failed to parse hist date: $date", var3)
     }
     return null
@@ -240,7 +237,6 @@ fun getLong(data: String): Long? {
         try {
             result = cleanNumberString(data).toLong()
         } catch (var3: NumberFormatException) {
-            log.warn("Failed to parse: $data")
             log.debug("Failed to parse: $data", var3)
         }
         result
@@ -272,7 +268,6 @@ fun getBigDecimal(data: String): BigDecimal? {
             }
             result = BigDecimal(value).multiply(multiplier)
         } catch (var4: NumberFormatException) {
-            log.warn("Failed to parse: $data")
             log.debug("Failed to parse: $data", var4)
         }
         result

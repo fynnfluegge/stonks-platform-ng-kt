@@ -5,5 +5,5 @@ RUN mvn -f /home/app/pom.xml clean install
 
 FROM openjdk:14-jdk-alpine
 VOLUME /tmp
-COPY --from=build /home/app/target/algo-invest-core-0.0.1.jar target/app.jar
+COPY --from=build /home/app/target/stonk-api-0.0.1.jar target/app.jar
 ENTRYPOINT ["java","-jar","target/app.jar"]

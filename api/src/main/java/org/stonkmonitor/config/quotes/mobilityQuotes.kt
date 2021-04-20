@@ -34,5 +34,10 @@ val mobilityQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["VOL1.F"] = QuoteSymbolMetaData("VOL1.F", "Volvo", "871229", Industry.MOBILITY, SubIndustry.AUTOMOBILE)
         symbolNameMapping["GELYF"] = QuoteSymbolMetaData("GELYF", "Geely", "A0CACX", Industry.MOBILITY, SubIndustry.AUTOMOBILE)
 
+        symbolNameMapping["AMKBY"] = QuoteSymbolMetaData("AMKBY", "Maersk", "", Industry.MOBILITY, SubIndustry.SHIPPING)
+        symbolNameMapping["HLAG.DE"] = QuoteSymbolMetaData("HLAG.DE", "Hapag-Lloyd", "", Industry.MOBILITY, SubIndustry.SHIPPING)
+        symbolNameMapping["ZIM"] = QuoteSymbolMetaData("ZIM", "ZIM", "", Industry.MOBILITY, SubIndustry.SHIPPING)
+        symbolNameMapping["NMM"] = QuoteSymbolMetaData("NMM", "Navios", "", Industry.MOBILITY, SubIndustry.SHIPPING)
+
         return symbolNameMapping
     }

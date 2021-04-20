@@ -22,8 +22,9 @@ val industrialQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["RIO"] = QuoteSymbolMetaData("RIO", "Rio Tinto", "852147", Industry.INDUSTRIAL, SubIndustry.MATERIALS)
         symbolNameMapping["HEI.DE"] = QuoteSymbolMetaData("HEI.DE", "Heidelberg Cement", "604700", Industry.INDUSTRIAL, SubIndustry.MATERIALS)
         symbolNameMapping["STLD"] = QuoteSymbolMetaData("STLD", "Steel Dynamics", "903772", Industry.INDUSTRIAL, SubIndustry.MATERIALS)
+        symbolNameMapping["IMPUY"] = QuoteSymbolMetaData(symbol = "IMPUY", name = "Impala", industry = Industry.INDUSTRIAL, subIndustry = SubIndustry.MATERIALS)
         symbolNameMapping["RPL.F"] = QuoteSymbolMetaData("RPL.F", "UPM-Kymmene", "881026", Industry.INDUSTRIAL, SubIndustry.MATERIALS)
-        symbolNameMapping["GOLD"] = QuoteSymbolMetaData("GOLD", "Barrick Gold", "870450", Industry.INDUSTRIAL, SubIndustry.MATERIALS)
+
         symbolNameMapping["BAS.DE"] = QuoteSymbolMetaData("BAS.DE", "BASF", "BASF11", Industry.INDUSTRIAL, SubIndustry.CHEMICALS)
         symbolNameMapping["AIL.DE"] = QuoteSymbolMetaData("AIL.DE", "Air Liquide", "850133", Industry.INDUSTRIAL, SubIndustry.CHEMICALS)
         symbolNameMapping["LIN.DE"] = QuoteSymbolMetaData("LIN.DE", "Linde", "A2DSYC", Industry.INDUSTRIAL, SubIndustry.CHEMICALS)

@@ -22,6 +22,7 @@ val financeQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["UNH"] = QuoteSymbolMetaData("UNH", "UnitedHealth Group", "869561", Industry.FINANCE, SubIndustry.BANK)
         symbolNameMapping["LMND"] = QuoteSymbolMetaData("LMND", "Lemonade", "A2P7Z1", Industry.FINANCE, SubIndustry.BANK)
         symbolNameMapping["AFRM"] = QuoteSymbolMetaData("AFRM", "Affirm", "A2QL1G", Industry.FINANCE, SubIndustry.BANK)
+        symbolNameMapping["SLM"] = QuoteSymbolMetaData("SLM", "Slm", "", Industry.FINANCE, SubIndustry.BANK)
 
         symbolNameMapping["BLK"] = QuoteSymbolMetaData("BLK", "Blackrock", "928193", Industry.FINANCE, SubIndustry.EXCHANGE)
         symbolNameMapping["MSCI"] = QuoteSymbolMetaData("MSCI", "MSCI", "A0M63R", Industry.FINANCE, SubIndustry.EXCHANGE)
