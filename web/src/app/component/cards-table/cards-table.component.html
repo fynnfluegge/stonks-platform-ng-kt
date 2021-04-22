@@ -90,7 +90,7 @@
           <div *ngIf="quoteRecord.trailingAnnualDividendYield != 0.0" style="text-align: center;">
             dividend {{ (quoteRecord.trailingAnnualDividendYield).toPrecision(3) * 100 | number:'1.0-2' }} %
           </div>
-          <div *ngIf="quoteRecord.earningsDate != '1970-01-01'" style="text-align: center;">
+          <div *ngIf="quoteRecord.earningsDate != '01-01-1970'" style="text-align: center;">
             quart. rep. {{ quoteRecord.earningsDate }}
           </div>
         </div>
