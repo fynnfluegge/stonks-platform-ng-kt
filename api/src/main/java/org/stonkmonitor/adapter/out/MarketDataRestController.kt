@@ -138,7 +138,7 @@ class MarketDataRestController(
             chartData.data.removeLast()
             chartData.data.add(HistoricalDayCandle(quoteRecord.regularMarketOpen, quoteRecord.regularMarketDayLow, quoteRecord.regularMarketDayHigh, quoteRecord.regularMarketPrice))
         }
-        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol))
+        return quoteRecord.toDto(chartData, appConfig.quoteSymbolMetaData.getValue(quoteRecord.symbol!!))
     }
 
     @RequestMapping(value = ["/quote/{symbol}"], method = [RequestMethod.GET])

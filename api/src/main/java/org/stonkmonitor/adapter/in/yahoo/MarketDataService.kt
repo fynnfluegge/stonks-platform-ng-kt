@@ -59,7 +59,7 @@ class MarketDataService(
 
         // Init RealtimeMarketDataController.RealtimeStockRecords
         Objects.requireNonNull(mono.block()).quoteResponse.result.forEach(Consumer { quoteRecord: QuoteRecord ->
-            realtimeStockRecords[quoteRecord.symbol] = quoteRecord
+            realtimeStockRecords[quoteRecord.symbol!!] = quoteRecord
         })
     }
 
@@ -72,7 +72,7 @@ class MarketDataService(
                         if (realtimeStockRecords[quoteRecord.symbol]!!.regularMarketPrice != quoteRecord.regularMarketPrice ||
                             realtimeStockRecords[quoteRecord.symbol]!!.preMarketChange != quoteRecord.preMarketChange ||
                             realtimeStockRecords[quoteRecord.symbol]!!.postMarketChange != quoteRecord.postMarketChange) {
-                        realtimeStockRecords[quoteRecord.symbol] = quoteRecord
+                        realtimeStockRecords[quoteRecord.symbol!!] = quoteRecord
                         sink.tryEmitNext(quoteRecord)
                     }
                 }.subscribe()
