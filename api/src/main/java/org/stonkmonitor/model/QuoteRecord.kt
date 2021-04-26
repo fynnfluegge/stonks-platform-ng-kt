@@ -82,7 +82,7 @@ fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolM
     QuoteDto(
         subIndustry = quoteSymbolMetaData.subIndustry?.toString() ?: "",
         symbol = symbol,
-        name = displayName ?: quoteSymbolMetaData.name,
+        name = displayName ?: quoteSymbolMetaData.name ?: quoteSymbolMetaData.symbol,
         wkn = quoteSymbolMetaData.wkn,
         currency = currency,
         marketCap = marketCap,
@@ -139,7 +139,8 @@ enum class Industry {
     FOOD,
     RETAIL,
     ENERGY,
-    OTHER
+    OTHER,
+    WUCHT
 }
 
 enum class SubIndustry {

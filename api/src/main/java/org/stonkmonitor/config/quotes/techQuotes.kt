@@ -34,6 +34,7 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["QRVO"] = QuoteSymbolMetaData("QRVO", "Qorvo", "A12CY9", Industry.TECH, SubIndustry.SEMICONDUCTOR)
         symbolNameMapping["ASME.DE"] = QuoteSymbolMetaData("ASME.DE", "ASML", "A1J4U4", Industry.TECH, SubIndustry.SEMICONDUCTOR)
         symbolNameMapping["UCTT"] = QuoteSymbolMetaData("UCTT", "Ultra Clean Holding", "", Industry.TECH, SubIndustry.SEMICONDUCTOR)
+        symbolNameMapping["SNPS"] = QuoteSymbolMetaData("SNPS", "Synopsis", "", Industry.TECH, SubIndustry.SEMICONDUCTOR)
 
         symbolNameMapping["CRM"] = QuoteSymbolMetaData("CRM", "Salesforce", "A0B87V", Industry.TECH, SubIndustry.SAAS)
         symbolNameMapping["NOW"] = QuoteSymbolMetaData("NOW", "ServiceNow", "A1JX4P", Industry.TECH, SubIndustry.SAAS)

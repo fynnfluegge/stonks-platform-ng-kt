@@ -2,7 +2,7 @@ package org.stonkmonitor.adapter.out
 
 import org.stonkmonitor.adapter.`in`.yahoo.MarketDataService
 import org.stonkmonitor.config.AppConfig
-import org.stonkmonitor.config.watchlistQuotes
+import org.stonkmonitor.config.lists.wuchtlistQuotes
 import org.stonkmonitor.model.ChartDataDto
 import org.stonkmonitor.model.HistoricalDayCandle
 import reactor.core.publisher.Flux
@@ -229,7 +229,7 @@ class MarketDataRestController(
         appConfig.quoteSymbolMetaData.keys
             .asSequence()
             .map { marketDataService.realtimeStockRecords.getValue(it) }
-            .filter{ watchlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
+            .filter{ wuchtlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
             .map{ getQuoteDto(it) }
             .toList()
 }

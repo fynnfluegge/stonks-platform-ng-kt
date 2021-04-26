@@ -107,7 +107,7 @@ class MarketDataService(
         for (symbol in appConfig.quoteSymbolMetaData.keys) {
             var historicalQuotes: List<HistoricalQuote> = ArrayList()
             try {
-                Thread.sleep(1000)
+                Thread.sleep(100)
                 historicalQuotes = getHistory(symbol, cal)
             } catch (e: Exception) {
                 log.info(e.message)
@@ -119,6 +119,7 @@ class MarketDataService(
 
     @Throws(IOException::class)
     private fun getHistory(vSymbol: String, vFrom: Calendar): List<HistoricalQuote> {
+        log.info("history date: $vSymbol")
         val result: MutableList<HistoricalQuote> = ArrayList()
         val dateTo = Calendar.getInstance()
         if (vFrom.after(dateTo)) {

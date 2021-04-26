@@ -29,6 +29,8 @@ const routes: Routes = [
   { path: 'cards/food', component: CardsTableComponent },
   { path: 'list/other', component: BaseTableComponent },
   { path: 'cards/other', component: CardsTableComponent },
+  { path: 'list/wucht', component: BaseTableComponent },
+  { path: 'cards/wucht', component: CardsTableComponent },
   { path: 'performance', component: PerformanceComponent },
 ];
 
