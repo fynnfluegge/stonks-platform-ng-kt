@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'cryptobotweb'`, () => {
+  it(`should have as title 'stonk-monitor-web'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('cryptobotweb');
+    expect(app.title).toEqual('stonk-monitor-web');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('cryptobotweb app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('stonk-monitor-web app is running!');
   });
 });

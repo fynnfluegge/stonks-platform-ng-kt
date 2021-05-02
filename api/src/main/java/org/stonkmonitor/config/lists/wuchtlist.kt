@@ -5,16 +5,16 @@ import org.stonkmonitor.model.QuoteSymbolMetaData
 
 val wuchtlistQuotes: Map<String, QuoteSymbolMetaData> =
     linkedMapOf(
-        "2SV.F" to QuoteSymbolMetaData(name = "ZIM", industry = Industry.WUCHT),
+        "2SV.F" to QuoteSymbolMetaData(name = "ZIM Shipping", symbol = "ZIM", industry = Industry.WUCHT),
         "DVW1.F" to QuoteSymbolMetaData(name = "Danaos", industry = Industry.WUCHT),
-        "HLAG.F" to QuoteSymbolMetaData(name = "Hapag", industry = Industry.WUCHT),
+        "HLAG.F" to QuoteSymbolMetaData(name = "Hapag-Lloyd", industry = Industry.WUCHT),
         "NMM" to QuoteSymbolMetaData(name = "Navios", industry = Industry.WUCHT),
         "089.F" to QuoteSymbolMetaData(name = "Cambium Networks", industry = Industry.WUCHT),
         "COQ.F" to QuoteSymbolMetaData(name = "Copper Mountain Mining", industry = Industry.WUCHT),
         "OUW.F" to QuoteSymbolMetaData(name = "Capstone Mining", industry = Industry.WUCHT),
         "FPMB.F" to QuoteSymbolMetaData(name = "FCX", industry = Industry.WUCHT),
         "HO3A.F" to QuoteSymbolMetaData(symbol = "HOV", industry = Industry.WUCHT),
-        "PR4.F" to QuoteSymbolMetaData(name = "Protector Forsikring ASA", industry = Industry.WUCHT),
+        "PR4.F" to QuoteSymbolMetaData(name = "Protector Forsikring", industry = Industry.WUCHT),
         "TZ4.F" to QuoteSymbolMetaData(name = "Titan International", industry = Industry.WUCHT),
         "SZ2.F" to QuoteSymbolMetaData(name = "Signet Jeweliers", industry = Industry.WUCHT),
         "NWF.F" to QuoteSymbolMetaData(name = "Western Forest Products", industry = Industry.WUCHT),
@@ -35,7 +35,6 @@ val wuchtlistQuotes: Map<String, QuoteSymbolMetaData> =
         "RIK.F" to QuoteSymbolMetaData(name = "RCi Hospitality", industry = Industry.WUCHT),
         "SM1.F" to QuoteSymbolMetaData(name = "SLM Corp", industry = Industry.WUCHT),
         "SD5.F" to QuoteSymbolMetaData(name = "Steel Dynamic", industry = Industry.WUCHT),
-        "WHC.F" to QuoteSymbolMetaData(name = "Weyerhaeuser", industry = Industry.WUCHT),
         "WHC.F" to QuoteSymbolMetaData(name = "Weyerhaeuser", industry = Industry.WUCHT),
         "MT" to QuoteSymbolMetaData(name = "ArcelorMittal", industry = Industry.WUCHT),
     )

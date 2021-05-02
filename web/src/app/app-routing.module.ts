@@ -6,7 +6,7 @@ import { CardsTableComponent } from './component/cards-table/cards-table.compone
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list/indices' },
+  { path: '', redirectTo: 'list/indices', pathMatch: 'full' },
   { path: 'list/indices', component: BaseTableComponent },
   { path: 'cards/indices', component: CardsTableComponent },
   { path: 'list/tech', component: BaseTableComponent },

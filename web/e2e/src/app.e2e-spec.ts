@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('cryptobotweb app is running!');
+    expect(page.getTitleText()).toEqual('stonk-monitor-web app is running!');
   });
 
   afterEach(async () => {
