@@ -15,26 +15,69 @@
 
 The project is divided into two services, *api* and *web*.
 The api service fetches realtime and historical data from *yahoo finance* and exposes a rest stream api
-to the web service which is an Angular web application for displaying and updating the streamed data.
+to the web app which is an Angular web application for displaying and updating the streamed data.
+
+
+![](doc/list-view.png)
+
+![](doc/cards-view.png)
+
+---
 
 ## How To Run
 ### Run on local machine with docker
 Install docker.
 Build the api service with *mvn clean install* in api directory.
-Build the web service with *ng build --prod* in web directory.
+Build the web app with *ng build --prod* in web directory.
 Create Docker images with docker-compose in project root.
 Create docker containers and run them with *docker run*.
 
 
 ### Run on local machine in debug mode
-Start api service by run *StonkMonitorApp*. Start web service with ng serve in the web directory.
+Start api service by run *StonkMonitorApp*. Start web app with ng serve in the web directory.
 
-### API Specification
-/quote/{symbol} - single symbol data  
-/stream/quotes/{industry} - stream of all industry specific quotes  
-/stream/quotes/{industry}/{category} - stream of subindustry quotes  
-/stream/quotes/{industry}/{page} - stream of industry quotes with paging  
-/stream/quotes/{industry}/{page}?{sortProperty}&{sortDirection} - stream of sorted indsutry quotes with paging   
+## API Specification
+
+---
+```
+/quote/{symbol}
+```   
+**GET** single quote symbol data  
+**Param**: ```symbol=[alphanumeric]```
+---
+```
+/stream/quotes/{industry}
+```  
+**GET** stream of all industry specific quotes  
+**Param:** ```industries:[INDICES, TECH, HEALTH, INDUSTRIAL, MEDIA, MOBILITY,
+    FINANCE, FOOD, RETAIL, ENERGY]```
+---
+```
+/stream/quotes/{industry}/{category}
+```  
+**GET** stream of subindustry quotes  
+**Param**: ```categories:[ETF, FANG, MANUFACTURING, SEMICONDUCTOR, ECOMMERCE,
+    SOFTWARE, CLOUD, SAAS, SECURITY, FOOD, GASTRONOMY, MATERIALS,
+    CHEMICALS, TELECOMMUNICATION, REALESTATE, PHARMA, MEDTECH, BIOTECH,
+    DELIVERY, APPAREL, SPORTS, CONVENTIONAL, RENEWABLE, AKKU, AEROSPACE,
+    TRAVEL, AUTOMOBILE, PAYMENT, BANK, EXCHANGE, RENTAL, RECYCLING,
+    GAMES, TELEVISION, MUSIC, CHINA, CONSUMER, SERVICES, OTHER, 
+    SHIPPING]``` 
+---
+```
+/stream/quotes/{industry}/{page}
+```   
+**GET** stream of industry quotes with paging  
+**Param**: ```page=[integer]``` 
+---
+```
+/stream/quotes/{industry}/{page}?{sortProperty}&{sortDirection}
+```
+**GET** stream of sorted industry quotes with paging:  
+**Param**: ```sortProperties:=[name, dayChangePercent, fiftyDayAverageChangePercent,
+twoHundredDayAverageChangePercent, fiftyTwoWeekLowChangePercent, fiftyTwoWeekHighChangePercent, marketCap]```  
+**Param**: ```sortDirection:[ascending, descending]```
+
 
 
 
