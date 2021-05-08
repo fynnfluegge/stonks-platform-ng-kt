@@ -41,26 +41,27 @@ Start api service by run ```StonkMonitorApp```. Start web app with ```ng serve``
 
 ## API Specification
 
----
-
 ```
 /quote/{symbol}
 ```
 
-GET single quote symbol data  
-Param: ```symbol=[alphanumeric]```
+**GET** single quote symbol data  
+**Param**: ```symbol=[alphanumeric]```
 
 ---
 ```
 /stream/quotes/{industry}
 ```  
+
 **GET** stream of all industry specific quotes  
 **Param:** ```industries:[INDICES, TECH, HEALTH, INDUSTRIAL, MEDIA, MOBILITY,
 FINANCE, FOOD, RETAIL, ENERGY]```
+
 ---
 ```
 /stream/quotes/{industry}/{category}
 ```  
+
 **GET** stream of subindustry quotes  
 **Param**: ```categories:[ETF, FANG, MANUFACTURING, SEMICONDUCTOR, ECOMMERCE,
 SOFTWARE, CLOUD, SAAS, SECURITY, FOOD, GASTRONOMY, MATERIALS,
@@ -69,20 +70,25 @@ DELIVERY, APPAREL, SPORTS, CONVENTIONAL, RENEWABLE, AKKU, AEROSPACE,
 TRAVEL, AUTOMOBILE, PAYMENT, BANK, EXCHANGE, RENTAL, RECYCLING,
 GAMES, TELEVISION, MUSIC, CHINA, CONSUMER, SERVICES, OTHER,
 SHIPPING]```
+
 ---
 ```
 /stream/quotes/{industry}/{page}
 ```   
+
 **GET** stream of industry quotes with paging  
 **Param**: ```page=[integer]```
+
 ---
 ```
 /stream/quotes/{industry}/{page}?{sortProperty}&{sortDirection}
 ```
+
 **GET** stream of sorted industry quotes with paging:  
 **Param**: ```sortProperties:=[name, dayChangePercent, fiftyDayAverageChangePercent,
 twoHundredDayAverageChangePercent, fiftyTwoWeekLowChangePercent, fiftyTwoWeekHighChangePercent, marketCap]```  
 **Param**: ```sortDirection:[ascending, descending]```
+
 
 
 
