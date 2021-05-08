@@ -42,11 +42,14 @@ Start api service by run ```StonkMonitorApp```. Start web app with ```ng serve``
 ## API Specification
 
 ---
+
 ```
 /quote/{symbol}
-```   
-**GET** single quote symbol data  
-**Param**: ```symbol=[alphanumeric]```
+```
+
+GET single quote symbol data  
+Param: ```symbol=[alphanumeric]```
+
 ---
 ```
 /stream/quotes/{industry}
