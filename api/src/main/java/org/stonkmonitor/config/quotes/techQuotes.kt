@@ -60,7 +60,6 @@ val techQuotes: Map<String, QuoteSymbolMetaData>
         symbolNameMapping["MDLA"] = QuoteSymbolMetaData("MDLA", "Medallia", "A2PL9R", Industry.TECH, SubIndustry.SAAS)
         symbolNameMapping["FROG"] = QuoteSymbolMetaData("FROG", "JFrog", "A2QCJN", Industry.TECH, SubIndustry.SAAS)
         symbolNameMapping["TWOU"] = QuoteSymbolMetaData("TWOU", "2U", "A1XEYD", Industry.TECH, SubIndustry.SAAS)
-        symbolNameMapping["PS"] = QuoteSymbolMetaData("PS", "Pluralsight", "A2JL45", Industry.TECH, SubIndustry.SAAS)
         symbolNameMapping["XNET"] = QuoteSymbolMetaData("XNET", "Xunlei", "A1JJL2", Industry.TECH, SubIndustry.SAAS)
 
         symbolNameMapping["SAP.DE"] = QuoteSymbolMetaData("SAP.DE", "SAP", "716460", Industry.TECH, SubIndustry.SOFTWARE)
