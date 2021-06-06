@@ -83,7 +83,6 @@ fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolM
         subIndustry = quoteSymbolMetaData.subIndustry?.toString() ?: "",
         symbol = symbol,
         name = displayName ?: quoteSymbolMetaData.name ?: quoteSymbolMetaData.symbol,
-        wkn = quoteSymbolMetaData.wkn,
         currency = currency,
         marketCap = marketCap,
         priceToBookRatio = priceToBook,
@@ -119,7 +118,6 @@ fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolM
 data class QuoteSymbolMetaData(
         val symbol: String? = null,
         val name: String? = null,
-        val wkn: String? = null,
         val industry: Industry? = null,
         val subIndustry: SubIndustry? = null
 )
@@ -138,9 +136,7 @@ enum class Industry {
     FINANCE,
     FOOD,
     RETAIL,
-    ENERGY,
-    OTHER,
-    WUCHT
+    ENERGY
 }
 
 enum class SubIndustry {
