@@ -2,7 +2,9 @@ version: "3.9"
 services:
   web:
     build: ./web/.
-    image: eu.gcr.io/${GCPID}/web:${IMAGE_TAG}
+    # image: eu.gcr.io/${GCPID}/web:${IMAGE_TAG}
+    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/web:${IMAGE_TAG}
   api:
     build: ./api/.
-    image: eu.gcr.io/${GCPID}/api:${IMAGE_TAG}
+    # image: eu.gcr.io/${GCPID}/api:${IMAGE_TAG}
+    image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:${IMAGE_TAG}

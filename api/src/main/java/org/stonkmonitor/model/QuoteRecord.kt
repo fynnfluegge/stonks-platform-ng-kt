@@ -116,22 +116,22 @@ fun QuoteRecord.toDto(chartData: ChartDataDto, quoteSymbolMetaData: QuoteSymbolM
     )
 
 data class QuoteSymbolMetaData(
-        val symbol: String? = null,
-        val name: String? = null,
-        val industry: Industry? = null,
+        val symbol: String,
+        val name: String,
+        val industry: Industry,
         val subIndustry: SubIndustry? = null
 )
 
 enum class QuoteType {
-    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE
+    EQUITY, CURRENCY, CRYPTOCURRENCY, INDEX, ETF, FUTURE, ECNQUOTE
 }
 
 enum class Industry {
     INDICES,
+    TECH,
     HEALTH,
     INDUSTRIAL,
     MOBILITY,
-    TECH,
     MEDIA,
     FINANCE,
     FOOD,
@@ -175,10 +175,15 @@ enum class SubIndustry {
     GAMES,
     TELEVISION,
     MUSIC,
-    CHINA,
     CONSUMER,
     SERVICES,
     OTHER,
     PUMPNDUMP,
-    SHIPPING
+    SHIPPING,
+    CONGLOMERATE,
+    TRANSPORT,
+    INVESTMENT,
+    INSURANCE,
+    BEVERAGES,
+    RETAIL
 }
