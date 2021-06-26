@@ -8,3 +8,5 @@ services:
     build: ./api/.
     # image: eu.gcr.io/${GCPID}/api:${IMAGE_TAG}
     image: registry-intl.eu-central-1.aliyuncs.com/invest-platform-default/api:${IMAGE_TAG}
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
