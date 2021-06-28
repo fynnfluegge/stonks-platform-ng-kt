@@ -2,6 +2,7 @@ package org.stonkmonitor.adapter.`in`.yahoo
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationListener
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.ExchangeStrategies
@@ -10,6 +11,7 @@ import org.springframework.web.util.UriBuilder
 import org.stonkmonitor.config.AppConfig
 import org.stonkmonitor.model.HistoricalQuote
 import org.stonkmonitor.model.QuoteRecord
+import org.stonkmonitor.model.TickerAddedEvent
 import org.stonkmonitor.model.YahooFinanceResponse
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -32,7 +34,7 @@ class MarketDataService(
     webClientBuilder: WebClient.Builder,
     exchangeStrategies: ExchangeStrategies,
     private val appConfig: AppConfig
-) {
+): ApplicationListener<TickerAddedEvent> {
     var realtimeStockRecords: MutableMap<String, QuoteRecord> = ConcurrentHashMap()
     var historyQuotes: MutableMap<String, MutableMap<Calendar, HistoricalQuote>> = ConcurrentHashMap()
     var latestQuotes: Flux<QuoteRecord>
@@ -167,6 +169,29 @@ class MarketDataService(
             getBigDecimal(data[5]),
             getLong(data[6])
         )
+    }
+
+    override fun onApplicationEvent(event: TickerAddedEvent) {
+        appConfig.allQuoteSymbolsUrl += ",${event.ticker.symbol}"
+
+        val newMono = webClient
+            .get()
+            .uri { uriBuilder: UriBuilder ->
+                uriBuilder.path("/quote")
+                    .queryParam("symbols", appConfig.allQuoteSymbolsUrl).build()
+            }
+            .retrieve()
+            .bodyToMono(YahooFinanceResponse::class.java)
+            .doOnError { throwable: Throwable? -> log.error("Failed for some reason", throwable) }
+            .onErrorReturn(YahooFinanceResponse())
+
+        // Init RealtimeMarketDataController.RealtimeStockRecords
+        Objects.requireNonNull(newMono.block()).quoteResponse.result.forEach(Consumer { quoteRecord: QuoteRecord ->
+            realtimeStockRecords[quoteRecord.symbol!!] = quoteRecord
+        })
+
+        appConfig.quoteSymbolMetaData.putIfAbsent(event.ticker.symbol, event.ticker)
+        mono = newMono
     }
 }
 
