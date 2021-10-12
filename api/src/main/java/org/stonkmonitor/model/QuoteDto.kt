@@ -51,3 +51,9 @@ data class HistoricalDayCandle (
     val high: Float,
     val close: Float
 )
+
+data class SectorDto (
+    val industry: Industry,
+    val subIndustry: SubIndustry,
+    var change: Float
+)

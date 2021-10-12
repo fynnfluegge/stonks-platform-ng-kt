@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { PerformanceComponent } from './component/performance/performance.component';
 import { BaseTableComponent } from './component/base-table/base-table.component';
 import { CardsTableComponent } from './component/cards-table/cards-table.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'list/indices', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'list/indices', component: BaseTableComponent },
   { path: 'cards/indices', component: CardsTableComponent },
   { path: 'list/tech', component: BaseTableComponent },

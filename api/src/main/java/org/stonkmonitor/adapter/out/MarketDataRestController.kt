@@ -34,14 +34,14 @@ class MarketDataRestController(
                 .filter { appConfig.quoteSymbolMetaData[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase()) }
                 .map { getQuoteDto(it) })
 
-    @RequestMapping(value = ["/stream/quotes/{industry}/{category}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun quotesByCategory(@PathVariable industry: String, @PathVariable category: String): Flux<QuoteDto> =
+    @RequestMapping(value = ["/stream/quotes/{industry}/{subIndustry}"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    fun quotesByCategory(@PathVariable industry: String, @PathVariable subIndustry: String): Flux<QuoteDto> =
         Mono.just(getQuotes(Industry.valueOf(industry.toUpperCase())))
             .flatMapMany { Flux.fromIterable(it) }
             .mergeWith(marketDataService.latestQuotes
                 .filter { it.quoteType == QuoteType.EQUITY
                     && appConfig.quoteSymbolMetaData[it.symbol]!!.industry == Industry.valueOf(industry.toUpperCase())
-                    && appConfig.quoteSymbolMetaData[it.symbol]!!.subIndustry == SubIndustry.valueOf(category.toUpperCase())
+                    && appConfig.quoteSymbolMetaData[it.symbol]!!.subIndustry == SubIndustry.valueOf(subIndustry.toUpperCase())
                 }
                 .map { getQuoteDto(it) })
 
@@ -223,12 +223,6 @@ class MarketDataRestController(
         }
 
 
-    @RequestMapping(value = ["/stream/quotes/watchlist/Ae8m0X1h"])
-    fun watchlist() =
-        appConfig.quoteSymbolMetaData.keys
-            .asSequence()
-            .map { marketDataService.realtimeStockRecords.getValue(it) }
-//            .filter{ wuchtlistQuotes.containsKey(appConfig.quoteSymbolMetaData[it.symbol]!!.symbol) }
-            .map{ getQuoteDto(it) }
-            .toList()
+    @RequestMapping(value = ["/quote/sectors"])
+    fun sectors() = marketDataService.sectors.values.map { it.values }.flatten()
 }

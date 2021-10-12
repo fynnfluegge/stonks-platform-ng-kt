@@ -9,10 +9,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.UriBuilder
 import org.stonkmonitor.config.AppConfig
-import org.stonkmonitor.model.HistoricalQuote
-import org.stonkmonitor.model.QuoteRecord
-import org.stonkmonitor.model.TickerAddedEvent
-import org.stonkmonitor.model.YahooFinanceResponse
+import org.stonkmonitor.model.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Sinks
@@ -35,10 +32,13 @@ class MarketDataService(
     exchangeStrategies: ExchangeStrategies,
     private val appConfig: AppConfig
 ): ApplicationListener<TickerAddedEvent> {
+
     var realtimeStockRecords: MutableMap<String, QuoteRecord> = ConcurrentHashMap()
     var historyQuotes: MutableMap<String, MutableMap<Calendar, HistoricalQuote>> = ConcurrentHashMap()
+    var sectors: MutableMap<Industry, MutableMap<SubIndustry, SectorDto>> = ConcurrentHashMap()
     var latestQuotes: Flux<QuoteRecord>
-    var sink: Many<QuoteRecord> = Sinks.many().replay().latest()
+
+    private var sink: Many<QuoteRecord> = Sinks.many().replay().latest()
     var mono: Mono<YahooFinanceResponse>
 
     private val webClient: WebClient = webClientBuilder
@@ -62,7 +62,18 @@ class MarketDataService(
         // Init RealtimeMarketDataController.RealtimeStockRecords
         Objects.requireNonNull(mono.block()).quoteResponse.result.forEach(Consumer { quoteRecord: QuoteRecord ->
             realtimeStockRecords[quoteRecord.symbol!!] = quoteRecord
+            if (quoteRecord.quoteType == QuoteType.EQUITY) {
+                if (!sectors.containsKey(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry)) {
+                    sectors[appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry] = ConcurrentHashMap()
+                }
+                if (!sectors[appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry]!!.containsKey(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry)) {
+                    sectors[appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry]!![appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry!!] =
+                        SectorDto(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry, appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry!!, 0.0f)
+                }
+            }
         })
+
+        sectors.values.forEach { it.values.forEach { sectorDto -> sectorDto.change = updateSector(sectorDto.industry, sectorDto.subIndustry) } }
     }
 
     @Scheduled(fixedRate = 2000, initialDelay = 1000)
@@ -74,7 +85,13 @@ class MarketDataService(
                         if (realtimeStockRecords[quoteRecord.symbol]!!.regularMarketPrice != quoteRecord.regularMarketPrice ||
                             realtimeStockRecords[quoteRecord.symbol]!!.preMarketChange != quoteRecord.preMarketChange ||
                             realtimeStockRecords[quoteRecord.symbol]!!.postMarketChange != quoteRecord.postMarketChange) {
+
                         realtimeStockRecords[quoteRecord.symbol!!] = quoteRecord
+
+                        if (quoteRecord.quoteType == QuoteType.EQUITY){
+                            val metaData = appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!
+                            sectors[metaData.industry]!![metaData.subIndustry]?.change = updateSector(metaData.industry, metaData.subIndustry!!)
+                        }
                         sink.tryEmitNext(quoteRecord)
                     }
                 }.subscribe()
@@ -92,7 +109,7 @@ class MarketDataService(
         }
     }
 
-    @Scheduled(initialDelay = 1000, fixedDelay = Long.MAX_VALUE)
+//    @Scheduled(initialDelay = 1000, fixedDelay = Long.MAX_VALUE)
     fun initHistoricalData() {
         for ((key, value) in getYahooHistoricalData(2.592e+10.toLong())) {
             historyQuotes[key] = LinkedHashMap()
@@ -101,6 +118,11 @@ class MarketDataService(
             }
         }
     }
+
+    private fun updateSector(industry: Industry, subIndustry: SubIndustry) =
+        realtimeStockRecords.values.filter {
+            appConfig.quoteSymbolMetaData[it.symbol]!!.industry == industry && appConfig.quoteSymbolMetaData[it.symbol]!!.subIndustry == subIndustry
+        }.fold(0.0f ) { total, item -> total + item.regularMarketChangePercent } / appConfig.quoteSymbolMetaData.values.filter { it.industry == industry && it.subIndustry == subIndustry }.size
 
     private fun getYahooHistoricalData(timeMillis: Long): Map<String, List<HistoricalQuote>> {
         val cal = Calendar.getInstance(Locale.GERMAN)

@@ -23,6 +23,7 @@ import { DialogChartComponent } from './component/dialog-chart/dialog-chart.comp
 import { PerformanceComponent } from './component/performance/performance.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CardsTableComponent } from './component/cards-table/cards-table.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CardsTableComponent } from './component/cards-table/cards-table.compone
     NgbdSortableHeaderDirective,
     DialogChartComponent,
     BaseTableComponent,
+    DashboardComponent,
     PerformanceComponent,
     CardsTableComponent
   ],

@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat
 
 data class QuoteRecord(
     val symbol: String? = null,
-    val industry: Industry? = null,
     val quoteType: QuoteType? = null,
     val region: String? = null,
     val currency: String? = null,
