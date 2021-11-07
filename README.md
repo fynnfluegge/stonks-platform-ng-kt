@@ -14,7 +14,7 @@
 
 #
 
-<p style="text-align: center;"> [Live-Demo](http://47.91.78.219:3000) </p>
+[Live-Demo](http://47.91.78.219:3000)
 
 
 #
