@@ -82,10 +82,17 @@ a.whitelink:hover {
 }
 
 tbody {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   display: block;
   font-size: 14px;
   height: calc(100% - 46px);
   overflow: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+tbody::-webkit-scrollbar {
+  display: none;
 }
 
 thead, tbody tr {
@@ -171,6 +178,12 @@ td.ng-tns-c3-0 {
 
 .mat-card {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px !important;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1160px;
+  }
 }
 
 @media (max-width:768px) {

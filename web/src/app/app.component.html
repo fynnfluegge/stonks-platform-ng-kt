@@ -9,11 +9,18 @@
     <button type="button" mat-button (click)='showCards()'>
       <mat-icon>view_module</mat-icon>
     </button>
+    <!-- WIP bad performance-->
+    <!-- <button type="button" mat-button (click)='showHeatmap()'>
+      <mat-icon>dashboard</mat-icon>
+    </button> -->
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-drawer-container>
   <mat-drawer #drawer mode="over">
+    <div>
+      <a mat-button [routerLink]="'/dashboard'">Dashboard</a>
+    </div>
     <div>
       <a mat-button [routerLink]="viewmode + '/indices'">Indices</a>
     </div>
@@ -43,9 +50,6 @@
     </div>
     <div>
       <a mat-button [routerLink]="viewmode + '/media'">Media</a>
-    </div>
-    <div>
-      <a mat-button [routerLink]="viewmode + '/other'">Misc</a>
     </div>
     <div>
       <a mat-button [routerLink]="'/performance'" [queryParams]="{industry:'none'}">Performance</a>

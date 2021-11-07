@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment'
 import { HttpClient } from '@angular/common/http';
 
@@ -11,7 +12,7 @@ import {
   ApexAxisChartSeries,
   ApexTooltip,
 } from "ng-apexcharts";
-import { SectorRecord } from 'src/app/model/sectorRecord';
+import { QuoteRecord } from 'src/app/model/quoteRecord';
 
 export type ChartOptions = {
   chart: ApexChart
@@ -25,57 +26,55 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'app-heatmap',
+  templateUrl: './heatmap.component.html',
+  styleUrls: ['./heatmap.component.scss']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-  @Input() url: string = "/quote/sectors"
+export class HeatmapComponent implements AfterViewInit {
+  @Input() url: string = "/quotes"
   apiURL = environment.apiUrl;
 
   chartOptions: Partial<ChartOptions>[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    this.http.get<SectorRecord[]>(this.apiURL + this.url)
-      .subscribe(message => { this.concat(message) })
+  path: string
+  ngAfterViewInit() {
+    let industryParam = this.route.snapshot.queryParamMap.get('industry')
+
+    let url = this.route.snapshot.url.join().split(',')
+    this.path = "/" + url[1] 
+
+    console.log(this.apiURL + this.url + "/tech")
+    this.http.get<QuoteRecord[]>(this.apiURL + this.url + this.path).subscribe(message => { 
+      this.concat(message) 
+    })
   }
 
-  ngOnDestroy() {
-  }
+  concat(elements: QuoteRecord[]) {
 
-  concat(elements: SectorRecord[]) {
+    var series: {x: any, y: number}[] = []
+    var colors: string[] = []
 
-    var sectors: string[] = []
-    var seriesData = new Map()
-    var colors = new Map()
+    var i = 0
 
-    elements.forEach(it => {
-      if (sectors.indexOf(it.industry) == -1)
-        sectors.push(it.industry)
+    elements.sort(k => k.marketCap).forEach(it => {
+      i++
+      // WIP bad performance with many elements
+      if (i < 32) {
+        var dayChangeRound: number = Math.round(it.dayChangePercent * 100) / 100
+        series.push({
+          x: it.symbol + ' ' + (dayChangeRound >= 0.0 ? '+' : '') + dayChangeRound,
+          y : it.marketCap > 1500000000000 ? 1500000000000 : it.marketCap < 10000000000 ? 10000000000 : it.marketCap
+        })
+        colors.push(this.color(it.dayChange))
+      } 
     })
 
-    sectors.forEach(it => {
-      seriesData.set(it, [])
-      colors.set(it, [])
-    })
+    var chartOption = this.chartOptionsTemplate("", series, colors)
 
-    elements.forEach(it => {
-      var dayChangeRound: number = Math.round(it.dayChange * 100) / 100
+    this.chartOptions.push(chartOption)
 
-      var series: {x: any, y: number}[] = seriesData.get(it.industry)
-      series.push({
-        x: it.subIndustry + ' ' + (it.dayChange >= 0.0 ? '+' : '') + dayChangeRound,
-        y : it.weighting > 0.5 ? 0.5 : it.weighting < 0.1 ? 0.1 : it.weighting
-      })
-      var color: string[] = colors.get(it.industry)
-      color.push(this.color(it.dayChange))
-    })
-
-    sectors.forEach(it => {
-      this.chartOptions.push(this.chartOptionsTemplate(it, seriesData.get(it), colors.get(it)))
-    })
   }
 
   // interpolates color related to change with two function
@@ -123,8 +122,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         toolbar: {
           show: false
         },
-        height: 360,
-        width: 360,
         type: 'treemap'
       },
       series: [

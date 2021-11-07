@@ -25,4 +25,10 @@ export class AppComponent {
     let segments = this.router.url.split('/')
     this.router.navigate(['cards/' + segments[segments.length-1]])
   }
+
+  showHeatmap() {
+    this.viewmode = "heatmap"
+    let segments = this.router.url.split('/')
+    this.router.navigate(['heatmap/' + segments[segments.length-1]])
+  }
 }

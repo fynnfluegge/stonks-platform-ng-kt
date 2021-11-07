@@ -24,6 +24,7 @@ import { PerformanceComponent } from './component/performance/performance.compon
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CardsTableComponent } from './component/cards-table/cards-table.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { HeatmapComponent } from './component/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
     BaseTableComponent,
     DashboardComponent,
     PerformanceComponent,
-    CardsTableComponent
+    CardsTableComponent,
+    HeatmapComponent
   ],
   imports: [
     FormsModule,

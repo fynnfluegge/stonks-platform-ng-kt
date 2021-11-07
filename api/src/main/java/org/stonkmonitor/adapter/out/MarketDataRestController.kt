@@ -50,6 +50,9 @@ class MarketDataRestController(
              @RequestParam(required = false) sortProperty: String?, @RequestParam(required = false) sortDirection: String?) =
         getQuotes(Industry.valueOf(industry.toUpperCase()), page, sortProperty, sortDirection)
 
+    @RequestMapping(value = ["/quotes/{industry}"])
+    fun paged(@PathVariable industry: String) = getQuotes(Industry.valueOf(industry.toUpperCase()))
+
     @RequestMapping(value = ["/24hOutPerformer"])
     fun dailyOutPerformer() =
         marketDataService.realtimeStockRecords.values.asSequence()

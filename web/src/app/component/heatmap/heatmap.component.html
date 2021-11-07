@@ -1,0 +1,12 @@
+<div *ngFor="let chartOption of chartOptions">
+    <apx-chart
+    [series]="chartOption.series"
+    [chart]="chartOption.chart"
+    [title]="chartOption.title"
+    [plotOptions]="chartOption.plotOptions"
+    [dataLabels]="chartOption.dataLabels"
+    [legend]="chartOption.legend"
+    [tooltip]="chartOption.tooltip"
+    [colors]="chartOption.colors">
+</apx-chart>
+</div>
