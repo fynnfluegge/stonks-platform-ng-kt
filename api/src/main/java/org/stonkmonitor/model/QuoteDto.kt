@@ -55,5 +55,6 @@ data class HistoricalDayCandle (
 data class SectorDto (
     val industry: Industry,
     val subIndustry: SubIndustry,
-    var change: Float
+    var dayChange: Float,
+    var weighting: Float
 )

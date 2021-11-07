@@ -68,12 +68,14 @@ class MarketDataService(
                 }
                 if (!sectors[appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry]!!.containsKey(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry)) {
                     sectors[appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry]!![appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry!!] =
-                        SectorDto(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry, appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry!!, 0.0f)
+                        SectorDto(appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.industry, appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!.subIndustry!!, 0.0f, 0.0f)
                 }
             }
         })
 
-        sectors.values.forEach { it.values.forEach { sectorDto -> sectorDto.change = updateSector(sectorDto.industry, sectorDto.subIndustry) } }
+        sectors.values.forEach { it.values.forEach { sectorDto -> sectorDto.dayChange = updateSector(sectorDto.industry, sectorDto.subIndustry) } }
+
+        updateSectorWeighting()
     }
 
     @Scheduled(fixedRate = 2000, initialDelay = 1000)
@@ -90,7 +92,7 @@ class MarketDataService(
 
                         if (quoteRecord.quoteType == QuoteType.EQUITY){
                             val metaData = appConfig.quoteSymbolMetaData[quoteRecord.symbol]!!
-                            sectors[metaData.industry]!![metaData.subIndustry]?.change = updateSector(metaData.industry, metaData.subIndustry!!)
+                            sectors[metaData.industry]!![metaData.subIndustry]?.dayChange = updateSector(metaData.industry, metaData.subIndustry!!)
                         }
                         sink.tryEmitNext(quoteRecord)
                     }
@@ -107,9 +109,11 @@ class MarketDataService(
                 historyQuotes[quote.symbol]!![quote.date!!] = quote
             }
         }
+
+        updateSectorWeighting()
     }
 
-//    @Scheduled(initialDelay = 1000, fixedDelay = Long.MAX_VALUE)
+    @Scheduled(initialDelay = 1000, fixedDelay = Long.MAX_VALUE)
     fun initHistoricalData() {
         for ((key, value) in getYahooHistoricalData(2.592e+10.toLong())) {
             historyQuotes[key] = LinkedHashMap()
@@ -123,6 +127,17 @@ class MarketDataService(
         realtimeStockRecords.values.filter {
             appConfig.quoteSymbolMetaData[it.symbol]!!.industry == industry && appConfig.quoteSymbolMetaData[it.symbol]!!.subIndustry == subIndustry
         }.fold(0.0f ) { total, item -> total + item.regularMarketChangePercent } / appConfig.quoteSymbolMetaData.values.filter { it.industry == industry && it.subIndustry == subIndustry }.size
+
+    private fun updateSectorWeighting() {
+        sectors.values.forEach {
+            it.values.forEach{ subSector ->
+                subSector.weighting =
+                    realtimeStockRecords.values.filter { stock ->
+                        appConfig.quoteSymbolMetaData[stock.symbol]!!.industry == subSector.industry && appConfig.quoteSymbolMetaData[stock.symbol]!!.subIndustry == subSector.subIndustry
+                    }.fold(0.0f ) { total, item -> total + item.marketCap } / appConfig.quoteSymbolMetaData.values.filter { t -> t.industry == subSector.industry && t.subIndustry == subSector.subIndustry }.size / 1000000000000
+            }
+        }
+    }
 
     private fun getYahooHistoricalData(timeMillis: Long): Map<String, List<HistoricalQuote>> {
         val cal = Calendar.getInstance(Locale.GERMAN)

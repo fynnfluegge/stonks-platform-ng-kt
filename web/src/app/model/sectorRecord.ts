@@ -1,5 +1,6 @@
 export interface SectorRecord {
     industry: string
     subIndustry: string
-    change: number
+    dayChange: number,
+    weighting: number
 }

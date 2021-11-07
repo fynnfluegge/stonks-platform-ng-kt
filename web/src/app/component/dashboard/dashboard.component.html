@@ -7,11 +7,16 @@ alle subbranchen tabelle -->
 200 Tagesschnitt Versenker
 200 Tagesschnitt Hüpfer/Abpraller -->
 
-<apx-chart
-    [series]="apexChartOptions.series"
-    [chart]="apexChartOptions.chart"
-    [title]="apexChartOptions.title"
-    [plotOptions]="apexChartOptions.plotOptions"
-    [dataLabels]="apexChartOptions.dataLabels"
-    [legend]="apexChartOptions.legend">
+<div *ngFor="let chartOption of chartOptions">
+    <apx-chart
+    style="float:left;margin:4px;"
+    [series]="chartOption.series"
+    [chart]="chartOption.chart"
+    [title]="chartOption.title"
+    [plotOptions]="chartOption.plotOptions"
+    [dataLabels]="chartOption.dataLabels"
+    [legend]="chartOption.legend"
+    [tooltip]="chartOption.tooltip"
+    [colors]="chartOption.colors">
 </apx-chart>
+</div>
