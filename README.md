@@ -23,6 +23,8 @@ to the web app which is an Angular web application for displaying and updating t
 
 ![](doc/cards-view.png)
 
+![](doc/heatmap.png)
+
 ---
 
 ## How To Run
