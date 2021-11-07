@@ -14,6 +14,8 @@
 
 #
 
+[Live-Demo](http://http://47.91.78.219:3000)
+
 The project is divided into two services, *api* and *web*.
 The api service fetches realtime and historical data from *yahoo finance* and exposes a rest stream api
 to the web app which is an Angular web application for displaying and updating the streamed data.
