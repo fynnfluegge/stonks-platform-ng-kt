@@ -2,7 +2,7 @@
 
 <h3 align="center"> Technology Stack </h3>
 <div align="center">
-	<img src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/kotlin.svg" width="40"/>
+	<img src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/kotlin.svg" width="120"/>
   	<img src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/angular-icon.svg" width="40"/>
   	<img src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/spring.svg" width="150"/> 
   	<img src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/docker.svg" width="150"/>
